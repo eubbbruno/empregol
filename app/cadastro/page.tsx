@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import {
   User,
   Building2,
@@ -11,10 +12,11 @@ import {
   ArrowRight,
   Github,
   Chrome,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fadeInUp, staggerContainer, scaleIn } from "@/lib/animations";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 type UserType = "candidate" | "company" | null;
 
@@ -22,226 +24,131 @@ export default function CadastroPage() {
   const [userType, setUserType] = useState<UserType>(null);
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          className="absolute top-20 right-20 w-96 h-96 rounded-full bg-[var(--primary-700)] opacity-20 blur-[120px]"
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, -50, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 left-20 w-96 h-96 rounded-full bg-[var(--accent-hot)] opacity-15 blur-[120px]"
-          animate={{
-            scale: [1, 1.3, 1],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
-      </div>
+    <div className="min-h-screen grid lg:grid-cols-2">
+      {/* Left side - Form */}
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        className="flex flex-col justify-center px-6 py-12 lg:px-16 bg-white"
+      >
+        <div className="w-full max-w-md mx-auto">
+          {/* Logo */}
+          <motion.div variants={fadeInUp} className="mb-8">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <span className="text-2xl font-bold gradient-text-primary">
+                EmpreGol
+              </span>
+            </Link>
+          </motion.div>
 
-      <div className="container mx-auto max-w-6xl relative z-10">
-        <AnimatePresence mode="wait">
-          {!userType ? (
-            // User Type Selection
-            <motion.div
-              key="selection"
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="max-w-4xl mx-auto"
-            >
-              {/* Logo */}
-              <motion.div variants={fadeInUp} className="text-center mb-12">
-                <Link href="/" className="inline-flex items-center gap-3 mb-6">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-primary flex items-center justify-center glow-primary">
-                    <span className="text-3xl">⚡</span>
-                  </div>
-                  <span className="text-3xl font-bold gradient-text-primary">
-                    EmpreGol
-                  </span>
-                </Link>
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                  <span className="text-[var(--text-primary)]">Comece sua</span>{" "}
-                  <span className="gradient-text-primary">Jornada</span>
-                </h1>
-                <p className="text-xl text-[var(--text-secondary)]">
-                  Escolha como você quer usar o EmpreGol
-                </p>
-              </motion.div>
+          <AnimatePresence mode="wait">
+            {!userType ? (
+              <motion.div
+                key="selection"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
+              >
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    Crie sua conta
+                  </h1>
+                  <p className="text-gray-600">
+                    Escolha como você quer usar o EmpreGol
+                  </p>
+                </div>
 
-              {/* User Type Cards */}
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Candidate Card */}
-                <motion.div variants={scaleIn}>
+                <div className="grid grid-cols-1 gap-4">
                   <motion.button
-                    onClick={() => setUserType("candidate")}
-                    className="w-full glass rounded-3xl p-8 border border-[var(--glass-border)] hover:border-[var(--primary-500)] transition-all text-left group"
-                    whileHover={{ scale: 1.02, y: -5 }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={() => setUserType("candidate")}
+                    className="p-6 bg-white border-2 border-gray-200 rounded-2xl hover:border-purple-400 hover:bg-purple-50 transition-all text-left group"
                   >
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center mb-6 glow-primary">
-                      <User className="w-8 h-8 text-white" />
+                    <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
+                      <User className="w-6 h-6 text-purple-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-3">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
                       Sou Candidato
                     </h3>
-                    <p className="text-[var(--text-secondary)] mb-6">
-                      Encontre seu próximo emprego dos sonhos. Candidate-se a
-                      milhares de vagas com um clique.
+                    <p className="text-gray-600">
+                      Encontre vagas perfeitas para você e impulsione sua
+                      carreira
                     </p>
-                    <div className="space-y-2">
-                      {[
-                        "100% Grátis para sempre",
-                        "Match inteligente com IA",
-                        "Alertas personalizados",
-                      ].map((feature, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center gap-2 text-sm text-[var(--text-muted)]"
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--success-500)]" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mt-6 flex items-center gap-2 text-[var(--primary-500)] font-semibold group-hover:gap-3 transition-all">
-                      <span>Continuar como candidato</span>
-                      <ArrowRight className="w-5 h-5" />
-                    </div>
                   </motion.button>
-                </motion.div>
 
-                {/* Company Card */}
-                <motion.div variants={scaleIn}>
                   <motion.button
-                    onClick={() => setUserType("company")}
-                    className="w-full glass rounded-3xl p-8 border border-[var(--glass-border)] hover:border-[var(--secondary-500)] transition-all text-left group"
-                    whileHover={{ scale: 1.02, y: -5 }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={() => setUserType("company")}
+                    className="p-6 bg-white border-2 border-gray-200 rounded-2xl hover:border-orange-400 hover:bg-orange-50 transition-all text-left group"
                   >
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--secondary-500)] to-[var(--secondary-400)] flex items-center justify-center mb-6 shadow-[0_0_30px_var(--secondary-glow)]">
-                      <Building2 className="w-8 h-8 text-white" />
+                    <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors">
+                      <Building2 className="w-6 h-6 text-orange-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-3">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
                       Sou Empresa
                     </h3>
-                    <p className="text-[var(--text-secondary)] mb-6">
-                      Encontre os melhores talentos para sua empresa. Publique
-                      vagas e receba candidatos qualificados.
+                    <p className="text-gray-600">
+                      Encontre os melhores talentos para sua equipe
                     </p>
-                    <div className="space-y-2">
-                      {[
-                        "14 dias grátis para testar",
-                        "Filtros inteligentes",
-                        "Dashboard completo",
-                      ].map((feature, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center gap-2 text-sm text-[var(--text-muted)]"
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--secondary-500)]" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mt-6 flex items-center gap-2 text-[var(--secondary-500)] font-semibold group-hover:gap-3 transition-all">
-                      <span>Continuar como empresa</span>
-                      <ArrowRight className="w-5 h-5" />
-                    </div>
                   </motion.button>
-                </motion.div>
-              </div>
+                </div>
 
-              {/* Login Link */}
-              <motion.p
-                variants={fadeInUp}
-                className="text-center text-[var(--text-secondary)] mt-8"
-              >
-                Já tem uma conta?{" "}
-                <Link
-                  href="/login"
-                  className="text-[var(--primary-500)] hover:text-[var(--primary-400)] font-semibold transition-colors"
-                >
-                  Fazer login
-                </Link>
-              </motion.p>
-            </motion.div>
-          ) : (
-            // Registration Form
-            <motion.div
-              key="form"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="max-w-2xl mx-auto"
-            >
-              <div className="glass rounded-3xl p-8 md:p-12 border border-[var(--glass-border)]">
-                {/* Back Button */}
-                <button
-                  onClick={() => setUserType(null)}
-                  className="flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] mb-8 transition-colors"
-                >
-                  <ArrowRight className="w-4 h-4 rotate-180" />
-                  <span className="text-sm">Voltar</span>
-                </button>
-
-                {/* Header */}
-                <div className="flex items-center gap-4 mb-8">
-                  <div
-                    className={`w-14 h-14 rounded-xl flex items-center justify-center ${
-                      userType === "candidate"
-                        ? "bg-gradient-primary glow-primary"
-                        : "bg-gradient-to-br from-[var(--secondary-500)] to-[var(--secondary-400)] shadow-[0_0_30px_var(--secondary-glow)]"
-                    }`}
+                <p className="text-center text-sm text-gray-600">
+                  Já tem uma conta?{" "}
+                  <Link
+                    href="/login"
+                    className="text-purple-600 hover:text-purple-700 font-semibold"
                   >
-                    {userType === "candidate" ? (
-                      <User className="w-7 h-7 text-white" />
-                    ) : (
-                      <Building2 className="w-7 h-7 text-white" />
-                    )}
-                  </div>
-                  <div>
-                    <h2 className="text-3xl font-bold text-[var(--text-primary)]">
-                      {userType === "candidate" ? "Criar Conta" : "Criar Conta Empresa"}
-                    </h2>
-                    <p className="text-[var(--text-secondary)]">
-                      {userType === "candidate"
-                        ? "Comece sua jornada profissional"
-                        : "Encontre os melhores talentos"}
-                    </p>
-                  </div>
+                    Fazer login
+                  </Link>
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
+              >
+                <div>
+                  <button
+                    onClick={() => setUserType(null)}
+                    className="text-sm text-purple-600 hover:text-purple-700 font-medium mb-4"
+                  >
+                    ← Voltar
+                  </button>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    {userType === "candidate"
+                      ? "Cadastro de Candidato"
+                      : "Cadastro de Empresa"}
+                  </h1>
+                  <p className="text-gray-600">
+                    Preencha seus dados para começar
+                  </p>
                 </div>
 
                 {/* Social Login */}
-                <div className="space-y-3 mb-8">
+                <div className="space-y-3">
                   <Button
-                    variant="secondary"
+                    variant="outline"
                     size="lg"
-                    className="w-full"
-                    animated={false}
+                    className="w-full justify-center"
                   >
                     <Chrome className="w-5 h-5" />
                     Continuar com Google
                   </Button>
                   <Button
-                    variant="secondary"
+                    variant="outline"
                     size="lg"
-                    className="w-full"
-                    animated={false}
+                    className="w-full justify-center"
                   >
                     <Github className="w-5 h-5" />
                     Continuar com GitHub
@@ -249,129 +156,152 @@ export default function CadastroPage() {
                 </div>
 
                 {/* Divider */}
-                <div className="relative mb-8">
+                <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[var(--glass-border)]" />
+                    <div className="w-full border-t border-gray-200" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-[var(--bg-primary)] text-[var(--text-muted)]">
+                    <span className="px-4 bg-white text-gray-500">
                       ou cadastre-se com email
                     </span>
                   </div>
                 </div>
 
                 {/* Form */}
-                <form className="space-y-5">
-                  {userType === "company" && (
-                    <div>
-                      <label
-                        htmlFor="company"
-                        className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                      >
-                        Nome da Empresa
-                      </label>
-                      <div className="relative">
-                        <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
-                        <Input
-                          id="company"
-                          type="text"
-                          placeholder="Sua Empresa Ltda"
-                          className="pl-12"
-                        />
-                      </div>
-                    </div>
-                  )}
-
+                <form className="space-y-4">
                   <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                    >
-                      {userType === "candidate" ? "Nome Completo" : "Seu Nome"}
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {userType === "candidate" ? "Nome completo" : "Nome da empresa"}
                     </label>
-                    <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
-                      <Input
-                        id="name"
-                        type="text"
-                        placeholder="João Silva"
-                        className="pl-12"
-                      />
-                    </div>
+                    <Input type="text" placeholder="Seu nome" />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                    >
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <Input
-                        id="email"
                         type="email"
                         placeholder="seu@email.com"
-                        className="pl-12"
+                        className="pl-10"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                    >
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Senha
                     </label>
                     <div className="relative">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <Input
-                        id="password"
                         type="password"
                         placeholder="••••••••"
-                        className="pl-12"
+                        className="pl-10"
                       />
                     </div>
-                    <p className="text-xs text-[var(--text-muted)] mt-2">
-                      Mínimo 8 caracteres
-                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="terms"
+                      className="w-4 h-4 mt-1 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                    />
+                    <label htmlFor="terms" className="text-sm text-gray-600">
+                      Concordo com os{" "}
+                      <Link
+                        href="/termos"
+                        className="text-purple-600 hover:text-purple-700"
+                      >
+                        Termos de Uso
+                      </Link>{" "}
+                      e{" "}
+                      <Link
+                        href="/privacidade"
+                        className="text-purple-600 hover:text-purple-700"
+                      >
+                        Política de Privacidade
+                      </Link>
+                    </label>
                   </div>
 
                   <Button
                     type="submit"
-                    variant="default"
                     size="lg"
-                    className="w-full"
+                    className="w-full bg-gradient-primary text-white shadow-md"
                   >
-                    Criar Conta
+                    Criar conta
                     <ArrowRight className="w-5 h-5" />
                   </Button>
                 </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
 
-                {/* Footer */}
-                <p className="text-center text-sm text-[var(--text-muted)] mt-8">
-                  Ao criar uma conta, você concorda com nossos{" "}
-                  <Link
-                    href="/termos"
-                    className="text-[var(--primary-500)] hover:underline"
-                  >
-                    Termos de Uso
-                  </Link>{" "}
-                  e{" "}
-                  <Link
-                    href="/privacidade"
-                    className="text-[var(--primary-500)] hover:underline"
-                  >
-                    Política de Privacidade
-                  </Link>
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      {/* Right side - Visual */}
+      <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-orange-50 p-12 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 right-20 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-30" />
+        <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-200 rounded-full blur-3xl opacity-20" />
+
+        <div className="relative z-10 max-w-lg">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-200 shadow-sm mb-8"
+          >
+            <Sparkles className="w-4 h-4 text-purple-600" />
+            <span className="text-sm font-medium text-purple-700">
+              Cadastro 100% gratuito
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-4xl font-bold text-gray-900 mb-6"
+          >
+            Junte-se a milhares de{" "}
+            <span className="gradient-text-primary">profissionais</span> que já
+            encontraram seu lugar
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-xl text-gray-600 mb-8"
+          >
+            Crie seu perfil em minutos e comece a receber oportunidades
+            personalizadas hoje mesmo.
+          </motion.p>
+
+          {/* Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="relative w-full h-80 rounded-2xl overflow-hidden shadow-2xl"
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80"
+              alt="Profissionais felizes"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
+          </motion.div>
+        </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -2,238 +2,212 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Mail, Lock, ArrowRight, Github, Chrome } from "lucide-react";
+import Image from "next/image";
+import { Mail, Lock, Chrome, Github, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          className="absolute top-20 left-20 w-96 h-96 rounded-full bg-[var(--primary-700)] opacity-20 blur-[120px]"
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 rounded-full bg-[var(--secondary-500)] opacity-15 blur-[120px]"
-          animate={{
-            scale: [1, 1.3, 1],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
-      </div>
-
-      <div className="container mx-auto max-w-6xl relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Branding */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="hidden lg:block"
-          >
-            <motion.div variants={fadeInUp}>
-              <Link href="/" className="flex items-center gap-3 mb-8 group">
-                <div className="w-14 h-14 rounded-xl bg-gradient-primary flex items-center justify-center glow-primary">
-                  <span className="text-3xl">⚡</span>
-                </div>
-                <span className="text-3xl font-bold gradient-text-primary">
-                  EmpreGol
-                </span>
-              </Link>
-            </motion.div>
-
-            <motion.h1
-              variants={fadeInUp}
-              className="text-5xl font-bold mb-6 leading-tight"
-            >
-              <span className="gradient-text-primary">Bem-vindo</span>
-              <br />
-              <span className="text-[var(--text-primary)]">de volta!</span>
-            </motion.h1>
-
-            <motion.p
-              variants={fadeInUp}
-              className="text-xl text-[var(--text-secondary)] mb-8"
-            >
-              Continue sua jornada profissional. Milhares de oportunidades estão
-              esperando por você.
-            </motion.p>
-
-            <motion.div variants={staggerContainer} className="space-y-4">
-              {[
-                "✓ Acesso a +5.000 vagas exclusivas",
-                "✓ Match inteligente com IA",
-                "✓ Candidatura em 1 clique",
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  className="flex items-center gap-3 text-[var(--text-secondary)]"
-                >
-                  <div className="w-2 h-2 rounded-full bg-[var(--success-500)]" />
-                  <span>{item}</span>
-                </motion.div>
-              ))}
-            </motion.div>
+    <div className="min-h-screen grid lg:grid-cols-2">
+      {/* Left side - Form */}
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        className="flex flex-col justify-center px-6 py-12 lg:px-16 bg-white"
+      >
+        <div className="w-full max-w-md mx-auto">
+          {/* Logo */}
+          <motion.div variants={fadeInUp} className="mb-8">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <span className="text-2xl font-bold gradient-text-primary">
+                EmpreGol
+              </span>
+            </Link>
           </motion.div>
 
-          {/* Right Side - Login Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="glass rounded-3xl p-8 md:p-12 border border-[var(--glass-border)]">
-              {/* Mobile Logo */}
-              <Link
-                href="/"
-                className="flex lg:hidden items-center gap-3 mb-8 justify-center"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center glow-primary">
-                  <span className="text-2xl">⚡</span>
-                </div>
-                <span className="text-2xl font-bold gradient-text-primary">
-                  EmpreGol
-                </span>
-              </Link>
+          {/* Header */}
+          <motion.div variants={fadeInUp} className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Bem-vindo de volta!
+            </h1>
+            <p className="text-gray-600">
+              Entre para acessar sua conta e continuar sua jornada
+            </p>
+          </motion.div>
 
-              <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-2">
-                Entrar na Conta
-              </h2>
-              <p className="text-[var(--text-secondary)] mb-8">
-                Não tem uma conta?{" "}
-                <Link
-                  href="/cadastro"
-                  className="text-[var(--primary-500)] hover:text-[var(--primary-400)] font-semibold transition-colors"
-                >
-                  Cadastre-se grátis
-                </Link>
-              </p>
+          {/* Social Login */}
+          <motion.div variants={fadeInUp} className="space-y-3 mb-6">
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full justify-center"
+            >
+              <Chrome className="w-5 h-5" />
+              Continuar com Google
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full justify-center"
+            >
+              <Github className="w-5 h-5" />
+              Continuar com GitHub
+            </Button>
+          </motion.div>
 
-              {/* Social Login */}
-              <div className="space-y-3 mb-8">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="w-full"
-                  animated={false}
-                >
-                  <Chrome className="w-5 h-5" />
-                  Continuar com Google
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="w-full"
-                  animated={false}
-                >
-                  <Github className="w-5 h-5" />
-                  Continuar com GitHub
-                </Button>
-              </div>
-
-              {/* Divider */}
-              <div className="relative mb-8">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-[var(--glass-border)]" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-[var(--bg-primary)] text-[var(--text-muted)]">
-                    ou continue com email
-                  </span>
-                </div>
-              </div>
-
-              {/* Email/Password Form */}
-              <form className="space-y-5">
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                  >
-                    Email
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="seu@email.com"
-                      className="pl-12"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium text-[var(--text-primary)]"
-                    >
-                      Senha
-                    </label>
-                    <Link
-                      href="/recuperar-senha"
-                      className="text-sm text-[var(--primary-500)] hover:text-[var(--primary-400)] transition-colors"
-                    >
-                      Esqueceu?
-                    </Link>
-                  </div>
-                  <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="••••••••"
-                      className="pl-12"
-                    />
-                  </div>
-                </div>
-
-                <Button type="submit" variant="default" size="lg" className="w-full">
-                  Entrar
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </form>
-
-              {/* Footer */}
-              <p className="text-center text-sm text-[var(--text-muted)] mt-8">
-                Ao continuar, você concorda com nossos{" "}
-                <Link
-                  href="/termos"
-                  className="text-[var(--primary-500)] hover:underline"
-                >
-                  Termos de Uso
-                </Link>{" "}
-                e{" "}
-                <Link
-                  href="/privacidade"
-                  className="text-[var(--primary-500)] hover:underline"
-                >
-                  Política de Privacidade
-                </Link>
-              </p>
+          {/* Divider */}
+          <motion.div variants={fadeInUp} className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200" />
             </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-gray-500">
+                ou entre com email
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Form */}
+          <motion.form variants={staggerContainer} className="space-y-4">
+            <motion.div variants={fadeInUp}>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Input
+                  type="email"
+                  placeholder="seu@email.com"
+                  className="pl-10"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeInUp}>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Senha
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  className="pl-10"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              className="flex items-center justify-between"
+            >
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                />
+                <span className="text-sm text-gray-600">Lembrar de mim</span>
+              </label>
+              <Link
+                href="/recuperar-senha"
+                className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+              >
+                Esqueceu a senha?
+              </Link>
+            </motion.div>
+
+            <motion.div variants={fadeInUp}>
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full bg-gradient-primary text-white shadow-md"
+              >
+                Entrar
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </motion.div>
+          </motion.form>
+
+          {/* Footer */}
+          <motion.p
+            variants={fadeInUp}
+            className="mt-8 text-center text-sm text-gray-600"
+          >
+            Não tem uma conta?{" "}
+            <Link
+              href="/cadastro"
+              className="text-purple-600 hover:text-purple-700 font-semibold"
+            >
+              Cadastre-se grátis
+            </Link>
+          </motion.p>
+        </div>
+      </motion.div>
+
+      {/* Right side - Visual */}
+      <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-orange-50 p-12 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 right-20 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-30" />
+        <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-200 rounded-full blur-3xl opacity-20" />
+
+        <div className="relative z-10 max-w-lg">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-200 shadow-sm mb-8"
+          >
+            <Sparkles className="w-4 h-4 text-purple-600" />
+            <span className="text-sm font-medium text-purple-700">
+              +85.000 profissionais ativos
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-4xl font-bold text-gray-900 mb-6"
+          >
+            Sua próxima oportunidade está a um{" "}
+            <span className="gradient-text-primary">clique</span> de distância
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-xl text-gray-600 mb-8"
+          >
+            Acesse vagas exclusivas, receba recomendações personalizadas e
+            acompanhe suas candidaturas em tempo real.
+          </motion.p>
+
+          {/* Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="relative w-full h-80 rounded-2xl overflow-hidden shadow-2xl"
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80"
+              alt="Profissionais trabalhando"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
           </motion.div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
