@@ -53,7 +53,8 @@ export default function PublicarVagaPage() {
         throw new Error("Usuário não autenticado");
       }
 
-      const { data, error } = await supabase.from("vagas").insert([{
+      // @ts-expect-error - Supabase type inference issue with insert
+      const { error } = await supabase.from("vagas").insert([{
         empresa_id: user.id,
         titulo: formData.titulo,
         descricao: formData.descricao,
@@ -76,7 +77,7 @@ export default function PublicarVagaPage() {
           ? formData.skills_requeridas.split(",").map((s) => s.trim())
           : null,
         status: "ativa",
-      }] as any).select();
+      }]).select();
 
       if (error) throw error;
 
@@ -87,8 +88,9 @@ export default function PublicarVagaPage() {
       });
 
       router.push("/empresa/dashboard");
-    } catch (error) {
-      console.error("Error publishing job:", error);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error publishing job";
+      console.error(message);
       addToast({
         type: "error",
         title: "Erro ao publicar vaga",

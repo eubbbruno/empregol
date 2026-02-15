@@ -6,6 +6,14 @@ import { Briefcase, Users, Calendar, Plus, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { createClient } from "@/lib/supabase/client";
+import { Database } from "@/types/database.types";
+
+type Vaga = Database["public"]["Tables"]["vagas"]["Row"];
+type Empresa = Database["public"]["Tables"]["empresas"]["Row"];
+
+interface VagaWithCount extends Vaga {
+  candidaturas_count: number;
+}
 
 interface Stats {
   vagasAtivas: number;
@@ -20,7 +28,7 @@ export default function EmpresaDashboardPage() {
     candidatosRecebidos: 0,
     entrevistasAgendadas: 0,
   });
-  const [vagas, setVagas] = useState<any[]>([]);
+  const [vagas, setVagas] = useState<VagaWithCount[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +53,8 @@ export default function EmpresaDashboardPage() {
           .single();
 
         if (empresa) {
-          setCompanyName((empresa as any).nome_empresa || "Empresa");
+          const empresaData = empresa as Empresa;
+          setCompanyName(empresaData.nome_empresa || "Empresa");
         }
 
         // Get vagas count
@@ -78,7 +87,7 @@ export default function EmpresaDashboardPage() {
         if (vagasData) {
           // Get candidaturas count for each vaga
           const vagasWithCount = await Promise.all(
-            vagasData.map(async (vaga: any) => {
+            vagasData.map(async (vaga: Vaga) => {
               const { count } = await supabase
                 .from("candidaturas")
                 .select("*", { count: "exact", head: true })
@@ -91,8 +100,9 @@ export default function EmpresaDashboardPage() {
           setVagas(vagasWithCount);
         }
       }
-    } catch (error) {
-      console.error("Error loading dashboard:", error);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error loading dashboard";
+      console.error(message);
     } finally {
       setLoading(false);
     }

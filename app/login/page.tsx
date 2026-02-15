@@ -11,6 +11,9 @@ import { Input } from "@/components/ui/input";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/toast";
+import { Database } from "@/types/database.types";
+
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -51,7 +54,8 @@ export default function LoginPage() {
         });
 
         // Redirect based on user type
-        if ((profile as any)?.tipo === "empresa") {
+        const profileData = profile as Profile | null;
+        if (profileData?.tipo === "empresa") {
           router.push("/empresa/dashboard");
         } else {
           router.push("/dashboard");

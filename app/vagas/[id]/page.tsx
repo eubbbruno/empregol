@@ -180,7 +180,7 @@ export default function VagaDetailPage() {
     setApplying(true);
 
     try {
-      // @ts-ignore - Supabase type inference issue
+      // @ts-expect-error - Supabase type inference issue with insert
       const { error } = await supabase.from("candidaturas").insert([{
         candidato_id: user.id,
         vaga_id: params.id as string,

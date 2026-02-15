@@ -13,12 +13,38 @@ import { VagaCard } from "@/components/cards/VagaCard";
 import { ActivityChart } from "@/components/dashboard/ActivityChart";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { createClient } from "@/lib/supabase/client";
+import { Database } from "@/types/database.types";
+
+type Vaga = Database["public"]["Tables"]["vagas"]["Row"];
+type Empresa = Database["public"]["Tables"]["empresas"]["Row"];
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+
+interface VagaWithEmpresa extends Vaga {
+  empresas: Empresa | null;
+}
 
 interface Stats {
   candidaturasAtivas: number;
   visualizacoes: number;
   convites: number;
   profileScore: number;
+}
+
+// Helper functions to map database types to UI types
+function mapTipoContrato(tipo: string): "CLT" | "PJ" | "Estágio" | "Freelancer" {
+  const tipoUpper = tipo.toUpperCase();
+  if (tipoUpper === "ESTAGIO") return "Estágio";
+  if (tipoUpper === "TEMPORARIO") return "Freelancer";
+  return tipoUpper as "CLT" | "PJ";
+}
+
+function mapNivel(nivel: string): "Estágio" | "Júnior" | "Pleno" | "Sênior" | "Liderança" {
+  if (nivel === "estagio") return "Estágio";
+  if (nivel === "junior") return "Júnior";
+  if (nivel === "pleno") return "Pleno";
+  if (nivel === "senior") return "Sênior";
+  if (nivel === "especialista") return "Liderança";
+  return "Júnior";
 }
 
 export default function DashboardPage() {
@@ -29,7 +55,7 @@ export default function DashboardPage() {
     convites: 0,
     profileScore: 0,
   });
-  const [vagas, setVagas] = useState<any[]>([]);
+  const [vagas, setVagas] = useState<VagaWithEmpresa[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -54,7 +80,8 @@ export default function DashboardPage() {
           .single();
 
         if (profile) {
-          setUserName((profile as any).nome_completo || "Usuário");
+          const profileData = profile as Profile;
+          setUserName(profileData.nome_completo || "Usuário");
         }
 
         // Get candidaturas count
@@ -87,11 +114,12 @@ export default function DashboardPage() {
           .limit(6);
 
         if (vagasData) {
-          setVagas(vagasData);
+          setVagas(vagasData as VagaWithEmpresa[]);
         }
       }
-    } catch (error) {
-      console.error("Error loading dashboard:", error);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error loading dashboard";
+      console.error(message);
     } finally {
       setLoading(false);
     }
@@ -251,13 +279,13 @@ export default function DashboardPage() {
                   key={vaga.id}
                   titulo={vaga.titulo}
                   empresa={vaga.empresas?.nome_empresa || "Empresa"}
-                  logoEmpresa={vaga.empresas?.logo_url}
+                  logoEmpresa={vaga.empresas?.logo_url || undefined}
                   localizacao={`${vaga.cidade || ""}, ${vaga.estado || ""}`.trim()}
-                  tipo={vaga.tipo_contrato.toUpperCase() as any}
-                  nivel={vaga.nivel as any}
+                  tipo={mapTipoContrato(vaga.tipo_contrato)}
+                  nivel={mapNivel(vaga.nivel)}
                   salario={
                     vaga.mostra_salario && vaga.salario_min
-                      ? `R$ ${vaga.salario_min.toLocaleString()} - R$ ${vaga.salario_max.toLocaleString()}`
+                      ? `R$ ${vaga.salario_min.toLocaleString()} - R$ ${vaga.salario_max?.toLocaleString()}`
                       : "A combinar"
                   }
                   remoto={vaga.modelo_trabalho === "remoto"}
