@@ -54,7 +54,7 @@ export default function DashboardPage() {
           .single();
 
         if (profile) {
-          setUserName(profile.nome_completo);
+          setUserName((profile as any).nome_completo || "Usuário");
         }
 
         // Get candidaturas count
@@ -254,6 +254,7 @@ export default function DashboardPage() {
                   logoEmpresa={vaga.empresas?.logo_url}
                   localizacao={`${vaga.cidade || ""}, ${vaga.estado || ""}`.trim()}
                   tipo={vaga.tipo_contrato.toUpperCase() as any}
+                  nivel={vaga.nivel as any}
                   salario={
                     vaga.mostra_salario && vaga.salario_min
                       ? `R$ ${vaga.salario_min.toLocaleString()} - R$ ${vaga.salario_max.toLocaleString()}`

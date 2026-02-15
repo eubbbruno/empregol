@@ -47,11 +47,11 @@ export default function LoginPage() {
         addToast({
           type: "success",
           title: "Login realizado!",
-          message: "Redirecionando...",
+          description: "Redirecionando...",
         });
 
         // Redirect based on user type
-        if (profile?.tipo === "empresa") {
+        if ((profile as any)?.tipo === "empresa") {
           router.push("/empresa/dashboard");
         } else {
           router.push("/dashboard");
@@ -62,7 +62,7 @@ export default function LoginPage() {
       addToast({
         type: "error",
         title: "Erro ao fazer login",
-        message: err.message || "Verifique suas credenciais",
+        description: err.message || "Verifique suas credenciais",
       });
     } finally {
       setLoading(false);

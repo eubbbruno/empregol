@@ -54,15 +54,15 @@ export default function VagaDetailPage() {
           .eq("id", user.id)
           .single();
 
-        setUserType(profile?.tipo || null);
+        setUserType((profile as any)?.tipo || null);
 
         // Check if already applied
-        if (profile?.tipo === "candidato") {
+        if ((profile as any)?.tipo === "candidato") {
           const { data: candidatura } = await supabase
             .from("candidaturas")
             .select("*")
             .eq("candidato_id", user.id)
-            .eq("vaga_id", params.id)
+            .eq("vaga_id", params.id as string)
             .single();
 
           setAlreadyApplied(!!candidatura);
@@ -91,7 +91,7 @@ export default function VagaDetailPage() {
           )
         `
         )
-        .eq("id", params.id)
+        .eq("id", params.id as string)
         .single();
 
       if (error) throw error;
@@ -112,8 +112,8 @@ export default function VagaDetailPage() {
         `
         )
         .eq("status", "ativa")
-        .eq("area", data.area)
-        .neq("id", params.id)
+        .eq("area", (data as any).area)
+        .neq("id", params.id as string)
         .limit(3);
 
       setSimilarVagas(similar || []);
@@ -139,7 +139,7 @@ export default function VagaDetailPage() {
       addToast({
         type: "error",
         title: "Erro",
-        message: "Apenas candidatos podem se candidatar a vagas",
+        description: "Apenas candidatos podem se candidatar a vagas",
       });
       return;
     }
@@ -147,18 +147,18 @@ export default function VagaDetailPage() {
     setApplying(true);
 
     try {
-      const { error } = await supabase.from("candidaturas").insert({
+      const { error } = await supabase.from("candidaturas").insert([{
         candidato_id: user.id,
-        vaga_id: params.id,
+        vaga_id: params.id as string,
         status: "enviada",
-      });
+      }] as any);
 
       if (error) throw error;
 
       addToast({
         type: "success",
         title: "Candidatura enviada!",
-        message: "Boa sorte no processo seletivo",
+        description: "Boa sorte no processo seletivo",
       });
 
       setAlreadyApplied(true);
@@ -167,7 +167,7 @@ export default function VagaDetailPage() {
       addToast({
         type: "error",
         title: "Erro ao candidatar",
-        message: "Tente novamente mais tarde",
+        description: "Tente novamente mais tarde",
       });
     } finally {
       setApplying(false);
@@ -440,6 +440,7 @@ export default function VagaDetailPage() {
                         similarVaga.estado || ""
                       }`.trim()}
                       tipo={similarVaga.tipo_contrato.toUpperCase() as any}
+                      nivel={similarVaga.nivel as any}
                       salario={
                         similarVaga.mostra_salario && similarVaga.salario_min
                           ? `R$ ${similarVaga.salario_min.toLocaleString()} - R$ ${similarVaga.salario_max.toLocaleString()}`

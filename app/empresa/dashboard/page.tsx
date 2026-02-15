@@ -45,7 +45,7 @@ export default function EmpresaDashboardPage() {
           .single();
 
         if (empresa) {
-          setCompanyName(empresa.nome_empresa);
+          setCompanyName((empresa as any).nome_empresa || "Empresa");
         }
 
         // Get vagas count
@@ -78,7 +78,7 @@ export default function EmpresaDashboardPage() {
         if (vagasData) {
           // Get candidaturas count for each vaga
           const vagasWithCount = await Promise.all(
-            vagasData.map(async (vaga) => {
+            vagasData.map(async (vaga: any) => {
               const { count } = await supabase
                 .from("candidaturas")
                 .select("*", { count: "exact", head: true })

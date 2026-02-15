@@ -47,7 +47,7 @@ export default function EmpresaDashboardLayout({
       addToast({
         type: "success",
         title: "Logout realizado",
-        message: "Até logo!",
+        description: "Até logo!",
       });
       router.push("/");
     } catch (error) {

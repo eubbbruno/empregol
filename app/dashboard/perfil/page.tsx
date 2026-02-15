@@ -50,19 +50,20 @@ export default function PerfilPage() {
           .eq("id", user.id)
           .single();
 
-        if (profile || candidato) {
-          setFormData({
-            nome_completo: profile?.nome_completo || "",
-            titulo_profissional: candidato?.titulo_profissional || "",
-            resumo: candidato?.resumo || "",
-            cidade: candidato?.cidade || "",
-            estado: candidato?.estado || "",
-            salario_pretendido: candidato?.salario_pretendido?.toString() || "",
-            linkedin_url: candidato?.linkedin_url || "",
-            telefone: candidato?.telefone || "",
-            skills: candidato?.skills?.join(", ") || "",
-          });
-        }
+        const p = profile as any;
+        const c = candidato as any;
+        
+        setFormData({
+          nome_completo: p?.nome_completo || "",
+          titulo_profissional: c?.titulo_profissional || "",
+          resumo: c?.resumo || "",
+          cidade: c?.cidade || "",
+          estado: c?.estado || "",
+          salario_pretendido: c?.salario_pretendido?.toString() || "",
+          linkedin_url: c?.linkedin_url || "",
+          telefone: c?.telefone || "",
+          skills: c?.skills?.join(", ") || "",
+        });
       }
     } catch (error) {
       console.error("Error loading profile:", error);
@@ -83,34 +84,34 @@ export default function PerfilPage() {
 
       if (user) {
         // Update profiles table
-        await supabase
+        await (supabase
           .from("profiles")
-          .update({ nome_completo: formData.nome_completo })
+          .update as any)({ nome_completo: formData.nome_completo })
           .eq("id", user.id);
 
         // Update candidatos table
-        await supabase
+        await (supabase
           .from("candidatos")
-          .update({
-            titulo_profissional: formData.titulo_profissional,
-            resumo: formData.resumo,
-            cidade: formData.cidade,
-            estado: formData.estado,
+          .update as any)({
+            titulo_profissional: formData.titulo_profissional || null,
+            resumo: formData.resumo || null,
+            cidade: formData.cidade || null,
+            estado: formData.estado || null,
             salario_pretendido: formData.salario_pretendido
               ? parseInt(formData.salario_pretendido)
               : null,
-            linkedin_url: formData.linkedin_url,
-            telefone: formData.telefone,
+            linkedin_url: formData.linkedin_url || null,
+            telefone: formData.telefone || null,
             skills: formData.skills
               ? formData.skills.split(",").map((s) => s.trim())
-              : [],
+              : null,
           })
           .eq("id", user.id);
 
         addToast({
           type: "success",
           title: "Perfil atualizado!",
-          message: "Suas informações foram salvas com sucesso",
+          description: "Suas informações foram salvas com sucesso",
         });
       }
     } catch (error) {
@@ -118,7 +119,7 @@ export default function PerfilPage() {
       addToast({
         type: "error",
         title: "Erro ao salvar",
-        message: "Tente novamente mais tarde",
+        description: "Tente novamente mais tarde",
       });
     } finally {
       setSaving(false);

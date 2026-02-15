@@ -43,7 +43,7 @@ export default function CadastroPage() {
       addToast({
         type: "error",
         title: "Erro",
-        message: "Selecione o tipo de conta",
+        description: "Selecione o tipo de conta",
       });
       return;
     }
@@ -52,7 +52,7 @@ export default function CadastroPage() {
       addToast({
         type: "error",
         title: "Erro",
-        message: "As senhas não coincidem",
+        description: "As senhas não coincidem",
       });
       return;
     }
@@ -61,7 +61,7 @@ export default function CadastroPage() {
       addToast({
         type: "error",
         title: "Erro",
-        message: "A senha deve ter no mínimo 6 caracteres",
+        description: "A senha deve ter no mínimo 6 caracteres",
       });
       return;
     }
@@ -88,11 +88,11 @@ export default function CadastroPage() {
         // Create profile record
         const { error: profileError } = await supabase
           .from("profiles")
-          .insert({
+          .insert([{
             id: data.user.id,
             tipo: userType,
             nome_completo: formData.nomeCompleto,
-          });
+          }] as any);
 
         if (profileError) {
           console.error("Error creating profile:", profileError);
@@ -100,20 +100,20 @@ export default function CadastroPage() {
 
         // Create specific profile (candidato or empresa)
         if (userType === "candidato") {
-          await supabase.from("candidatos").insert({
+          await supabase.from("candidatos").insert([{
             id: data.user.id,
-          });
+          }] as any);
         } else {
-          await supabase.from("empresas").insert({
+          await supabase.from("empresas").insert([{
             id: data.user.id,
             nome_empresa: formData.nomeCompleto,
-          });
+          }] as any);
         }
 
         addToast({
           type: "success",
           title: "Conta criada!",
-          message: "Você já pode fazer login",
+          description: "Você já pode fazer login",
         });
 
         router.push("/login");
@@ -123,7 +123,7 @@ export default function CadastroPage() {
       addToast({
         type: "error",
         title: "Erro ao criar conta",
-        message: err.message || "Tente novamente mais tarde",
+        description: err.message || "Tente novamente mais tarde",
       });
     } finally {
       setLoading(false);

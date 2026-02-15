@@ -53,12 +53,12 @@ export default function PublicarVagaPage() {
         throw new Error("Usuário não autenticado");
       }
 
-      const { data, error } = await supabase.from("vagas").insert({
+      const { data, error } = await supabase.from("vagas").insert([{
         empresa_id: user.id,
         titulo: formData.titulo,
         descricao: formData.descricao,
         requisitos: formData.requisitos,
-        beneficios: formData.beneficios,
+        beneficios: formData.beneficios || null,
         tipo_contrato: formData.tipo_contrato,
         modelo_trabalho: formData.modelo_trabalho,
         cidade: formData.cidade,
@@ -74,16 +74,16 @@ export default function PublicarVagaPage() {
         area: formData.area,
         skills_requeridas: formData.skills_requeridas
           ? formData.skills_requeridas.split(",").map((s) => s.trim())
-          : [],
+          : null,
         status: "ativa",
-      }).select();
+      }] as any).select();
 
       if (error) throw error;
 
       addToast({
         type: "success",
         title: "Vaga publicada!",
-        message: "Sua vaga está disponível para candidatos",
+        description: "Sua vaga está disponível para candidatos",
       });
 
       router.push("/empresa/dashboard");
@@ -92,7 +92,7 @@ export default function PublicarVagaPage() {
       addToast({
         type: "error",
         title: "Erro ao publicar vaga",
-        message: "Tente novamente mais tarde",
+        description: "Tente novamente mais tarde",
       });
     } finally {
       setSaving(false);
