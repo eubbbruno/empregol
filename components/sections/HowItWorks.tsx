@@ -54,7 +54,7 @@ const colorClasses = {
 
 export function HowItWorks() {
   return (
-    <section className="py-20 bg-[var(--bg-tertiary)] relative overflow-hidden">
+    <section id="how-it-works" className="py-20 bg-[var(--bg-tertiary)] relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
