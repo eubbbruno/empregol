@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { AlertCircle, RefreshCw, Home } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function Error({
@@ -32,19 +31,19 @@ export default function Error({
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button
+          <button
             onClick={reset}
-            size="lg"
-            className="bg-gradient-primary text-white shadow-md"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-primary text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-md"
           >
             <RefreshCw className="w-5 h-5" />
             Tentar Novamente
-          </Button>
-          <Link href="/">
-            <Button size="lg" variant="outline">
-              <Home className="w-5 h-5" />
-              Voltar para Home
-            </Button>
+          </button>
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 text-gray-900 rounded-xl font-semibold hover:bg-gray-50 transition-colors shadow-sm"
+          >
+            <Home className="w-5 h-5" />
+            Voltar para Home
           </Link>
         </div>
 
