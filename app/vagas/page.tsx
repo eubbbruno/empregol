@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Search, MapPin, SlidersHorizontal, Grid3x3, List, Loader2 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
@@ -10,12 +10,37 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { createClient } from "@/lib/supabase/client";
+import { Database } from "@/types/database.types";
+
+type Vaga = Database["public"]["Tables"]["vagas"]["Row"];
+type Empresa = Database["public"]["Tables"]["empresas"]["Row"];
+
+interface VagaWithEmpresa extends Vaga {
+  empresas: Empresa | null;
+}
+
+// Helper functions to map database types to UI types
+function mapTipoContrato(tipo: string): "CLT" | "PJ" | "Estágio" | "Freelancer" {
+  const tipoUpper = tipo.toUpperCase();
+  if (tipoUpper === "ESTAGIO") return "Estágio";
+  if (tipoUpper === "TEMPORARIO") return "Freelancer";
+  return tipoUpper as "CLT" | "PJ";
+}
+
+function mapNivel(nivel: string): "Estágio" | "Júnior" | "Pleno" | "Sênior" | "Liderança" {
+  if (nivel === "estagio") return "Estágio";
+  if (nivel === "junior") return "Júnior";
+  if (nivel === "pleno") return "Pleno";
+  if (nivel === "senior") return "Sênior";
+  if (nivel === "especialista") return "Liderança";
+  return "Júnior";
+}
 
 export default function VagasPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [vagas, setVagas] = useState<any[]>([]);
+  const [vagas, setVagas] = useState<VagaWithEmpresa[]>([]);
   
   const [filters, setFilters] = useState({
     search: "",
@@ -25,11 +50,7 @@ export default function VagasPage() {
     cidade: "",
   });
 
-  useEffect(() => {
-    loadVagas();
-  }, [filters]);
-
-  const loadVagas = async () => {
+  const loadVagas = useCallback(async () => {
     try {
       setLoading(true);
       const supabase = createClient();
@@ -72,13 +93,18 @@ export default function VagasPage() {
 
       if (error) throw error;
 
-      setVagas(data || []);
-    } catch (error) {
-      console.error("Error loading jobs:", error);
+      setVagas((data as VagaWithEmpresa[]) || []);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error loading jobs";
+      console.error(message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters]);
+
+  useEffect(() => {
+    loadVagas();
+  }, [loadVagas]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -293,13 +319,13 @@ export default function VagasPage() {
                     <VagaCard
                       titulo={vaga.titulo}
                       empresa={vaga.empresas?.nome_empresa || "Empresa"}
-                      logoEmpresa={vaga.empresas?.logo_url}
+                      logoEmpresa={vaga.empresas?.logo_url || undefined}
                       localizacao={`${vaga.cidade || ""}, ${vaga.estado || ""}`.trim()}
-                      tipo={vaga.tipo_contrato.toUpperCase() as any}
-                      nivel={vaga.nivel as any}
+                      tipo={mapTipoContrato(vaga.tipo_contrato)}
+                      nivel={mapNivel(vaga.nivel)}
                       salario={
                         vaga.mostra_salario && vaga.salario_min
-                          ? `R$ ${vaga.salario_min.toLocaleString()} - R$ ${vaga.salario_max.toLocaleString()}`
+                          ? `R$ ${vaga.salario_min.toLocaleString()} - R$ ${vaga.salario_max?.toLocaleString()}`
                           : "A combinar"
                       }
                       remoto={vaga.modelo_trabalho === "remoto"}

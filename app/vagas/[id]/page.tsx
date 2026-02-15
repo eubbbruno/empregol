@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -23,6 +23,32 @@ import { VagaCard } from "@/components/cards/VagaCard";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/toast";
+import { Database } from "@/types/database.types";
+
+type Vaga = Database["public"]["Tables"]["vagas"]["Row"];
+type Empresa = Database["public"]["Tables"]["empresas"]["Row"];
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+
+interface VagaWithEmpresa extends Vaga {
+  empresas: Empresa | null;
+}
+
+// Helper functions to map database types to UI types
+function mapTipoContrato(tipo: string): "CLT" | "PJ" | "Estágio" | "Freelancer" {
+  const tipoUpper = tipo.toUpperCase();
+  if (tipoUpper === "ESTAGIO") return "Estágio";
+  if (tipoUpper === "TEMPORARIO") return "Freelancer";
+  return tipoUpper as "CLT" | "PJ";
+}
+
+function mapNivel(nivel: string): "Estágio" | "Júnior" | "Pleno" | "Sênior" | "Liderança" {
+  if (nivel === "estagio") return "Estágio";
+  if (nivel === "junior") return "Júnior";
+  if (nivel === "pleno") return "Pleno";
+  if (nivel === "senior") return "Sênior";
+  if (nivel === "especialista") return "Liderança";
+  return "Júnior";
+}
 
 export default function VagaDetailPage() {
   const params = useParams();
@@ -30,17 +56,12 @@ export default function VagaDetailPage() {
   const { addToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
-  const [vaga, setVaga] = useState<any>(null);
-  const [similarVagas, setSimilarVagas] = useState<any[]>([]);
+  const [vaga, setVaga] = useState<VagaWithEmpresa | null>(null);
+  const [similarVagas, setSimilarVagas] = useState<VagaWithEmpresa[]>([]);
   const [userType, setUserType] = useState<string | null>(null);
   const [alreadyApplied, setAlreadyApplied] = useState(false);
 
-  useEffect(() => {
-    loadVaga();
-    checkUserStatus();
-  }, [params.id]);
-
-  const checkUserStatus = async () => {
+  const checkUserStatus = useCallback(async () => {
     try {
       const supabase = createClient();
       const {
@@ -54,10 +75,11 @@ export default function VagaDetailPage() {
           .eq("id", user.id)
           .single();
 
-        setUserType((profile as any)?.tipo || null);
+        const profileData = profile as Profile | null;
+        setUserType(profileData?.tipo || null);
 
         // Check if already applied
-        if ((profile as any)?.tipo === "candidato") {
+        if (profileData?.tipo === "candidato") {
           const { data: candidatura } = await supabase
             .from("candidaturas")
             .select("*")
@@ -68,12 +90,13 @@ export default function VagaDetailPage() {
           setAlreadyApplied(!!candidatura);
         }
       }
-    } catch (error) {
-      console.error("Error checking user status:", error);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error checking user status";
+      console.error(message);
     }
-  };
+  }, [params.id]);
 
-  const loadVaga = async () => {
+  const loadVaga = useCallback(async () => {
     try {
       const supabase = createClient();
 
@@ -96,33 +119,43 @@ export default function VagaDetailPage() {
 
       if (error) throw error;
 
-      setVaga(data);
+      setVaga(data as VagaWithEmpresa);
 
       // Load similar jobs
-      const { data: similar } = await supabase
-        .from("vagas")
-        .select(
+      const vagaData = data as VagaWithEmpresa;
+      if (vagaData.area) {
+        const { data: similar } = await supabase
+          .from("vagas")
+          .select(
+            `
+            *,
+            empresas (
+              nome_empresa,
+              logo_url,
+              verificada
+            )
           `
-          *,
-          empresas (
-            nome_empresa,
-            logo_url,
-            verificada
           )
-        `
-        )
-        .eq("status", "ativa")
-        .eq("area", (data as any).area)
-        .neq("id", params.id as string)
-        .limit(3);
+          .eq("status", "ativa")
+          .eq("area", vagaData.area)
+          .neq("id", params.id as string)
+          .limit(3);
 
-      setSimilarVagas(similar || []);
-    } catch (error) {
-      console.error("Error loading job:", error);
+        setSimilarVagas((similar as VagaWithEmpresa[]) || []);
+      }
+
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error loading job";
+      console.error(message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id]);
+
+  useEffect(() => {
+    loadVaga();
+    checkUserStatus();
+  }, [loadVaga, checkUserStatus]);
 
   const handleApply = async () => {
     const supabase = createClient();
@@ -147,11 +180,12 @@ export default function VagaDetailPage() {
     setApplying(true);
 
     try {
+      // @ts-ignore - Supabase type inference issue
       const { error } = await supabase.from("candidaturas").insert([{
         candidato_id: user.id,
         vaga_id: params.id as string,
-        status: "enviada",
-      }] as any);
+        status: "enviada" as const,
+      }]);
 
       if (error) throw error;
 
@@ -162,8 +196,9 @@ export default function VagaDetailPage() {
       });
 
       setAlreadyApplied(true);
-    } catch (error) {
-      console.error("Error applying:", error);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Erro ao candidatar";
+      console.error(message);
       addToast({
         type: "error",
         title: "Erro ao candidatar",
@@ -234,7 +269,7 @@ export default function VagaDetailPage() {
                       {vaga.empresas?.logo_url ? (
                         <Image
                           src={vaga.empresas.logo_url}
-                          alt={vaga.empresas.nome_empresa}
+                          alt={vaga.empresas.nome_empresa || "Empresa"}
                           width={80}
                           height={80}
                           className="object-cover"
@@ -254,7 +289,7 @@ export default function VagaDetailPage() {
                       </div>
                       <div className="flex items-center gap-2 mb-4">
                         <p className="text-xl text-gray-700">
-                          {vaga.empresas?.nome_empresa}
+                          {vaga.empresas?.nome_empresa || "Empresa"}
                         </p>
                         {vaga.empresas?.verificada && (
                           <CheckCircle2 className="w-5 h-5 text-blue-500" />
@@ -288,7 +323,7 @@ export default function VagaDetailPage() {
                       <DollarSign className="w-5 h-5 text-green-600" />
                       <span className="text-green-900 font-semibold">
                         R$ {vaga.salario_min.toLocaleString()} - R${" "}
-                        {vaga.salario_max.toLocaleString()}
+                        {vaga.salario_max?.toLocaleString()}
                       </span>
                     </div>
                   )}
@@ -435,15 +470,15 @@ export default function VagaDetailPage() {
                       key={similarVaga.id}
                       titulo={similarVaga.titulo}
                       empresa={similarVaga.empresas?.nome_empresa || "Empresa"}
-                      logoEmpresa={similarVaga.empresas?.logo_url}
+                      logoEmpresa={similarVaga.empresas?.logo_url || undefined}
                       localizacao={`${similarVaga.cidade || ""}, ${
                         similarVaga.estado || ""
                       }`.trim()}
-                      tipo={similarVaga.tipo_contrato.toUpperCase() as any}
-                      nivel={similarVaga.nivel as any}
+                      tipo={mapTipoContrato(similarVaga.tipo_contrato)}
+                      nivel={mapNivel(similarVaga.nivel)}
                       salario={
                         similarVaga.mostra_salario && similarVaga.salario_min
-                          ? `R$ ${similarVaga.salario_min.toLocaleString()} - R$ ${similarVaga.salario_max.toLocaleString()}`
+                          ? `R$ ${similarVaga.salario_min.toLocaleString()} - R$ ${similarVaga.salario_max?.toLocaleString()}`
                           : "A combinar"
                       }
                       remoto={similarVaga.modelo_trabalho === "remoto"}
