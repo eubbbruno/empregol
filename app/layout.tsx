@@ -25,9 +25,30 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EmpreGol - Seu Próximo Gol Profissional Começa Aqui",
-  description: "Conectamos talentos brasileiros às melhores oportunidades. Sem burocracia, sem enrolação.",
-  keywords: ["empregos", "vagas", "carreira", "recrutamento", "brasil"],
+  title: "EmpreGol - Sua Próxima Oportunidade de Carreira",
+  description:
+    "Encontre as melhores vagas de emprego do Brasil. Plataforma premium com IA para conectar candidatos e empresas. Cadastro gratuito.",
+  keywords: [
+    "vagas de emprego",
+    "oportunidades de carreira",
+    "recrutamento",
+    "empregos brasil",
+    "plataforma de vagas",
+  ],
+  authors: [{ name: "EmpreGol" }],
+  openGraph: {
+    title: "EmpreGol - Sua Próxima Oportunidade de Carreira",
+    description:
+      "Encontre as melhores vagas de emprego do Brasil. Plataforma premium com IA.",
+    type: "website",
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EmpreGol - Sua Próxima Oportunidade de Carreira",
+    description:
+      "Encontre as melhores vagas de emprego do Brasil. Plataforma premium com IA.",
+  },
 };
 
 export default function RootLayout({
