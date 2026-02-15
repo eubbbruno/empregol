@@ -3,7 +3,7 @@ import { Home, Search } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-orange-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-orange-50 flex items-center justify-center px-4">
       <div className="text-center max-w-2xl">
         <div className="mb-8">
           <h1 className="text-9xl font-bold gradient-text-primary mb-4">404</h1>
@@ -39,7 +39,7 @@ export default function NotFound() {
             Entre em contato:{" "}
             <a
               href="mailto:contato@empregol.com"
-              className="text-purple-600 hover:text-purple-700 font-semibold"
+              className="text-green-600 hover:text-green-700 font-semibold"
             >
               contato@empregol.com
             </a>

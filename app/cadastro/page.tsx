@@ -142,13 +142,14 @@ export default function CadastroPage() {
         <div className="w-full max-w-md mx-auto">
           {/* Logo */}
           <motion.div variants={fadeInUp} className="mb-8">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
-                <span className="text-2xl">⚡</span>
-              </div>
-              <span className="text-2xl font-bold gradient-text-primary">
-                EmpreGol
-              </span>
+            <Link href="/" className="flex items-center">
+              <Image 
+                src="/logo-empreGol.png" 
+                alt="EmpreGol" 
+                width={160} 
+                height={48} 
+                className="h-10 w-auto"
+              />
             </Link>
           </motion.div>
 
@@ -175,10 +176,10 @@ export default function CadastroPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setUserType("candidato")}
-                    className="p-6 bg-white border-2 border-gray-200 rounded-2xl hover:border-purple-400 hover:bg-purple-50 transition-all text-left group"
+                    className="p-6 bg-white border-2 border-gray-200 rounded-2xl hover:border-green-400 hover:bg-green-50 transition-all text-left group"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
-                      <User className="w-6 h-6 text-purple-600" />
+                    <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
+                      <User className="w-6 h-6 text-green-600" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-2">
                       Sou Candidato
@@ -211,7 +212,7 @@ export default function CadastroPage() {
                   Já tem uma conta?{" "}
                   <Link
                     href="/login"
-                    className="text-purple-600 hover:text-purple-700 font-semibold"
+                    className="text-green-600 hover:text-green-700 font-semibold"
                   >
                     Fazer login
                   </Link>
@@ -228,7 +229,7 @@ export default function CadastroPage() {
                 <div>
                   <button
                     onClick={() => setUserType(null)}
-                    className="text-sm text-purple-600 hover:text-purple-700 font-medium mb-4"
+                    className="text-sm text-green-600 hover:text-green-700 font-medium mb-4"
                   >
                     ← Voltar
                   </button>
@@ -365,21 +366,21 @@ export default function CadastroPage() {
                     <input
                       type="checkbox"
                       id="terms"
-                      className="w-4 h-4 mt-1 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                      className="w-4 h-4 mt-1 rounded border-gray-300 text-green-600 focus:ring-green-500"
                       required
                     />
                     <label htmlFor="terms" className="text-sm text-gray-600">
                       Concordo com os{" "}
                       <Link
                         href="/termos"
-                        className="text-purple-600 hover:text-purple-700"
+                        className="text-green-600 hover:text-green-700"
                       >
                         Termos de Uso
                       </Link>{" "}
                       e{" "}
                       <Link
                         href="/privacidade"
-                        className="text-purple-600 hover:text-purple-700"
+                        className="text-green-600 hover:text-green-700"
                       >
                         Política de Privacidade
                       </Link>
@@ -410,7 +411,7 @@ export default function CadastroPage() {
                   Já tem uma conta?{" "}
                   <Link
                     href="/login"
-                    className="text-purple-600 hover:text-purple-700 font-semibold"
+                    className="text-green-600 hover:text-green-700 font-semibold"
                   >
                     Fazer login
                   </Link>
@@ -422,8 +423,8 @@ export default function CadastroPage() {
       </motion.div>
 
       {/* Right side - Visual */}
-      <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-orange-50 p-12 relative overflow-hidden">
-        <div className="absolute top-20 right-20 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-30" />
+      <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-orange-50 p-12 relative overflow-hidden">
+        <div className="absolute top-20 right-20 w-64 h-64 bg-green-200 rounded-full blur-3xl opacity-30" />
         <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-200 rounded-full blur-3xl opacity-20" />
 
         <div className="relative z-10 max-w-lg">
@@ -431,10 +432,10 @@ export default function CadastroPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-200 shadow-sm mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-green-200 shadow-sm mb-8"
           >
-            <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700">
+            <Sparkles className="w-4 h-4 text-green-600" />
+            <span className="text-sm font-medium text-green-700">
               Cadastro 100% gratuito
             </span>
           </motion.div>
@@ -472,7 +473,7 @@ export default function CadastroPage() {
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-green-900/20 to-transparent" />
           </motion.div>
         </div>
       </div>

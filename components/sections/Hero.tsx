@@ -1,17 +1,79 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Search, MapPin, Sparkles, TrendingUp, Zap } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Autocomplete } from "@/components/ui/Autocomplete";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
+const CARGO_SUGGESTIONS = [
+  "Desenvolvedor Frontend",
+  "Desenvolvedor Backend",
+  "Desenvolvedor Fullstack",
+  "Designer UI/UX",
+  "Analista de Dados",
+  "Product Manager",
+  "Gerente de Projetos",
+  "Analista de Marketing",
+  "Vendedor",
+  "Atendente",
+  "Assistente Administrativo",
+  "Contador",
+  "Engenheiro",
+  "Médico",
+  "Enfermeiro",
+  "Professor",
+  "Advogado",
+  "Recursos Humanos",
+  "DevOps",
+  "QA/Tester",
+  "Scrum Master",
+  "Tech Lead",
+];
+
+const CIDADE_SUGGESTIONS = [
+  "São Paulo, SP",
+  "Rio de Janeiro, RJ",
+  "Belo Horizonte, MG",
+  "Curitiba, PR",
+  "Porto Alegre, RS",
+  "Brasília, DF",
+  "Salvador, BA",
+  "Fortaleza, CE",
+  "Recife, PE",
+  "Goiânia, GO",
+  "Manaus, AM",
+  "Belém, PA",
+  "Florianópolis, SC",
+  "Campinas, SP",
+  "Londrina, PR",
+  "Maringá, PR",
+  "Joinville, SC",
+  "Uberlândia, MG",
+  "Ribeirão Preto, SP",
+  "Santos, SP",
+  "Remoto",
+];
+
 export function Hero() {
+  const router = useRouter();
+  const [cargo, setCargo] = useState("");
+  const [cidade, setCidade] = useState("");
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (cargo) params.set("q", cargo);
+    if (cidade) params.set("cidade", cidade);
+    router.push(`/vagas?${params.toString()}`);
+  };
   return (
     <section className="relative min-h-screen flex items-center bg-gradient-hero overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-30" />
+        <div className="absolute top-20 right-20 w-96 h-96 bg-green-200 rounded-full blur-3xl opacity-30" />
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20" />
       </div>
 
@@ -26,9 +88,9 @@ export function Hero() {
           >
             {/* Badge */}
             <motion.div variants={fadeInUp} className="inline-flex mb-6">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-200 shadow-sm">
-                <Sparkles className="w-4 h-4 text-purple-600" />
-                <span className="text-sm font-medium text-purple-700">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-green-200 shadow-sm">
+                <Sparkles className="w-4 h-4 text-green-600" />
+                <span className="text-sm font-medium text-green-700">
                   +12.500 vagas ativas
                 </span>
               </div>
@@ -56,26 +118,27 @@ export function Hero() {
             {/* Search bar */}
             <motion.div variants={fadeInUp} className="mb-8">
               <div className="flex flex-col sm:flex-row gap-3 p-3 bg-white rounded-2xl shadow-lg border border-gray-200 max-w-2xl">
-                <div className="flex items-center gap-3 flex-1 px-4 py-3 bg-gray-50 rounded-xl">
-                  <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                  <input
-                    type="text"
-                    placeholder="Cargo ou palavra-chave"
-                    className="flex-1 bg-transparent border-none outline-none text-gray-900 placeholder:text-gray-400"
-                  />
-                </div>
-                <div className="flex items-center gap-3 flex-1 px-4 py-3 bg-gray-50 rounded-xl">
-                  <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                  <input
-                    type="text"
-                    placeholder="Cidade ou remoto"
-                    className="flex-1 bg-transparent border-none outline-none text-gray-900 placeholder:text-gray-400"
-                  />
-                </div>
+                <Autocomplete
+                  placeholder="Cargo ou palavra-chave"
+                  suggestions={CARGO_SUGGESTIONS}
+                  value={cargo}
+                  onChange={setCargo}
+                  icon={<Search className="w-5 h-5" />}
+                  className="flex-1"
+                />
+                <Autocomplete
+                  placeholder="Cidade ou remoto"
+                  suggestions={CIDADE_SUGGESTIONS}
+                  value={cidade}
+                  onChange={setCidade}
+                  icon={<MapPin className="w-5 h-5" />}
+                  className="flex-1"
+                />
                 <Button
                   variant="default"
                   size="lg"
-                  className="bg-gradient-cta hover:opacity-90 text-white px-8 shadow-lg"
+                  onClick={handleSearch}
+                  className="bg-gradient-cta hover:opacity-90 text-white px-8 shadow-lg whitespace-nowrap"
                 >
                   Buscar
                 </Button>
@@ -118,7 +181,7 @@ export function Hero() {
                 priority
               />
               {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-green-900/20 to-transparent" />
             </div>
 
             {/* Floating card */}

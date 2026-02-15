@@ -33,10 +33,10 @@ const steps = [
 
 const colorClasses = {
   purple: {
-    bg: "bg-purple-600",
-    light: "bg-purple-100",
-    text: "text-purple-600",
-    ring: "ring-purple-200",
+    bg: "bg-green-600",
+    light: "bg-green-100",
+    text: "text-green-600",
+    ring: "ring-green-200",
   },
   orange: {
     bg: "bg-orange-600",
@@ -75,7 +75,7 @@ export function HowItWorks() {
           {/* Steps */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative">
             {/* Connecting line - desktop only */}
-            <div className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-300 via-orange-300 to-cyan-300 opacity-30" />
+            <div className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-green-300 via-orange-300 to-cyan-300 opacity-30" />
 
             {steps.map((step, index) => {
               const Icon = step.icon;

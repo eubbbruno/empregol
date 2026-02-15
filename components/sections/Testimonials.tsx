@@ -93,8 +93,8 @@ export function Testimonials() {
                 className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200"
               >
                 {/* Quote icon */}
-                <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mb-4">
-                  <Quote className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                  <Quote className="w-5 h-5 text-green-600" />
                 </div>
 
                 {/* Rating */}

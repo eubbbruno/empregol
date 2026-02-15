@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X, Briefcase, Building2, DollarSign, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -53,19 +54,15 @@ export function Navbar() {
           >
             <div className="flex items-center justify-between px-6 py-4">
               {/* Logo */}
-              <Link href="/" className="flex items-center gap-2 group">
-                <motion.div
-                  className="relative"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                </motion.div>
-                <span className="text-xl font-bold gradient-text-primary hidden sm:block">
-                  EmpreGol
-                </span>
+              <Link href="/" className="flex items-center">
+                <Image 
+                  src="/logo-empreGol.png" 
+                  alt="EmpreGol" 
+                  width={140} 
+                  height={40} 
+                  className="h-8 w-auto"
+                  priority
+                />
               </Link>
 
               {/* Desktop Navigation */}

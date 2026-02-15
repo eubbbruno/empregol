@@ -214,7 +214,7 @@ export default function VagaDetailPage() {
       <div className="min-h-screen bg-gray-50">
         <Navbar />
         <div className="flex items-center justify-center min-h-[60vh] pt-24">
-          <Loader2 className="w-12 h-12 animate-spin text-purple-600" />
+          <Loader2 className="w-12 h-12 animate-spin text-green-600" />
         </div>
       </div>
     );
@@ -333,7 +333,7 @@ export default function VagaDetailPage() {
                       {vaga.skills_requeridas.map((skill: string) => (
                         <span
                           key={skill}
-                          className="px-3 py-1 bg-purple-50 text-purple-700 rounded-lg text-sm font-medium"
+                          className="px-3 py-1 bg-green-50 text-green-700 rounded-lg text-sm font-medium"
                         >
                           {skill}
                         </span>
@@ -448,7 +448,7 @@ export default function VagaDetailPage() {
                         href={vaga.empresas.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-purple-600 hover:text-purple-700 font-semibold text-sm"
+                        className="text-green-600 hover:text-green-700 font-semibold text-sm"
                       >
                         Visitar site →
                       </a>

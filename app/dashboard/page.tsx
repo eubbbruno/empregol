@@ -155,9 +155,9 @@ export default function DashboardPage() {
 
   const colorClasses = {
     purple: {
-      bg: "bg-purple-50",
-      icon: "text-purple-600",
-      border: "border-purple-200",
+      bg: "bg-green-50",
+      icon: "text-green-600",
+      border: "border-green-200",
     },
     cyan: {
       bg: "bg-cyan-50",
@@ -179,7 +179,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-600 border-t-transparent" />
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-green-600 border-t-transparent" />
       </div>
     );
   }
@@ -239,8 +239,8 @@ export default function DashboardPage() {
       {vagas.length === 0 ? (
         <motion.div variants={fadeInUp}>
           <div className="bg-white rounded-2xl p-12 border-2 border-dashed border-gray-200 text-center">
-            <div className="w-20 h-20 rounded-full bg-purple-50 flex items-center justify-center mx-auto mb-6">
-              <Briefcase className="w-10 h-10 text-purple-600" />
+            <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-6">
+              <Briefcase className="w-10 h-10 text-green-600" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               Nenhuma candidatura ainda
@@ -268,7 +268,7 @@ export default function DashboardPage() {
               </h2>
               <Link
                 href="/vagas"
-                className="text-purple-600 hover:text-purple-700 font-semibold text-sm flex items-center gap-1"
+                className="text-green-600 hover:text-green-700 font-semibold text-sm flex items-center gap-1"
               >
                 Ver todas
                 <ArrowUpRight className="w-4 h-4" />

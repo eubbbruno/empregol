@@ -125,7 +125,7 @@ export default function PublicarVagaPage() {
         {/* Basic Info */}
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Briefcase className="w-5 h-5 text-purple-600" />
+            <Briefcase className="w-5 h-5 text-green-600" />
             Informações Básicas
           </h2>
           <div className="space-y-6">
@@ -149,7 +149,7 @@ export default function PublicarVagaPage() {
                 Descrição da Vaga *
               </label>
               <textarea
-                className="flex min-h-[150px] w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-white"
+                className="flex min-h-[150px] w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white"
                 placeholder="Descreva as responsabilidades e o dia a dia da posição..."
                 value={formData.descricao}
                 onChange={(e) =>
@@ -164,7 +164,7 @@ export default function PublicarVagaPage() {
                 Requisitos *
               </label>
               <textarea
-                className="flex min-h-[120px] w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-white"
+                className="flex min-h-[120px] w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white"
                 placeholder="Liste os requisitos necessários para a vaga..."
                 value={formData.requisitos}
                 onChange={(e) =>
@@ -179,7 +179,7 @@ export default function PublicarVagaPage() {
                 Benefícios
               </label>
               <textarea
-                className="flex min-h-[100px] w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-white"
+                className="flex min-h-[100px] w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white"
                 placeholder="Vale refeição, plano de saúde, home office..."
                 value={formData.beneficios}
                 onChange={(e) =>
@@ -193,7 +193,7 @@ export default function PublicarVagaPage() {
         {/* Job Details */}
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-purple-600" />
+            <Building2 className="w-5 h-5 text-green-600" />
             Detalhes da Vaga
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -202,7 +202,7 @@ export default function PublicarVagaPage() {
                 Tipo de Contrato *
               </label>
               <select
-                className="flex h-11 w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 transition-all focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-white"
+                className="flex h-11 w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 transition-all focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white"
                 value={formData.tipo_contrato}
                 onChange={(e) =>
                   setFormData({ ...formData, tipo_contrato: e.target.value })
@@ -221,7 +221,7 @@ export default function PublicarVagaPage() {
                 Modelo de Trabalho *
               </label>
               <select
-                className="flex h-11 w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 transition-all focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-white"
+                className="flex h-11 w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 transition-all focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white"
                 value={formData.modelo_trabalho}
                 onChange={(e) =>
                   setFormData({ ...formData, modelo_trabalho: e.target.value })
@@ -239,7 +239,7 @@ export default function PublicarVagaPage() {
                 Nível *
               </label>
               <select
-                className="flex h-11 w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 transition-all focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-white"
+                className="flex h-11 w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 transition-all focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white"
                 value={formData.nivel}
                 onChange={(e) =>
                   setFormData({ ...formData, nivel: e.target.value })
@@ -274,7 +274,7 @@ export default function PublicarVagaPage() {
         {/* Location */}
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-purple-600" />
+            <MapPin className="w-5 h-5 text-green-600" />
             Localização
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -316,7 +316,7 @@ export default function PublicarVagaPage() {
         {/* Salary */}
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-purple-600" />
+            <DollarSign className="w-5 h-5 text-green-600" />
             Remuneração
           </h2>
           <div className="space-y-6">
@@ -352,7 +352,7 @@ export default function PublicarVagaPage() {
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
-                className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                 checked={formData.mostra_salario}
                 onChange={(e) =>
                   setFormData({ ...formData, mostra_salario: e.target.checked })

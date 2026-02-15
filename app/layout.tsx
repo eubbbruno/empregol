@@ -1,27 +1,19 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
+import "@fontsource/geom/300.css";
+import "@fontsource/geom/400.css";
+import "@fontsource/geom/500.css";
+import "@fontsource/geom/600.css";
+import "@fontsource/geom/700.css";
+import "@fontsource/geom/800.css";
+import "@fontsource/geom/900.css";
 import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-heading",
+  variable: "--font-inter",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-  weight: ["400", "500", "700"],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -59,7 +51,8 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${plusJakarta.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${inter.variable} antialiased`}
+        style={{ fontFamily: 'var(--font-inter), sans-serif' }}
       >
         <ToastProvider>
           {children}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Search, MapPin, SlidersHorizontal, Grid3x3, List, Loader2 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
@@ -37,17 +38,18 @@ function mapNivel(nivel: string): "Estágio" | "Júnior" | "Pleno" | "Sênior" |
 }
 
 export default function VagasPage() {
+  const searchParams = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(true);
   const [vagas, setVagas] = useState<VagaWithEmpresa[]>([]);
   
   const [filters, setFilters] = useState({
-    search: "",
+    search: searchParams.get("q") || "",
     tipo_contrato: "",
     modelo_trabalho: "",
     nivel: "",
-    cidade: "",
+    cidade: searchParams.get("cidade") || "",
   });
 
   const loadVagas = useCallback(async () => {
@@ -272,7 +274,7 @@ export default function VagasPage() {
                   onClick={() => setViewMode("grid")}
                   className={`p-2 rounded-lg transition-colors ${
                     viewMode === "grid"
-                      ? "bg-purple-100 text-purple-600"
+                      ? "bg-green-100 text-green-600"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -282,7 +284,7 @@ export default function VagasPage() {
                   onClick={() => setViewMode("list")}
                   className={`p-2 rounded-lg transition-colors ${
                     viewMode === "list"
-                      ? "bg-purple-100 text-purple-600"
+                      ? "bg-green-100 text-green-600"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -294,7 +296,7 @@ export default function VagasPage() {
             {/* Jobs Grid/List */}
             {loading ? (
               <div className="flex items-center justify-center py-20">
-                <Loader2 className="w-12 h-12 animate-spin text-purple-600" />
+                <Loader2 className="w-12 h-12 animate-spin text-green-600" />
               </div>
             ) : vagas.length === 0 ? (
               <motion.div

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { buttonHover } from "@/lib/animations";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -22,7 +22,7 @@ const buttonVariants = cva(
           "border-2 border-gray-200 bg-transparent text-gray-900 hover:bg-gray-50 hover:border-gray-300",
         destructive:
           "bg-red-500 text-white hover:bg-red-600 shadow-md",
-        link: "text-purple-600 underline-offset-4 hover:underline",
+        link: "text-green-600 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-11 px-6 py-2.5",

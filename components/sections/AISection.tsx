@@ -32,7 +32,7 @@ export function AISection() {
     <section className="py-24 bg-gray-900 text-white relative overflow-hidden">
       {/* Purple glow effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-600 rounded-full blur-[150px] opacity-20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-600 rounded-full blur-[150px] opacity-20" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -45,9 +45,9 @@ export function AISection() {
           {/* Header */}
           <motion.div variants={fadeInUp} className="text-center mb-16">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/20 border border-purple-500/30 mb-6">
-              <Sparkles className="w-4 h-4 text-purple-400" />
-              <span className="text-sm font-medium text-purple-300">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 border border-green-500/30 mb-6">
+              <Sparkles className="w-4 h-4 text-green-400" />
+              <span className="text-sm font-medium text-green-300">
                 Powered by AI
               </span>
             </div>
@@ -55,7 +55,7 @@ export function AISection() {
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
               Inteligência Artificial
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">
                 trabalhando para você
               </span>
             </h2>
@@ -75,10 +75,10 @@ export function AISection() {
                   key={index}
                   variants={fadeInUp}
                   whileHover={{ y: -4 }}
-                  className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-purple-500/50 transition-all duration-300"
+                  className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-purple-400" />
+                  <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-green-400" />
                   </div>
                   <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
                   <p className="text-sm text-gray-400">{feature.description}</p>
@@ -94,7 +94,7 @@ export function AISection() {
           >
             <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
                   <Brain className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -114,7 +114,7 @@ export function AISection() {
                   <div key={index}>
                     <div className="flex justify-between text-sm mb-2">
                       <span className="text-gray-300">{item.label}</span>
-                      <span className="text-purple-400 font-semibold">
+                      <span className="text-green-400 font-semibold">
                         {item.progress}%
                       </span>
                     </div>
@@ -123,7 +123,7 @@ export function AISection() {
                         initial={{ width: 0 }}
                         whileInView={{ width: `${item.progress}%` }}
                         transition={{ duration: 1, delay: index * 0.2 }}
-                        className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
+                        className="h-full bg-gradient-to-r from-green-500 to-emerald-500"
                       />
                     </div>
                   </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -70,11 +71,14 @@ export default function EmpresaDashboardLayout({
               <Menu className="w-6 h-6 text-gray-900" />
             )}
           </button>
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-              <span className="text-lg">⚡</span>
-            </div>
-            <span className="font-bold gradient-text-primary">EmpreGol</span>
+          <Link href="/" className="flex items-center">
+            <Image 
+              src="/logo-empreGol.png" 
+              alt="EmpreGol" 
+              width={120} 
+              height={36} 
+              className="h-7 w-auto"
+            />
           </Link>
           <Button size="sm" className="bg-gradient-cta text-white">
             <Plus className="w-4 h-4" />
@@ -107,15 +111,16 @@ export default function EmpresaDashboardLayout({
               <div className="p-6 border-b border-gray-200">
                 <Link
                   href="/"
-                  className="flex items-center gap-2"
+                  className="flex items-center"
                   onClick={() => setIsSidebarOpen(false)}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                  <span className="text-xl font-bold gradient-text-primary">
-                    EmpreGol
-                  </span>
+                  <Image 
+                    src="/logo-empreGol.png" 
+                    alt="EmpreGol" 
+                    width={140} 
+                    height={42} 
+                    className="h-9 w-auto"
+                  />
                 </Link>
               </div>
 
@@ -148,7 +153,7 @@ export default function EmpresaDashboardLayout({
                         className={cn(
                           "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
                           isActive
-                            ? "bg-purple-50 text-purple-700 font-semibold"
+                            ? "bg-green-50 text-green-700 font-semibold"
                             : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                         )}
                       >
@@ -197,7 +202,7 @@ export default function EmpresaDashboardLayout({
                 <input
                   type="text"
                   placeholder="Buscar candidatos..."
-                  className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
             </div>

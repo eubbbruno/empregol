@@ -9,11 +9,11 @@ export function FinalCTA() {
   return (
     <section className="py-24 relative overflow-hidden">
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-orange-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-orange-50" />
 
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-20" />
+        <div className="absolute top-20 right-20 w-96 h-96 bg-green-200 rounded-full blur-3xl opacity-20" />
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20" />
       </div>
 
@@ -28,10 +28,10 @@ export function FinalCTA() {
           {/* Badge */}
           <motion.div
             variants={fadeInUp}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-200 shadow-sm mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-green-200 shadow-sm mb-8"
           >
-            <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700">
+            <Sparkles className="w-4 h-4 text-green-600" />
+            <span className="text-sm font-medium text-green-700">
               Junte-se a +85.000 profissionais
             </span>
           </motion.div>
@@ -61,7 +61,7 @@ export function FinalCTA() {
             <Button
               size="lg"
               variant="secondary"
-              className="px-8 text-lg border-2 border-purple-200 hover:border-purple-400 bg-white"
+              className="px-8 text-lg border-2 border-green-200 hover:border-green-400 bg-white"
             >
               Sou Empresa
               <Building2 className="ml-2 w-5 h-5" />
@@ -71,7 +71,7 @@ export function FinalCTA() {
           {/* Trust indicators */}
           <div className="flex flex-wrap justify-center gap-8 items-center text-sm text-gray-600">
             <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-purple-600" />
+              <Users className="w-5 h-5 text-green-600" />
               <span>+85.000 usuários</span>
             </div>
             <div className="flex items-center gap-2">

@@ -85,13 +85,14 @@ export default function LoginPage() {
         <div className="w-full max-w-md mx-auto">
           {/* Logo */}
           <motion.div variants={fadeInUp} className="mb-8">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
-                <span className="text-2xl">⚡</span>
-              </div>
-              <span className="text-2xl font-bold gradient-text-primary">
-                EmpreGol
-              </span>
+            <Link href="/" className="flex items-center">
+              <Image 
+                src="/logo-empreGol.png" 
+                alt="EmpreGol" 
+                width={160} 
+                height={48} 
+                className="h-10 w-auto"
+              />
             </Link>
           </motion.div>
 
@@ -192,7 +193,7 @@ export default function LoginPage() {
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                   checked={formData.lembrar}
                   onChange={(e) =>
                     setFormData({ ...formData, lembrar: e.target.checked })
@@ -202,7 +203,7 @@ export default function LoginPage() {
               </label>
               <Link
                 href="/recuperar-senha"
-                className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                className="text-sm text-green-600 hover:text-green-700 font-medium"
               >
                 Esqueceu a senha?
               </Link>
@@ -238,7 +239,7 @@ export default function LoginPage() {
             Não tem uma conta?{" "}
             <Link
               href="/cadastro"
-              className="text-purple-600 hover:text-purple-700 font-semibold"
+              className="text-green-600 hover:text-green-700 font-semibold"
             >
               Cadastre-se grátis
             </Link>
@@ -247,8 +248,8 @@ export default function LoginPage() {
       </motion.div>
 
       {/* Right side - Visual */}
-      <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-orange-50 p-12 relative overflow-hidden">
-        <div className="absolute top-20 right-20 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-30" />
+      <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-orange-50 p-12 relative overflow-hidden">
+        <div className="absolute top-20 right-20 w-64 h-64 bg-green-200 rounded-full blur-3xl opacity-30" />
         <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-200 rounded-full blur-3xl opacity-20" />
 
         <div className="relative z-10 max-w-lg">
@@ -256,10 +257,10 @@ export default function LoginPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-200 shadow-sm mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-green-200 shadow-sm mb-8"
           >
-            <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700">
+            <Sparkles className="w-4 h-4 text-green-600" />
+            <span className="text-sm font-medium text-green-700">
               +85.000 profissionais ativos
             </span>
           </motion.div>
@@ -296,7 +297,7 @@ export default function LoginPage() {
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-green-900/20 to-transparent" />
           </motion.div>
         </div>
       </div>

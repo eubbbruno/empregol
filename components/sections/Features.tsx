@@ -80,10 +80,10 @@ const features = [
 
 const colorClasses = {
   purple: {
-    bg: "bg-purple-50",
-    icon: "text-purple-600",
-    border: "border-purple-200",
-    hover: "hover:border-purple-400",
+    bg: "bg-green-50",
+    icon: "text-green-600",
+    border: "border-green-200",
+    hover: "hover:border-green-400",
   },
   orange: {
     bg: "bg-orange-50",

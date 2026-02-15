@@ -136,7 +136,7 @@ export default function PerfilPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-600 border-t-transparent" />
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-green-600 border-t-transparent" />
       </div>
     );
   }
@@ -163,7 +163,7 @@ export default function PerfilPage() {
         {/* Personal Info */}
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <User className="w-5 h-5 text-purple-600" />
+            <User className="w-5 h-5 text-green-600" />
             Informações Pessoais
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -203,7 +203,7 @@ export default function PerfilPage() {
                 Resumo Profissional
               </label>
               <textarea
-                className="flex min-h-[120px] w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-white"
+                className="flex min-h-[120px] w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white"
                 placeholder="Conte um pouco sobre sua experiência e objetivos profissionais..."
                 value={formData.resumo}
                 onChange={(e) =>
@@ -217,7 +217,7 @@ export default function PerfilPage() {
         {/* Location */}
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-purple-600" />
+            <MapPin className="w-5 h-5 text-green-600" />
             Localização
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -257,7 +257,7 @@ export default function PerfilPage() {
         {/* Professional Info */}
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Briefcase className="w-5 h-5 text-purple-600" />
+            <Briefcase className="w-5 h-5 text-green-600" />
             Informações Profissionais
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

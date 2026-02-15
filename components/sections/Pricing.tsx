@@ -124,7 +124,7 @@ export function Pricing() {
                   whileHover={{ y: -8 }}
                   className={`relative bg-white rounded-2xl p-8 border-2 transition-all duration-300 ${
                     isPro
-                      ? "border-purple-500 shadow-xl shadow-purple-100"
+                      ? "border-green-500 shadow-xl shadow-green-100"
                       : "border-gray-200 shadow-md hover:shadow-lg"
                   }`}
                 >
@@ -141,13 +141,13 @@ export function Pricing() {
                   <div
                     className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 ${
                       isPro
-                        ? "bg-purple-100"
+                        ? "bg-green-100"
                         : "bg-gray-100"
                     }`}
                   >
                     <Icon
                       className={`w-7 h-7 ${
-                        isPro ? "text-purple-600" : "text-gray-600"
+                        isPro ? "text-green-600" : "text-gray-600"
                       }`}
                     />
                   </div>
@@ -198,12 +198,12 @@ export function Pricing() {
                       <li key={i} className="flex items-start gap-3">
                         <div
                           className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                            isPro ? "bg-purple-100" : "bg-gray-100"
+                            isPro ? "bg-green-100" : "bg-gray-100"
                           }`}
                         >
                           <Check
                             className={`w-3 h-3 ${
-                              isPro ? "text-purple-600" : "text-gray-600"
+                              isPro ? "text-green-600" : "text-gray-600"
                             }`}
                           />
                         </div>
