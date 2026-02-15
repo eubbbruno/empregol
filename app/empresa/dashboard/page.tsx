@@ -6,9 +6,6 @@ import {
   Users,
   Calendar,
   TrendingUp,
-  ArrowUpRight,
-  Eye,
-  Clock,
   Plus,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";

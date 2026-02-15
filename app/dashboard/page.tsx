@@ -7,10 +7,7 @@ import {
   Target,
   ArrowUpRight,
   Briefcase,
-  Clock,
-  TrendingUp,
 } from "lucide-react";
-import { VagaCard } from "@/components/cards/VagaCard";
 import { ActivityChart } from "@/components/dashboard/ActivityChart";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 

@@ -65,10 +65,9 @@ export default function EmpresaDashboardLayout({
 
       {/* Sidebar */}
       <AnimatePresence>
-        {(isSidebarOpen || window.innerWidth >= 1024) && (
+        {isSidebarOpen && (
           <>
             {/* Mobile Backdrop */}
-            {isSidebarOpen && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -78,17 +77,14 @@ export default function EmpresaDashboardLayout({
               />
             )}
 
-            {/* Sidebar Content */}
-            <motion.aside
-              initial={{ x: -300 }}
-              animate={{ x: 0 }}
-              exit={{ x: -300 }}
-              transition={{ type: "spring", damping: 25 }}
-              className={cn(
-                "fixed top-0 left-0 bottom-0 w-72 bg-white border-r border-gray-200 z-50 flex flex-col",
-                "lg:translate-x-0"
-              )}
-            >
+          {/* Sidebar Content */}
+          <motion.aside
+            initial={{ x: -300 }}
+            animate={{ x: 0 }}
+            exit={{ x: -300 }}
+            transition={{ type: "spring", damping: 25 }}
+            className="fixed top-0 left-0 bottom-0 w-72 bg-white border-r border-gray-200 z-50 flex flex-col lg:translate-x-0"
+          >
               {/* Logo */}
               <div className="p-6 border-b border-gray-200">
                 <Link
