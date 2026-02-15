@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   User,
   Building2,
@@ -13,15 +14,121 @@ import {
   Github,
   Chrome,
   Sparkles,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { createClient } from "@/lib/supabase/client";
+import { useToast } from "@/components/ui/toast";
 
-type UserType = "candidate" | "company" | null;
+type UserType = "candidato" | "empresa" | null;
 
 export default function CadastroPage() {
   const [userType, setUserType] = useState<UserType>(null);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    nomeCompleto: "",
+    email: "",
+    senha: "",
+    confirmarSenha: "",
+  });
+  const router = useRouter();
+  const { addToast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!userType) {
+      addToast({
+        type: "error",
+        title: "Erro",
+        message: "Selecione o tipo de conta",
+      });
+      return;
+    }
+
+    if (formData.senha !== formData.confirmarSenha) {
+      addToast({
+        type: "error",
+        title: "Erro",
+        message: "As senhas não coincidem",
+      });
+      return;
+    }
+
+    if (formData.senha.length < 6) {
+      addToast({
+        type: "error",
+        title: "Erro",
+        message: "A senha deve ter no mínimo 6 caracteres",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const supabase = createClient();
+
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.senha,
+        options: {
+          data: {
+            nome_completo: formData.nomeCompleto,
+            tipo: userType,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        // Create profile record
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .insert({
+            id: data.user.id,
+            tipo: userType,
+            nome_completo: formData.nomeCompleto,
+          });
+
+        if (profileError) {
+          console.error("Error creating profile:", profileError);
+        }
+
+        // Create specific profile (candidato or empresa)
+        if (userType === "candidato") {
+          await supabase.from("candidatos").insert({
+            id: data.user.id,
+          });
+        } else {
+          await supabase.from("empresas").insert({
+            id: data.user.id,
+            nome_empresa: formData.nomeCompleto,
+          });
+        }
+
+        addToast({
+          type: "success",
+          title: "Conta criada!",
+          message: "Você já pode fazer login",
+        });
+
+        router.push("/login");
+      }
+    } catch (error: unknown) {
+      const err = error as { message?: string };
+      addToast({
+        type: "error",
+        title: "Erro ao criar conta",
+        message: err.message || "Tente novamente mais tarde",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
@@ -67,7 +174,7 @@ export default function CadastroPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setUserType("candidate")}
+                    onClick={() => setUserType("candidato")}
                     className="p-6 bg-white border-2 border-gray-200 rounded-2xl hover:border-purple-400 hover:bg-purple-50 transition-all text-left group"
                   >
                     <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
@@ -85,7 +192,7 @@ export default function CadastroPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setUserType("company")}
+                    onClick={() => setUserType("empresa")}
                     className="p-6 bg-white border-2 border-gray-200 rounded-2xl hover:border-orange-400 hover:bg-orange-50 transition-all text-left group"
                   >
                     <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors">
@@ -126,7 +233,7 @@ export default function CadastroPage() {
                     ← Voltar
                   </button>
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                    {userType === "candidate"
+                    {userType === "candidato"
                       ? "Cadastro de Candidato"
                       : "Cadastro de Empresa"}
                   </h1>
@@ -141,6 +248,8 @@ export default function CadastroPage() {
                     variant="outline"
                     size="lg"
                     className="w-full justify-center"
+                    disabled
+                    title="Em breve"
                   >
                     <Chrome className="w-5 h-5" />
                     Continuar com Google
@@ -149,6 +258,8 @@ export default function CadastroPage() {
                     variant="outline"
                     size="lg"
                     className="w-full justify-center"
+                    disabled
+                    title="Em breve"
                   >
                     <Github className="w-5 h-5" />
                     Continuar com GitHub
@@ -168,12 +279,24 @@ export default function CadastroPage() {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {userType === "candidate" ? "Nome completo" : "Nome da empresa"}
+                      {userType === "candidato"
+                        ? "Nome completo"
+                        : "Nome da empresa"}
                     </label>
-                    <Input type="text" placeholder="Seu nome" />
+                    <Input
+                      type="text"
+                      placeholder={
+                        userType === "candidato" ? "Seu nome" : "Nome da empresa"
+                      }
+                      value={formData.nomeCompleto}
+                      onChange={(e) =>
+                        setFormData({ ...formData, nomeCompleto: e.target.value })
+                      }
+                      required
+                    />
                   </div>
 
                   <div>
@@ -186,6 +309,11 @@ export default function CadastroPage() {
                         type="email"
                         placeholder="seu@email.com"
                         className="pl-10"
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -200,6 +328,35 @@ export default function CadastroPage() {
                         type="password"
                         placeholder="••••••••"
                         className="pl-10"
+                        value={formData.senha}
+                        onChange={(e) =>
+                          setFormData({ ...formData, senha: e.target.value })
+                        }
+                        required
+                        minLength={6}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Confirmar senha
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
+                        className="pl-10"
+                        value={formData.confirmarSenha}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            confirmarSenha: e.target.value,
+                          })
+                        }
+                        required
+                        minLength={6}
                       />
                     </div>
                   </div>
@@ -209,6 +366,7 @@ export default function CadastroPage() {
                       type="checkbox"
                       id="terms"
                       className="w-4 h-4 mt-1 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                      required
                     />
                     <label htmlFor="terms" className="text-sm text-gray-600">
                       Concordo com os{" "}
@@ -232,11 +390,31 @@ export default function CadastroPage() {
                     type="submit"
                     size="lg"
                     className="w-full bg-gradient-primary text-white shadow-md"
+                    disabled={loading}
                   >
-                    Criar conta
-                    <ArrowRight className="w-5 h-5" />
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Criando conta...
+                      </>
+                    ) : (
+                      <>
+                        Criar conta
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
                   </Button>
                 </form>
+
+                <p className="text-center text-sm text-gray-600 mt-4">
+                  Já tem uma conta?{" "}
+                  <Link
+                    href="/login"
+                    className="text-purple-600 hover:text-purple-700 font-semibold"
+                  >
+                    Fazer login
+                  </Link>
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -245,12 +423,10 @@ export default function CadastroPage() {
 
       {/* Right side - Visual */}
       <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-orange-50 p-12 relative overflow-hidden">
-        {/* Decorative elements */}
         <div className="absolute top-20 right-20 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-30" />
         <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-200 rounded-full blur-3xl opacity-20" />
 
         <div className="relative z-10 max-w-lg">
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -263,7 +439,6 @@ export default function CadastroPage() {
             </span>
           </motion.div>
 
-          {/* Headline */}
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -285,7 +460,6 @@ export default function CadastroPage() {
             personalizadas hoje mesmo.
           </motion.p>
 
-          {/* Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}

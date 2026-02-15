@@ -1,14 +1,74 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Lock, Chrome, Github, ArrowRight, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Mail, Lock, Chrome, Github, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { createClient } from "@/lib/supabase/client";
+import { useToast } from "@/components/ui/toast";
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    senha: "",
+    lembrar: false,
+  });
+  const router = useRouter();
+  const { addToast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const supabase = createClient();
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.senha,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        // Get user profile to determine redirect
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("tipo")
+          .eq("id", data.user.id)
+          .single();
+
+        addToast({
+          type: "success",
+          title: "Login realizado!",
+          message: "Redirecionando...",
+        });
+
+        // Redirect based on user type
+        if (profile?.tipo === "empresa") {
+          router.push("/empresa/dashboard");
+        } else {
+          router.push("/dashboard");
+        }
+      }
+    } catch (error: unknown) {
+      const err = error as { message?: string };
+      addToast({
+        type: "error",
+        title: "Erro ao fazer login",
+        message: err.message || "Verifique suas credenciais",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Left side - Form */}
@@ -47,6 +107,8 @@ export default function LoginPage() {
               variant="outline"
               size="lg"
               className="w-full justify-center"
+              disabled
+              title="Em breve"
             >
               <Chrome className="w-5 h-5" />
               Continuar com Google
@@ -55,6 +117,8 @@ export default function LoginPage() {
               variant="outline"
               size="lg"
               className="w-full justify-center"
+              disabled
+              title="Em breve"
             >
               <Github className="w-5 h-5" />
               Continuar com GitHub
@@ -74,7 +138,11 @@ export default function LoginPage() {
           </motion.div>
 
           {/* Form */}
-          <motion.form variants={staggerContainer} className="space-y-4">
+          <motion.form
+            variants={staggerContainer}
+            className="space-y-4"
+            onSubmit={handleSubmit}
+          >
             <motion.div variants={fadeInUp}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email
@@ -85,6 +153,11 @@ export default function LoginPage() {
                   type="email"
                   placeholder="seu@email.com"
                   className="pl-10"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  required
                 />
               </div>
             </motion.div>
@@ -99,6 +172,11 @@ export default function LoginPage() {
                   type="password"
                   placeholder="••••••••"
                   className="pl-10"
+                  value={formData.senha}
+                  onChange={(e) =>
+                    setFormData({ ...formData, senha: e.target.value })
+                  }
+                  required
                 />
               </div>
             </motion.div>
@@ -111,6 +189,10 @@ export default function LoginPage() {
                 <input
                   type="checkbox"
                   className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  checked={formData.lembrar}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lembrar: e.target.checked })
+                  }
                 />
                 <span className="text-sm text-gray-600">Lembrar de mim</span>
               </label>
@@ -127,9 +209,19 @@ export default function LoginPage() {
                 type="submit"
                 size="lg"
                 className="w-full bg-gradient-primary text-white shadow-md"
+                disabled={loading}
               >
-                Entrar
-                <ArrowRight className="w-5 h-5" />
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Entrando...
+                  </>
+                ) : (
+                  <>
+                    Entrar
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
               </Button>
             </motion.div>
           </motion.form>
@@ -152,12 +244,10 @@ export default function LoginPage() {
 
       {/* Right side - Visual */}
       <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-orange-50 p-12 relative overflow-hidden">
-        {/* Decorative elements */}
         <div className="absolute top-20 right-20 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-30" />
         <div className="absolute bottom-20 left-20 w-64 h-64 bg-orange-200 rounded-full blur-3xl opacity-20" />
 
         <div className="relative z-10 max-w-lg">
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -170,7 +260,6 @@ export default function LoginPage() {
             </span>
           </motion.div>
 
-          {/* Headline */}
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -191,7 +280,6 @@ export default function LoginPage() {
             acompanhe suas candidaturas em tempo real.
           </motion.p>
 
-          {/* Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}

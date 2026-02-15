@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/client";
+import { useToast } from "@/components/ui/toast";
 
 const navItems = [
   { icon: Home, label: "Dashboard", href: "/empresa/dashboard" },
@@ -35,6 +37,23 @@ export default function EmpresaDashboardLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { addToast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      addToast({
+        type: "success",
+        title: "Logout realizado",
+        message: "Até logo!",
+      });
+      router.push("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -143,11 +162,14 @@ export default function EmpresaDashboardLayout({
 
               {/* Company Profile */}
               <div className="p-4 border-t border-gray-200">
-                <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-red-50 transition-colors group"
+                >
                   <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold">
                     E
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 text-left">
                     <p className="text-sm font-semibold text-gray-900 truncate">
                       Empresa
                     </p>
@@ -155,8 +177,8 @@ export default function EmpresaDashboardLayout({
                       empresa@email.com
                     </p>
                   </div>
-                  <LogOut className="w-5 h-5 text-gray-400" />
-                </div>
+                  <LogOut className="w-5 h-5 text-gray-400 group-hover:text-red-600" />
+                </button>
               </div>
             </motion.aside>
           </>
