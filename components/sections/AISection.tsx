@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Brain, FileText, TrendingUp, Sparkles, Zap, Target } from "lucide-react";
-import { fadeInUp, staggerContainer, glowPulse } from "@/lib/animations";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 const aiFeatures = [
   {

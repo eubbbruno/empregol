@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import {
-  TrendingUp,
   Eye,
   Mail,
   Target,

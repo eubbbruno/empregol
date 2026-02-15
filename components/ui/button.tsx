@@ -52,15 +52,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     
     if (animated && !asChild) {
       return (
-        <motion.button
-          className={cn(buttonVariants({ variant, size, className }))}
-          ref={ref}
+        <motion.div
           variants={buttonHover}
           initial="rest"
           whileHover="hover"
           whileTap="tap"
-          {...props}
-        />
+          className="inline-block"
+        >
+          <button
+            className={cn(buttonVariants({ variant, size, className }))}
+            ref={ref}
+            {...props}
+          />
+        </motion.div>
       );
     }
 

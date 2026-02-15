@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { MapPin, Briefcase, DollarSign, Clock, Building2, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cardHover } from "@/lib/animations";
@@ -25,7 +26,6 @@ interface VagaCardProps {
 }
 
 export function VagaCard({
-  id,
   titulo,
   empresa,
   logoEmpresa,
@@ -91,12 +91,14 @@ export function VagaCard({
       {/* Header */}
       <div className="flex items-start gap-4 mb-4">
         {/* Company Logo */}
-        <div className="w-14 h-14 rounded-xl glass flex items-center justify-center flex-shrink-0 border border-[var(--glass-border)]">
+        <div className="w-14 h-14 rounded-xl glass flex items-center justify-center flex-shrink-0 border border-[var(--glass-border)] relative">
           {logoEmpresa ? (
-            <img
+            <Image
               src={logoEmpresa}
               alt={empresa}
-              className="w-10 h-10 object-contain"
+              width={40}
+              height={40}
+              className="object-contain"
             />
           ) : (
             <Building2 className="w-6 h-6 text-[var(--text-muted)]" />

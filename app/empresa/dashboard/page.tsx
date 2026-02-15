@@ -8,7 +8,6 @@ import {
   TrendingUp,
   ArrowUpRight,
   Eye,
-  UserCheck,
   Clock,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";

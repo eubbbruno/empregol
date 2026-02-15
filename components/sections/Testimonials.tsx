@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Quote, Star } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
@@ -127,15 +128,17 @@ export function Testimonials() {
 
                   {/* Content */}
                   <p className="text-[var(--text-secondary)] leading-relaxed mb-6 flex-1">
-                    "{testimonial.content}"
+                    &ldquo;{testimonial.content}&rdquo;
                   </p>
 
                   {/* Author */}
                   <div className="flex items-center gap-3 pt-4 border-t border-[var(--glass-border)]">
-                    <div className="w-12 h-12 rounded-full overflow-hidden glass border border-[var(--glass-border)]">
-                      <img
+                    <div className="w-12 h-12 rounded-full overflow-hidden glass border border-[var(--glass-border)] relative">
+                      <Image
                         src={testimonial.image}
                         alt={testimonial.name}
+                        width={48}
+                        height={48}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -171,9 +174,15 @@ export function Testimonials() {
                 {testimonials.slice(0, 4).map((t, i) => (
                   <div
                     key={i}
-                    className="w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--bg-primary)]"
+                    className="w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--bg-primary)] relative"
                   >
-                    <img src={t.image} alt="" className="w-full h-full object-cover" />
+                    <Image
+                      src={t.image}
+                      alt={t.name}
+                      width={32}
+                      height={32}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 ))}
               </div>

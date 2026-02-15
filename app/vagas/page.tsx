@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, Filter, SlidersHorizontal, Grid3x3, List } from "lucide-react";
+import { Search, MapPin, SlidersHorizontal, Grid3x3, List } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { VagaCard } from "@/components/cards/VagaCard";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 // Mock data
