@@ -6,35 +6,45 @@ import { MapPin, Briefcase, DollarSign, Clock, Building2, Bookmark, CheckCircle 
 import { Button } from "@/components/ui/button";
 import { cardHover } from "@/lib/animations";
 
+type WorkModel = "presencial" | "remoto" | "hibrido";
+
 interface VagaCardProps {
+  id: string;
   titulo: string;
   empresa: string;
   logoEmpresa?: string;
-  localizacao: string;
+  cidade: string;
+  estado: string;
   tipo: "CLT" | "PJ" | "Estágio" | "Freelancer";
   nivel: "Estágio" | "Júnior" | "Pleno" | "Sênior" | "Liderança";
-  salario: string;
-  remoto: boolean;
-  publicadoEm: Date;
-  tags: string[];
+  salario_min?: number | null;
+  salario_max?: number | null;
+  modelo: WorkModel;
+  publicadoEm?: Date;
+  tags?: string[];
   matchScore?: number;
   verificada?: boolean;
 }
 
 export function VagaCard({
+  id,
   titulo,
   empresa,
   logoEmpresa,
-  localizacao,
+  cidade,
+  estado,
   tipo,
-  salario,
-  remoto,
+  nivel,
+  salario_min,
+  salario_max,
+  modelo,
   publicadoEm,
-  tags,
+  tags = [],
   matchScore,
   verificada = false,
 }: VagaCardProps) {
   const timeAgo = () => {
+    if (!publicadoEm) return "Recente";
     const days = Math.floor(
       (Date.now() - publicadoEm.getTime()) / (1000 * 60 * 60 * 24)
     );
@@ -43,12 +53,25 @@ export function VagaCard({
     return `Há ${days} dias`;
   };
 
+  const formatSalario = () => {
+    if (!salario_min && !salario_max) return "A combinar";
+    if (salario_min && salario_max) {
+      return `R$ ${(salario_min / 1000).toFixed(0)}k - ${(salario_max / 1000).toFixed(0)}k`;
+    }
+    if (salario_min) return `A partir de R$ ${(salario_min / 1000).toFixed(0)}k`;
+    return `Até R$ ${(salario_max! / 1000).toFixed(0)}k`;
+  };
+
+  const localizacao = `${cidade}, ${estado}`;
+  const remoto = modelo === "remoto";
+
   return (
-    <motion.div
-      variants={cardHover}
-      whileHover="hover"
-      className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer group"
-    >
+    <a href={`/vagas/${id}`}>
+      <motion.div
+        variants={cardHover}
+        whileHover="hover"
+        className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer group"
+      >
       {/* Header */}
       <div className="flex items-start gap-4 mb-4">
         {/* Company Logo */}
@@ -68,7 +91,7 @@ export function VagaCard({
 
         <div className="flex-1 min-w-0">
           {/* Title */}
-          <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-purple-700 transition-colors line-clamp-2">
+          <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-green-700 transition-colors line-clamp-2">
             {titulo}
           </h3>
 
@@ -99,7 +122,7 @@ export function VagaCard({
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <DollarSign className="w-4 h-4 text-gray-400 flex-shrink-0" />
-          <span className="truncate">{salario}</span>
+          <span className="truncate">{formatSalario()}</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />
@@ -108,21 +131,24 @@ export function VagaCard({
       </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        {tags.slice(0, 3).map((tag, index) => (
-          <span
-            key={index}
-            className="px-3 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-full border border-purple-200"
-          >
-            {tag}
+      {tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          <span className="px-3 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">
+            {nivel}
           </span>
-        ))}
-        {tags.length > 3 && (
-          <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
-            +{tags.length - 3}
+          <span className="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-200">
+            {modelo.charAt(0).toUpperCase() + modelo.slice(1)}
           </span>
-        )}
-      </div>
+          {tags.slice(0, 2).map((tag, index) => (
+            <span
+              key={index}
+              className="px-3 py-1 bg-gray-50 text-gray-700 text-xs font-medium rounded-full border border-gray-200"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Footer */}
       <div className="flex items-center justify-between pt-4 border-t border-gray-200">
@@ -134,7 +160,7 @@ export function VagaCard({
                 style={{ width: `${matchScore}%` }}
               />
             </div>
-            <span className="text-sm font-semibold text-purple-700">
+            <span className="text-sm font-semibold text-green-700">
               {matchScore}% match
             </span>
           </div>
@@ -147,6 +173,7 @@ export function VagaCard({
           Ver detalhes
         </Button>
       </div>
-    </motion.div>
+      </motion.div>
+    </a>
   );
 }

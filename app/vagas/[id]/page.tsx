@@ -468,20 +468,17 @@ export default function VagaDetailPage() {
                   {similarVagas.map((similarVaga) => (
                     <VagaCard
                       key={similarVaga.id}
+                      id={similarVaga.id}
                       titulo={similarVaga.titulo}
                       empresa={similarVaga.empresas?.nome_empresa || "Empresa"}
                       logoEmpresa={similarVaga.empresas?.logo_url || undefined}
-                      localizacao={`${similarVaga.cidade || ""}, ${
-                        similarVaga.estado || ""
-                      }`.trim()}
+                      cidade={similarVaga.cidade || ""}
+                      estado={similarVaga.estado || ""}
                       tipo={mapTipoContrato(similarVaga.tipo_contrato)}
                       nivel={mapNivel(similarVaga.nivel)}
-                      salario={
-                        similarVaga.mostra_salario && similarVaga.salario_min
-                          ? `R$ ${similarVaga.salario_min.toLocaleString()} - R$ ${similarVaga.salario_max?.toLocaleString()}`
-                          : "A combinar"
-                      }
-                      remoto={similarVaga.modelo_trabalho === "remoto"}
+                      salario_min={similarVaga.salario_min}
+                      salario_max={similarVaga.salario_max}
+                      modelo={similarVaga.modelo_trabalho}
                       publicadoEm={new Date(similarVaga.created_at)}
                       tags={similarVaga.skills_requeridas || []}
                       verificada={similarVaga.empresas?.verificada || false}

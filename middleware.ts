@@ -44,23 +44,52 @@ export async function middleware(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    // Protect dashboard routes
-    if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    // Get user profile type if authenticated
+    let userType: "candidato" | "empresa" | null = null;
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("tipo")
+        .eq("id", user.id)
+        .single();
+      
+      userType = profile?.tipo as "candidato" | "empresa" | null;
     }
 
-    // Protect empresa dashboard routes
-    if (request.nextUrl.pathname.startsWith("/empresa/dashboard") && !user) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    // Protect dashboard routes - only candidatos
+    if (request.nextUrl.pathname.startsWith("/dashboard")) {
+      if (!user) {
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+      if (userType === "empresa") {
+        return NextResponse.redirect(new URL("/empresa/dashboard", request.url));
+      }
     }
 
-    // Redirect authenticated users away from auth pages
+    // Protect empresa dashboard routes - only empresas
+    if (request.nextUrl.pathname.startsWith("/empresa")) {
+      if (!user) {
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+      if (userType === "candidato") {
+        return NextResponse.redirect(new URL("/dashboard", request.url));
+      }
+    }
+
+    // Redirect authenticated users away from auth pages based on type
     if (
       user &&
       (request.nextUrl.pathname === "/login" ||
         request.nextUrl.pathname === "/cadastro")
     ) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      if (userType === "empresa") {
+        return NextResponse.redirect(new URL("/empresa/dashboard", request.url));
+      } else if (userType === "candidato") {
+        return NextResponse.redirect(new URL("/dashboard", request.url));
+      } else {
+        // No profile found, redirect to cadastro
+        return NextResponse.redirect(new URL("/cadastro", request.url));
+      }
     }
 
     return supabaseResponse;

@@ -1,37 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import {
-  Eye,
-  Mail,
-  Target,
-  ArrowUpRight,
   Briefcase,
+  Eye,
+  TrendingUp,
+  MapPin,
+  DollarSign,
+  Clock,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
+  Calendar,
+  ArrowRight,
 } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { VagaCard } from "@/components/cards/VagaCard";
-import { ActivityChart } from "@/components/dashboard/ActivityChart";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { getCandidatoDashboardData } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/client";
 import { Database } from "@/types/database.types";
 
 type Vaga = Database["public"]["Tables"]["vagas"]["Row"];
 type Empresa = Database["public"]["Tables"]["empresas"]["Row"];
-type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 interface VagaWithEmpresa extends Vaga {
   empresas: Empresa | null;
 }
 
-interface Stats {
-  candidaturasAtivas: number;
-  visualizacoes: number;
-  convites: number;
-  profileScore: number;
-}
-
-// Helper functions to map database types to UI types
+// Helper functions
 function mapTipoContrato(tipo: string): "CLT" | "PJ" | "Estágio" | "Freelancer" {
   const tipoUpper = tipo.toUpperCase();
   if (tipoUpper === "ESTAGIO") return "Estágio";
@@ -48,269 +47,302 @@ function mapNivel(nivel: string): "Estágio" | "Júnior" | "Pleno" | "Sênior" |
   return "Júnior";
 }
 
-export default function DashboardPage() {
-  const [userName, setUserName] = useState("Usuário");
-  const [stats, setStats] = useState<Stats>({
-    candidaturasAtivas: 0,
-    visualizacoes: 0,
-    convites: 0,
-    profileScore: 0,
-  });
-  const [vagas, setVagas] = useState<VagaWithEmpresa[]>([]);
+function getStatusBadge(status: string) {
+  const badges = {
+    enviada: { color: "bg-yellow-100 text-yellow-700 border-yellow-200", label: "Enviada", icon: Clock },
+    em_analise: { color: "bg-blue-100 text-blue-700 border-blue-200", label: "Em Análise", icon: AlertCircle },
+    entrevista: { color: "bg-green-100 text-green-700 border-green-200", label: "Entrevista", icon: Calendar },
+    aprovada: { color: "bg-green-100 text-green-800 border-green-300", label: "Aprovado", icon: CheckCircle2 },
+    recusada: { color: "bg-red-100 text-red-700 border-red-200", label: "Recusada", icon: XCircle },
+  };
+
+  return badges[status as keyof typeof badges] || badges.enviada;
+}
+
+export default function CandidatoDashboard() {
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<{
+    profile: any;
+    candidato: any;
+    candidaturas: any[];
+    vagasRecomendadas: VagaWithEmpresa[];
+  }>({
+    profile: null,
+    candidato: null,
+    candidaturas: [],
+    vagasRecomendadas: [],
+  });
 
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
-
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
+    setLoading(true);
     try {
       const supabase = createClient();
-
-      // Get user
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
       if (user) {
-        // Get profile
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("nome_completo")
-          .eq("id", user.id)
-          .single();
-
-        if (profile) {
-          const profileData = profile as Profile;
-          setUserName(profileData.nome_completo || "Usuário");
-        }
-
-        // Get candidaturas count
-        const { count: candidaturasCount } = await supabase
-          .from("candidaturas")
-          .select("*", { count: "exact", head: true })
-          .eq("candidato_id", user.id)
-          .in("status", ["enviada", "em_analise", "entrevista"]);
-
-        setStats((prev) => ({
-          ...prev,
-          candidaturasAtivas: candidaturasCount || 0,
-        }));
-
-        // Get recommended jobs
-        const { data: vagasData } = await supabase
-          .from("vagas")
-          .select(
-            `
-            *,
-            empresas (
-              nome_empresa,
-              logo_url,
-              verificada
-            )
-          `
-          )
-          .eq("status", "ativa")
-          .order("created_at", { ascending: false })
-          .limit(6);
-
-        if (vagasData) {
-          setVagas(vagasData as VagaWithEmpresa[]);
-        }
+        const dashboardData = await getCandidatoDashboardData(user.id);
+        setData({
+          profile: dashboardData.profile,
+          candidato: dashboardData.candidato,
+          candidaturas: dashboardData.candidaturas,
+          vagasRecomendadas: dashboardData.vagasRecomendadas as VagaWithEmpresa[],
+        });
       }
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Error loading dashboard";
-      console.error(message);
+    } catch (error) {
+      console.error("Error loading dashboard:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const statsConfig = [
-    {
-      icon: Briefcase,
-      label: "Candidaturas Ativas",
-      value: stats.candidaturasAtivas.toString(),
-      color: "purple",
-    },
-    {
-      icon: Eye,
-      label: "Visualizações do Perfil",
-      value: stats.visualizacoes.toString(),
-      color: "cyan",
-    },
-    {
-      icon: Mail,
-      label: "Convites Recebidos",
-      value: stats.convites.toString(),
-      color: "orange",
-    },
-    {
-      icon: Target,
-      label: "Score do Perfil",
-      value: `${stats.profileScore}%`,
-      color: "green",
-    },
-  ];
+  useEffect(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
 
-  const colorClasses = {
-    purple: {
-      bg: "bg-green-50",
-      icon: "text-green-600",
-      border: "border-green-200",
-    },
-    cyan: {
-      bg: "bg-cyan-50",
-      icon: "text-cyan-600",
-      border: "border-cyan-200",
-    },
-    orange: {
-      bg: "bg-orange-50",
-      icon: "text-orange-600",
-      border: "border-orange-200",
-    },
-    green: {
-      bg: "bg-green-50",
-      icon: "text-green-600",
-      border: "border-green-200",
-    },
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-green-600 border-t-transparent" />
-      </div>
-    );
-  }
+  const nomeUsuario = data.profile?.nome_completo?.split(" ")[0] || "Usuário";
+  const candidaturasCount = data.candidaturas.length;
+  const perfilCompleto = data.candidato?.skills?.length > 0 ? 85 : 45;
 
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      animate="visible"
-      className="space-y-8"
-    >
-      {/* Greeting */}
-      <motion.div variants={fadeInUp}>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Bem-vindo de volta, {userName}!
-        </h1>
-        <p className="text-gray-600">
-          Aqui está um resumo da sua atividade recente
-        </p>
-      </motion.div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          className="space-y-8"
+        >
+          {/* Welcome Banner */}
+          <motion.div
+            variants={fadeInUp}
+            className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-8 overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+            <div className="relative z-10">
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Bem-vindo de volta, {nomeUsuario}! 👋
+              </h1>
+              <p className="text-green-50 text-lg">
+                Continue sua busca pelo emprego ideal
+              </p>
+            </div>
+          </motion.div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsConfig.map((stat, index) => {
-          const Icon = stat.icon;
-          const colors = colorClasses[stat.color as keyof typeof colorClasses];
-
-          return (
-            <motion.div
-              key={index}
-              variants={fadeInUp}
-              whileHover={{ y: -4 }}
-              className={`bg-white rounded-2xl p-6 border-2 ${colors.border} shadow-sm hover:shadow-md transition-all`}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div
-                  className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center`}
-                >
-                  <Icon className={`w-6 h-6 ${colors.icon}`} />
+          {/* Stats Cards */}
+          <motion.div
+            variants={fadeInUp}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            {/* Candidaturas Enviadas */}
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                  <Briefcase className="w-6 h-6 text-green-600" />
                 </div>
               </div>
-              <p className="text-3xl font-bold text-gray-900 mb-1">
-                {stat.value}
-              </p>
-              <p className="text-sm text-gray-600">{stat.label}</p>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Activity Chart */}
-      <motion.div variants={fadeInUp}>
-        <ActivityChart />
-      </motion.div>
-
-      {/* Recommended Jobs or Empty State */}
-      {vagas.length === 0 ? (
-        <motion.div variants={fadeInUp}>
-          <div className="bg-white rounded-2xl p-12 border-2 border-dashed border-gray-200 text-center">
-            <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-6">
-              <Briefcase className="w-10 h-10 text-green-600" />
+              <div className="space-y-1">
+                <p className="text-3xl font-bold text-gray-900">{candidaturasCount}</p>
+                <p className="text-sm text-gray-600">Candidaturas Enviadas</p>
+                <p className="text-xs text-gray-500">este mês</p>
+              </div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">
-              Nenhuma candidatura ainda
-            </h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto">
-              Comece a explorar vagas e candidate-se às oportunidades que
-              combinam com você!
-            </p>
-            <Link
-              href="/vagas"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-primary text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-md"
-            >
-              Explorar Vagas
-              <ArrowUpRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </motion.div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Recommended Jobs */}
-          <motion.div variants={fadeInUp} className="lg:col-span-2">
+
+            {/* Vagas Visualizadas */}
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <Eye className="w-6 h-6 text-blue-600" />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <p className="text-3xl font-bold text-gray-900">24</p>
+                <p className="text-sm text-gray-600">Vagas Visualizadas</p>
+                <p className="text-xs text-gray-500">últimos 7 dias</p>
+              </div>
+            </div>
+
+            {/* Perfil Completo */}
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-orange-600" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <p className="text-3xl font-bold text-gray-900">{perfilCompleto}%</p>
+                <p className="text-sm text-gray-600">Perfil Completo</p>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-green-600 h-2 rounded-full transition-all duration-500"
+                    style={{ width: `${perfilCompleto}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Vagas Recomendadas */}
+          <motion.div variants={fadeInUp}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">
-                Vagas Recomendadas
+                Vagas Recomendadas para Você
               </h2>
-              <Link
-                href="/vagas"
-                className="text-green-600 hover:text-green-700 font-semibold text-sm flex items-center gap-1"
-              >
-                Ver todas
-                <ArrowUpRight className="w-4 h-4" />
+              <Link href="/vagas">
+                <Button variant="secondary" className="gap-2">
+                  Ver Todas
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-4">
-              {vagas.slice(0, 3).map((vaga) => (
-                <VagaCard
-                  key={vaga.id}
-                  titulo={vaga.titulo}
-                  empresa={vaga.empresas?.nome_empresa || "Empresa"}
-                  logoEmpresa={vaga.empresas?.logo_url || undefined}
-                  localizacao={`${vaga.cidade || ""}, ${vaga.estado || ""}`.trim()}
-                  tipo={mapTipoContrato(vaga.tipo_contrato)}
-                  nivel={mapNivel(vaga.nivel)}
-                  salario={
-                    vaga.mostra_salario && vaga.salario_min
-                      ? `R$ ${vaga.salario_min.toLocaleString()} - R$ ${vaga.salario_max?.toLocaleString()}`
-                      : "A combinar"
-                  }
-                  remoto={vaga.modelo_trabalho === "remoto"}
-                  publicadoEm={new Date(vaga.created_at)}
-                  tags={vaga.skills_requeridas || []}
-                  verificada={vaga.empresas?.verificada || false}
-                />
-              ))}
-            </div>
+
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="bg-white rounded-2xl p-6 border border-gray-200 animate-pulse"
+                  >
+                    <div className="h-12 bg-gray-200 rounded-lg mb-4" />
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                  </div>
+                ))}
+              </div>
+            ) : data.vagasRecomendadas.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {data.vagasRecomendadas.map((vaga) => (
+                  <VagaCard
+                    key={vaga.id}
+                    id={vaga.id}
+                    titulo={vaga.titulo}
+                    empresa={vaga.empresas?.nome_empresa || "Empresa"}
+                    cidade={vaga.cidade || ""}
+                    estado={vaga.estado || ""}
+                    salario_min={vaga.salario_min}
+                    salario_max={vaga.salario_max}
+                    tipo={mapTipoContrato(vaga.tipo_contrato)}
+                    nivel={mapNivel(vaga.nivel)}
+                    modelo={vaga.modelo_trabalho}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl p-12 border border-gray-200 text-center">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Briefcase className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Nenhuma vaga recomendada ainda
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Complete seu perfil para receber recomendações personalizadas
+                </p>
+                <Link href="/dashboard/perfil">
+                  <Button>Completar Perfil</Button>
+                </Link>
+              </div>
+            )}
           </motion.div>
 
-          {/* Recent Activity */}
+          {/* Candidaturas Recentes */}
           <motion.div variants={fadeInUp}>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Atividade Recente
+              Minhas Candidaturas
             </h2>
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-              <p className="text-gray-500 text-sm text-center py-8">
-                Nenhuma atividade recente
-              </p>
-            </div>
+
+            {loading ? (
+              <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                <div className="p-6 space-y-4">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="flex items-center gap-4 animate-pulse">
+                      <div className="h-12 w-12 bg-gray-200 rounded-lg" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-gray-200 rounded w-1/3" />
+                        <div className="h-3 bg-gray-200 rounded w-1/4" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : data.candidaturas.length > 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Vaga
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Empresa
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Data
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {data.candidaturas.map((candidatura: any) => {
+                        const badge = getStatusBadge(candidatura.status);
+                        const Icon = badge.icon;
+                        return (
+                          <tr
+                            key={candidatura.id}
+                            className="hover:bg-gray-50 transition-colors"
+                          >
+                            <td className="px-6 py-4">
+                              <Link
+                                href={`/vagas/${candidatura.vaga_id}`}
+                                className="font-medium text-gray-900 hover:text-green-600"
+                              >
+                                {candidatura.vagas?.titulo || "Vaga"}
+                              </Link>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600">
+                              {candidatura.vagas?.empresas?.nome_empresa || "Empresa"}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600">
+                              {new Date(candidatura.created_at).toLocaleDateString("pt-BR")}
+                            </td>
+                            <td className="px-6 py-4">
+                              <span
+                                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${badge.color}`}
+                              >
+                                <Icon className="w-3.5 h-3.5" />
+                                {badge.label}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl p-12 border border-gray-200 text-center">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Briefcase className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Você ainda não se candidatou a nenhuma vaga
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Explore vagas disponíveis e candidate-se às que mais combinam com você
+                </p>
+                <Link href="/vagas">
+                  <Button>Explorar Vagas</Button>
+                </Link>
+              </div>
+            )}
           </motion.div>
-        </div>
-      )}
-    </motion.div>
+        </motion.div>
+      </div>
+    </div>
   );
 }
