@@ -2,9 +2,11 @@
 
 ## 📊 Status Atual
 
-**Versão:** 0.1.0  
+**Versão:** 0.2.0  
 **Data de Criação:** 15 de Fevereiro de 2026  
-**Status:** Em Desenvolvimento Ativo ✅
+**Última Atualização:** 15 de Fevereiro de 2026  
+**Status:** Em Desenvolvimento Ativo ✅  
+**Deploy:** Em Preparação 🚀
 
 ## ✅ O Que Foi Implementado
 
