@@ -3,9 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  LayoutDashboard,
+  Home,
   Briefcase,
   Users,
   BarChart3,
@@ -17,15 +17,15 @@ import {
   LogOut,
   Plus,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/empresa/dashboard" },
-  { icon: Briefcase, label: "Vagas", href: "/empresa/dashboard/vagas" },
-  { icon: Users, label: "Candidatos", href: "/empresa/dashboard/candidatos" },
-  { icon: BarChart3, label: "Analytics", href: "/empresa/dashboard/analytics" },
-  { icon: Settings, label: "Configurações", href: "/empresa/dashboard/configuracoes" },
+  { icon: Home, label: "Dashboard", href: "/empresa/dashboard" },
+  { icon: Briefcase, label: "Vagas", href: "/empresa/vagas" },
+  { icon: Users, label: "Candidatos", href: "/empresa/candidatos" },
+  { icon: BarChart3, label: "Analytics", href: "/empresa/analytics" },
+  { icon: Settings, label: "Configurações", href: "/empresa/configuracoes" },
 ];
 
 export default function EmpresaDashboardLayout({
@@ -37,131 +37,167 @@ export default function EmpresaDashboardLayout({
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 w-12 h-12 rounded-xl glass border border-[var(--glass-border)] flex items-center justify-center"
-      >
-        {isSidebarOpen ? (
-          <X className="w-6 h-6 text-[var(--text-primary)]" />
-        ) : (
-          <Menu className="w-6 h-6 text-[var(--text-primary)]" />
-        )}
-      </button>
+    <div className="min-h-screen bg-gray-50">
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 px-4 py-3">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+          >
+            {isSidebarOpen ? (
+              <X className="w-6 h-6 text-gray-900" />
+            ) : (
+              <Menu className="w-6 h-6 text-gray-900" />
+            )}
+          </button>
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
+              <span className="text-lg">⚡</span>
+            </div>
+            <span className="font-bold gradient-text-primary">EmpreGol</span>
+          </Link>
+          <Button size="sm" className="bg-gradient-cta text-white">
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
 
       {/* Sidebar */}
-      <motion.aside
-        className={cn(
-          "fixed top-0 left-0 h-full w-64 glass border-r border-[var(--glass-border)] z-40 transition-transform lg:translate-x-0",
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-        initial={false}
-      >
-        <div className="flex flex-col h-full p-6">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center glow-primary">
-              <span className="text-2xl">⚡</span>
-            </div>
-            <span className="text-xl font-bold gradient-text-primary">
-              EmpreGol
-            </span>
-          </Link>
+      <AnimatePresence>
+        {(isSidebarOpen || window.innerWidth >= 1024) && (
+          <>
+            {/* Mobile Backdrop */}
+            {isSidebarOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsSidebarOpen(false)}
+                className="fixed inset-0 bg-gray-900/50 z-40 lg:hidden"
+              />
+            )}
 
-          {/* Quick Action */}
-          <Button variant="default" size="default" className="w-full mb-6">
-            <Plus className="w-5 h-5" />
-            Publicar Vaga
-          </Button>
-
-          {/* Navigation */}
-          <nav className="flex-1 space-y-2">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <Link key={item.href} href={item.href}>
-                  <motion.div
-                    className={cn(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
-                      isActive
-                        ? "bg-gradient-primary text-white glow-primary"
-                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg)]"
-                    )}
-                    whileHover={{ x: 4 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <item.icon className="w-5 h-5" />
-                    <span className="font-medium">{item.label}</span>
-                  </motion.div>
+            {/* Sidebar Content */}
+            <motion.aside
+              initial={{ x: -300 }}
+              animate={{ x: 0 }}
+              exit={{ x: -300 }}
+              transition={{ type: "spring", damping: 25 }}
+              className={cn(
+                "fixed top-0 left-0 bottom-0 w-72 bg-white border-r border-gray-200 z-50 flex flex-col",
+                "lg:translate-x-0"
+              )}
+            >
+              {/* Logo */}
+              <div className="p-6 border-b border-gray-200">
+                <Link
+                  href="/"
+                  className="flex items-center gap-2"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
+                    <span className="text-2xl">⚡</span>
+                  </div>
+                  <span className="text-xl font-bold gradient-text-primary">
+                    EmpreGol
+                  </span>
                 </Link>
-              );
-            })}
-          </nav>
+              </div>
 
-          {/* Company Profile */}
-          <div className="pt-6 border-t border-[var(--glass-border)]">
-            <div className="flex items-center gap-3 px-4 py-3 rounded-xl glass border border-[var(--glass-border)] mb-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--secondary-500)] to-[var(--secondary-400)] flex items-center justify-center text-white font-bold">
-                TC
+              {/* Quick Action */}
+              <div className="p-4">
+                <Button
+                  size="lg"
+                  className="w-full bg-gradient-cta text-white shadow-md"
+                >
+                  <Plus className="w-5 h-5" />
+                  Publicar Vaga
+                </Button>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
-                  TechCorp
-                </p>
-                <p className="text-xs text-[var(--text-muted)] truncate">
-                  Plano Pro
-                </p>
+
+              {/* Navigation */}
+              <nav className="flex-1 p-4 space-y-1">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsSidebarOpen(false)}
+                    >
+                      <motion.div
+                        whileHover={{ x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
+                          isActive
+                            ? "bg-purple-50 text-purple-700 font-semibold"
+                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                        )}
+                      >
+                        <Icon className="w-5 h-5" />
+                        <span>{item.label}</span>
+                      </motion.div>
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              {/* Company Profile */}
+              <div className="p-4 border-t border-gray-200">
+                <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer">
+                  <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold">
+                    E
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      Empresa
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      empresa@email.com
+                    </p>
+                  </div>
+                  <LogOut className="w-5 h-5 text-gray-400" />
+                </div>
               </div>
-            </div>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[var(--text-secondary)] hover:text-[var(--danger-500)] hover:bg-[var(--glass-bg)] transition-all">
-              <LogOut className="w-5 h-5" />
-              <span className="font-medium">Sair</span>
-            </button>
-          </div>
-        </div>
-      </motion.aside>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
-      <div className="lg:ml-64">
+      <div className="lg:pl-72">
         {/* Header */}
-        <header className="sticky top-0 z-30 glass border-b border-[var(--glass-border)] backdrop-blur-xl">
-          <div className="flex items-center justify-between px-6 py-4">
+        <header className="hidden lg:block sticky top-0 z-30 bg-white border-b border-gray-200">
+          <div className="px-8 py-4 flex items-center justify-between">
             {/* Search */}
             <div className="flex-1 max-w-xl">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Buscar candidatos, vagas..."
-                  className="w-full pl-12 pr-4 py-3 rounded-xl glass border border-[var(--glass-border)] bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--primary-500)] focus:ring-2 focus:ring-[var(--primary-glow)] outline-none transition-all"
+                  placeholder="Buscar candidatos..."
+                  className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-3 ml-6">
-              <button className="relative w-12 h-12 rounded-xl glass border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] flex items-center justify-center transition-all">
-                <Bell className="w-5 h-5 text-[var(--text-secondary)]" />
-                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[var(--danger-500)] animate-pulse" />
+            <div className="flex items-center gap-3">
+              <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors relative">
+                <Bell className="w-6 h-6 text-gray-600" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="p-6">{children}</main>
+        <main className="p-4 lg:p-8 pt-20 lg:pt-8">{children}</main>
       </div>
-
-      {/* Mobile Overlay */}
-      {isSidebarOpen && (
-        <motion.div
-          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
     </div>
   );
 }
