@@ -10,9 +10,8 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/vagas", label: "Vagas", icon: Briefcase },
-  { href: "/empresas", label: "Para Empresas", icon: Building2 },
-  { href: "/precos", label: "Preços", icon: DollarSign },
-  { href: "/blog", label: "Blog", icon: FileText },
+  { href: "/cadastro", label: "Para Empresas", icon: Building2 },
+  { href: "/#pricing", label: "Preços", icon: DollarSign },
 ];
 
 export function Navbar() {

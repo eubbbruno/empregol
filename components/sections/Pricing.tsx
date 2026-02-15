@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Check, Sparkles, Crown, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
@@ -180,17 +181,19 @@ export function Pricing() {
                   </div>
 
                   {/* CTA */}
-                  <Button
-                    variant={isPro ? "default" : "secondary"}
-                    size="lg"
-                    className={`w-full mb-8 ${
-                      isPro
-                        ? "bg-gradient-primary hover:opacity-90 text-white shadow-lg"
-                        : ""
-                    }`}
-                  >
-                    {plan.cta}
-                  </Button>
+                  <Link href="/cadastro" className="block w-full mb-8">
+                    <Button
+                      variant={isPro ? "default" : "secondary"}
+                      size="lg"
+                      className={`w-full ${
+                        isPro
+                          ? "bg-gradient-primary hover:opacity-90 text-white shadow-lg"
+                          : ""
+                      }`}
+                    >
+                      {plan.cta}
+                    </Button>
+                  </Link>
 
                   {/* Features */}
                   <ul className="space-y-3">

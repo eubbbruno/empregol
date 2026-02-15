@@ -9,27 +9,20 @@ import { fadeInUp, staggerContainer } from "@/lib/animations";
 const footerLinks = {
   produto: [
     { label: "Vagas", href: "/vagas" },
-    { label: "Para Empresas", href: "/empresas" },
-    { label: "Preços", href: "/precos" },
-    { label: "API", href: "/api" },
+    { label: "Para Empresas", href: "/cadastro" },
+    { label: "Preços", href: "/#pricing" },
   ],
   empresa: [
-    { label: "Sobre Nós", href: "/sobre" },
-    { label: "Blog", href: "/blog" },
-    { label: "Carreiras", href: "/carreiras" },
-    { label: "Contato", href: "/contato" },
+    { label: "Sobre Nós", href: "/#about" },
+    { label: "Contato", href: "mailto:contato@empregol.com.br" },
   ],
   recursos: [
-    { label: "Central de Ajuda", href: "/ajuda" },
-    { label: "Guias", href: "/guias" },
-    { label: "Status", href: "/status" },
-    { label: "Changelog", href: "/changelog" },
+    { label: "Central de Ajuda", href: "/#faq" },
+    { label: "Como Funciona", href: "/#how-it-works" },
   ],
   legal: [
-    { label: "Privacidade", href: "/privacidade" },
-    { label: "Termos de Uso", href: "/termos" },
-    { label: "Cookies", href: "/cookies" },
-    { label: "LGPD", href: "/lgpd" },
+    { label: "Privacidade", href: "#" },
+    { label: "Termos de Uso", href: "#" },
   ],
 };
 

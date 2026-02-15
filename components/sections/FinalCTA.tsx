@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { ArrowRight, Sparkles, Users, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fadeInUp } from "@/lib/animations";
@@ -51,21 +52,25 @@ export function FinalCTA() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button
-              size="lg"
-              className="bg-gradient-cta hover:opacity-90 text-white px-8 text-lg shadow-xl group"
-            >
-              Sou Candidato
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button
-              size="lg"
-              variant="secondary"
-              className="px-8 text-lg border-2 border-green-200 hover:border-green-400 bg-white"
-            >
-              Sou Empresa
-              <Building2 className="ml-2 w-5 h-5" />
-            </Button>
+            <Link href="/cadastro">
+              <Button
+                size="lg"
+                className="bg-gradient-cta hover:opacity-90 text-white px-8 text-lg shadow-xl group"
+              >
+                Sou Candidato
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <Link href="/cadastro">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="px-8 text-lg border-2 border-green-200 hover:border-green-400 bg-white"
+              >
+                Sou Empresa
+                <Building2 className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
           </div>
 
           {/* Trust indicators */}
