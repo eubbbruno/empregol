@@ -4,24 +4,22 @@ import { cn } from "@/lib/utils";
 const Input = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement>
->(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-11 w-full rounded-xl glass border border-[var(--glass-border)] bg-transparent px-4 py-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] transition-all",
-          "focus:outline-none focus:border-[var(--primary-500)] focus:ring-2 focus:ring-[var(--primary-glow)]",
-          "disabled:cursor-not-allowed disabled:opacity-50",
-          "hover:border-[var(--glass-border-hover)]",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
-);
+>(({ className, type, ...props }, ref) => {
+  return (
+    <input
+      type={type}
+      className={cn(
+        "flex h-11 w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all",
+        "focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:bg-white",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        "hover:border-gray-300",
+        className
+      )}
+      ref={ref}
+      {...props}
+    />
+  );
+});
 Input.displayName = "Input";
 
 export { Input };
