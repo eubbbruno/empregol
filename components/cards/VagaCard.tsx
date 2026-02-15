@@ -27,7 +27,6 @@ export function VagaCard({
   logoEmpresa,
   localizacao,
   tipo,
-  nivel,
   salario,
   remoto,
   publicadoEm,

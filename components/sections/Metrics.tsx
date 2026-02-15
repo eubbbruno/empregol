@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Briefcase, Users, Building2, TrendingUp } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 interface AnimatedNumberProps {
@@ -12,24 +12,35 @@ interface AnimatedNumberProps {
 }
 
 function AnimatedNumber({ value, suffix = "", prefix = "" }: AnimatedNumberProps) {
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, { duration: 2000 });
-  const displayValue = useTransform(springValue, (latest) =>
-    Math.round(latest).toLocaleString("pt-BR")
-  );
+  const [count, setCount] = useState(0);
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (!hasAnimated) {
-      motionValue.set(value);
-      setHasAnimated(true);
-    }
-  }, [hasAnimated, motionValue, value]);
+    if (!inView) return;
+    
+    const duration = 2000;
+    const startTime = performance.now();
+    
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      setCount(Math.floor(eased * value));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    
+    requestAnimationFrame(animate);
+  }, [inView, value]);
 
   return (
-    <motion.span className="text-4xl sm:text-5xl font-bold text-gray-900">
+    <motion.span
+      ref={ref}
+      onViewportEnter={() => setInView(true)}
+      className="text-4xl sm:text-5xl font-bold text-gray-900"
+    >
       {prefix}
-      {displayValue}
+      {count.toLocaleString("pt-BR")}
       {suffix}
     </motion.span>
   );
