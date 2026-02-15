@@ -1,214 +1,147 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, MapPin, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Search, MapPin, Sparkles, TrendingUp, Zap } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { fadeInUp, staggerContainer, blurFadeIn } from "@/lib/animations";
-
-const badges = [
-  { icon: CheckCircle2, text: "100% grátis para candidatos" },
-  { icon: CheckCircle2, text: "+5.000 vagas ativas" },
-  { icon: CheckCircle2, text: "Empresas verificadas" },
-];
+import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 pb-20">
-      {/* Animated Background Elements */}
+    <section className="relative min-h-screen flex items-center bg-gradient-hero overflow-hidden">
+      {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient Orbs */}
-        <motion.div
-          className="absolute top-20 left-10 w-96 h-96 rounded-full bg-[var(--primary-700)] opacity-20 blur-[120px]"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.3, 0.2],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-[var(--secondary-500)] opacity-15 blur-[120px]"
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.15, 0.25, 0.15],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[var(--accent-hot)] opacity-10 blur-[150px]"
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.1, 0.15, 0.1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2,
-          }}
-        />
-
-        {/* Grid Pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `linear-gradient(var(--glass-border) 1px, transparent 1px),
-                             linear-gradient(90deg, var(--glass-border) 1px, transparent 1px)`,
-            backgroundSize: "50px 50px",
-          }}
-        />
-
-        {/* Floating Particles */}
-        {Array.from({ length: 20 }, (_, i) => {
-          // Posições determinísticas para evitar hydration mismatch
-          const left = ((i * 37 + 13) % 100);
-          const top = ((i * 53 + 7) % 100);
-          const duration = 3 + ((i * 17) % 20) / 10; // 3.0 a 5.0 segundos
-          const delay = (i * 0.3) % 4; // 0 a 4 segundos
-          
-          return (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-[var(--primary-500)] rounded-full"
-              style={{
-                left: `${left}%`,
-                top: `${top}%`,
-              }}
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration,
-                repeat: Infinity,
-                delay,
-                ease: "easeInOut",
-              }}
-            />
-          );
-        })}
+        <div className="absolute top-20 right-20 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-30" />
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          className="max-w-5xl mx-auto text-center"
-        >
-          {/* Badge */}
-          <motion.div variants={fadeInUp} className="mb-8 inline-block">
-            <div className="glass rounded-full px-6 py-2 border border-[var(--glass-border)]">
-              <span className="text-sm text-[var(--text-secondary)]">
-                ✨ Plataforma #1 de Empregos no Brasil
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1
-            variants={blurFadeIn}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left side - Content */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="text-left"
           >
-            <span className="gradient-text-primary">Seu Próximo Gol</span>
-            <br />
-            <span className="text-[var(--text-primary)]">
-              Profissional Começa Aqui
-            </span>
-          </motion.h1>
+            {/* Badge */}
+            <motion.div variants={fadeInUp} className="inline-flex mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-purple-200 shadow-sm">
+                <Sparkles className="w-4 h-4 text-purple-600" />
+                <span className="text-sm font-medium text-purple-700">
+                  +12.500 vagas ativas
+                </span>
+              </div>
+            </motion.div>
 
-          {/* Subtitle */}
-          <motion.p
-            variants={fadeInUp}
-            className="text-xl md:text-2xl text-[var(--text-secondary)] mb-12 max-w-3xl mx-auto"
-          >
-            Conectamos talentos brasileiros às melhores oportunidades.{" "}
-            <span className="text-[var(--text-primary)] font-semibold">
-              Sem burocracia, sem enrolação.
-            </span>
-          </motion.p>
+            {/* Headline */}
+            <motion.h1
+              variants={fadeInUp}
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+            >
+              Seu próximo{" "}
+              <span className="gradient-text-primary">gol profissional</span>{" "}
+              começa aqui
+            </motion.h1>
 
-          {/* Search Bar */}
-          <motion.div variants={fadeInUp} className="mb-10">
-            <div className="glass rounded-2xl p-2 border border-[var(--glass-border)] max-w-4xl mx-auto">
-              <div className="flex flex-col md:flex-row gap-2">
-                {/* Job Search Input */}
-                <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[var(--glass-bg-hover)] transition-colors">
-                  <Search className="w-5 h-5 text-[var(--primary-500)]" />
+            {/* Subtitle */}
+            <motion.p
+              variants={fadeInUp}
+              className="text-xl text-[var(--text-secondary)] mb-8 max-w-xl"
+            >
+              Conecte-se com as melhores oportunidades do Brasil. Match
+              inteligente, salários transparentes, zero burocracia.
+            </motion.p>
+
+            {/* Search bar */}
+            <motion.div variants={fadeInUp} className="mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 p-3 bg-white rounded-2xl shadow-lg border border-gray-200 max-w-2xl">
+                <div className="flex items-center gap-3 flex-1 px-4 py-3 bg-gray-50 rounded-xl">
+                  <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <input
                     type="text"
                     placeholder="Cargo ou palavra-chave"
-                    className="flex-1 bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none"
+                    className="flex-1 bg-transparent border-none outline-none text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
-
-                {/* Divider */}
-                <div className="hidden md:block w-px bg-[var(--glass-border)]" />
-
-                {/* Location Input */}
-                <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[var(--glass-bg-hover)] transition-colors">
-                  <MapPin className="w-5 h-5 text-[var(--secondary-500)]" />
+                <div className="flex items-center gap-3 flex-1 px-4 py-3 bg-gray-50 rounded-xl">
+                  <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <input
                     type="text"
                     placeholder="Cidade ou remoto"
-                    className="flex-1 bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none"
+                    className="flex-1 bg-transparent border-none outline-none text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
-
-                {/* Search Button */}
-                <Button size="lg" className="md:w-auto w-full">
-                  Buscar Vagas
-                  <ArrowRight className="w-5 h-5" />
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="bg-gradient-cta hover:opacity-90 text-white px-8 shadow-lg"
+                >
+                  Buscar
                 </Button>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Badges */}
-          <motion.div
-            variants={staggerContainer}
-            className="flex flex-wrap items-center justify-center gap-6"
-          >
-            {badges.map((badge, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="flex items-center gap-2 text-[var(--text-secondary)]"
-              >
-                <badge.icon className="w-5 h-5 text-[var(--success-500)]" />
-                <span className="text-sm font-medium">{badge.text}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Scroll Indicator */}
-          <motion.div
-            className="mt-20"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.6 }}
-          >
+            {/* Stats badges */}
             <motion.div
-              className="w-6 h-10 rounded-full border-2 border-[var(--glass-border)] mx-auto flex items-start justify-center p-2"
-              animate={{ y: [0, 8, 0] }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              variants={fadeInUp}
+              className="flex flex-wrap gap-4 items-center"
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-[var(--primary-500)]" />
+              <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-200 shadow-sm">
+                <TrendingUp className="w-4 h-4 text-green-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  98% de satisfação
+                </span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-200 shadow-sm">
+                <Zap className="w-4 h-4 text-orange-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  Resposta em 24h
+                </span>
+              </div>
             </motion.div>
           </motion.div>
-        </motion.div>
+
+          {/* Right side - Image */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative hidden lg:block"
+          >
+            <div className="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-2xl">
+              <Image
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80"
+                alt="Equipe profissional colaborando"
+                fill
+                className="object-cover"
+                priority
+              />
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
+            </div>
+
+            {/* Floating card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-200 max-w-xs"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">+2.500</p>
+                  <p className="text-sm text-gray-600">
+                    Contratações este mês
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

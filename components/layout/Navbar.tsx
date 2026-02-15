@@ -47,8 +47,8 @@ export function Navbar() {
             className={cn(
               "rounded-2xl border transition-all duration-300",
               isScrolled
-                ? "glass backdrop-blur-xl border-[var(--glass-border)]"
-                : "bg-transparent border-transparent"
+                ? "bg-white/95 backdrop-blur-xl border-gray-200 shadow-lg"
+                : "bg-white/80 backdrop-blur-sm border-gray-200"
             )}
           >
             <div className="flex items-center justify-between px-6 py-4">
@@ -59,7 +59,7 @@ export function Navbar() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center glow-primary">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-md">
                     <span className="text-2xl">⚡</span>
                   </div>
                 </motion.div>
@@ -73,41 +73,45 @@ export function Navbar() {
                 {navLinks.map((link) => (
                   <Link key={link.href} href={link.href}>
                     <motion.div
-                      className="px-4 py-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg)] transition-all flex items-center gap-2"
+                      className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all flex items-center gap-2"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <link.icon className="w-4 h-4" />
-                      <span className="text-sm font-medium">{link.label}</span>
+                      <span className="font-medium">{link.label}</span>
                     </motion.div>
                   </Link>
                 ))}
               </div>
 
-              {/* CTA Buttons */}
+              {/* Desktop CTAs */}
               <div className="hidden lg:flex items-center gap-3">
                 <Link href="/login">
-                  <Button variant="ghost" size="default">
+                  <Button variant="secondary" size="sm">
                     Entrar
                   </Button>
                 </Link>
                 <Link href="/cadastro">
-                  <Button variant="default" size="default">
-                    Começar Grátis
+                  <Button
+                    variant="default"
+                    size="sm"
+                    className="bg-gradient-cta hover:opacity-90 text-white shadow-md"
+                  >
+                    Cadastrar
                   </Button>
                 </Link>
               </div>
 
               {/* Mobile Menu Button */}
               <button
-                className="lg:hidden p-2 rounded-xl hover:bg-[var(--glass-bg)] transition-colors"
+                className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Toggle menu"
               >
                 {isMobileMenuOpen ? (
-                  <X className="w-6 h-6 text-[var(--text-primary)]" />
+                  <X className="w-6 h-6 text-gray-900" />
                 ) : (
-                  <Menu className="w-6 h-6 text-[var(--text-primary)]" />
+                  <Menu className="w-6 h-6 text-gray-900" />
                 )}
               </button>
             </div>
@@ -116,63 +120,72 @@ export function Navbar() {
       </motion.nav>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
+      <motion.div
+        initial={false}
+        animate={{
+          opacity: isMobileMenuOpen ? 1 : 0,
+          y: isMobileMenuOpen ? 0 : -20,
+        }}
+        className={cn(
+          "fixed inset-0 z-40 lg:hidden",
+          isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
+        )}
+      >
+        {/* Backdrop */}
         <motion.div
-          className="fixed inset-0 z-40 lg:hidden"
+          className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          animate={{ opacity: isMobileMenuOpen ? 1 : 0 }}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+
+        {/* Menu Content */}
+        <motion.div
+          className="absolute top-24 left-4 right-4 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{
+            opacity: isMobileMenuOpen ? 1 : 0,
+            y: isMobileMenuOpen ? 0 : -20,
+          }}
         >
-          {/* Backdrop */}
-          <motion.div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-
-          {/* Menu Content */}
-          <motion.div
-            className="absolute top-24 left-4 right-4 glass rounded-2xl p-6 border border-[var(--glass-border)]"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link, index) => (
+          <div className="p-6 space-y-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + index * 0.05 }}
+                  className="flex items-center gap-3 p-4 rounded-xl hover:bg-gray-100 transition-colors"
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg)] transition-all"
-                  >
-                    <link.icon className="w-5 h-5" />
-                    <span className="font-medium">{link.label}</span>
-                  </Link>
+                  <link.icon className="w-5 h-5 text-purple-600" />
+                  <span className="font-medium text-gray-900">
+                    {link.label}
+                  </span>
                 </motion.div>
-              ))}
-            </div>
+              </Link>
+            ))}
 
-            <div className="mt-6 pt-6 border-t border-[var(--glass-border)] flex flex-col gap-3">
+            <div className="pt-4 border-t border-gray-200 space-y-3">
               <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button variant="ghost" size="lg" className="w-full">
+                <Button variant="secondary" size="lg" className="w-full">
                   Entrar
                 </Button>
               </Link>
               <Link href="/cadastro" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button variant="default" size="lg" className="w-full">
-                  Começar Grátis
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="w-full bg-gradient-cta hover:opacity-90 text-white shadow-md"
+                >
+                  Cadastrar
                 </Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
-      )}
+      </motion.div>
     </>
   );
 }

@@ -6,54 +6,69 @@ export async function middleware(request: NextRequest) {
     request,
   });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value)
-          );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
-        },
-      },
+  try {
+    // Check if env vars are available
+    if (
+      !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    ) {
+      console.warn("Supabase env vars not configured, skipping auth middleware");
+      return supabaseResponse;
     }
-  );
 
-  // Refresh session if expired
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) =>
+              request.cookies.set(name, value)
+            );
+            supabaseResponse = NextResponse.next({
+              request,
+            });
+            cookiesToSet.forEach(({ name, value, options }) =>
+              supabaseResponse.cookies.set(name, value, options)
+            );
+          },
+        },
+      }
+    );
 
-  // Protect dashboard routes
-  if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    // Refresh session if expired
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    // Protect dashboard routes
+    if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    // Protect empresa dashboard routes
+    if (request.nextUrl.pathname.startsWith("/empresa/dashboard") && !user) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    // Redirect authenticated users away from auth pages
+    if (
+      user &&
+      (request.nextUrl.pathname === "/login" ||
+        request.nextUrl.pathname === "/cadastro")
+    ) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+
+    return supabaseResponse;
+  } catch (error) {
+    // If Supabase fails, log error but don't crash
+    console.error("Middleware error:", error);
+    return supabaseResponse;
   }
-
-  // Protect empresa dashboard routes
-  if (request.nextUrl.pathname.startsWith("/empresa/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // Redirect authenticated users away from auth pages
-  if (
-    user &&
-    (request.nextUrl.pathname === "/login" ||
-      request.nextUrl.pathname === "/cadastro")
-  ) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-
-  return supabaseResponse;
 }
 
 export const config = {

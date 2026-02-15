@@ -10,94 +10,76 @@ const testimonials = [
     name: "Ana Carolina Silva",
     role: "Desenvolvedora Full Stack",
     company: "Tech Solutions",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ana",
-    content: "Encontrei minha vaga dos sonhos em menos de uma semana! O sistema de match da EmpreGol é incrível, me conectou com empresas que realmente se encaixam no meu perfil.",
+    image: "https://randomuser.me/api/portraits/women/1.jpg",
+    content:
+      "Consegui meu emprego dos sonhos em menos de 2 semanas. O match com IA realmente funciona!",
     rating: 5,
   },
   {
-    name: "Rafael Mendes",
+    name: "Ricardo Mendes",
     role: "Product Manager",
-    company: "StartupXYZ",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rafael",
-    content: "A plataforma é muito intuitiva e o processo de candidatura é rápido. Recebi 3 propostas em 2 semanas. Recomendo demais!",
+    company: "Startup XYZ",
+    image: "https://randomuser.me/api/portraits/men/2.jpg",
+    content:
+      "A transparência salarial me ajudou a negociar melhor. Plataforma incrível!",
     rating: 5,
   },
   {
     name: "Juliana Costa",
-    role: "UX Designer",
-    company: "Design Studio",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Juliana",
-    content: "Depois de meses procurando, finalmente achei uma empresa que valoriza design. O EmpreGol facilitou muito minha transição de carreira.",
+    role: "Designer UX/UI",
+    company: "Creative Agency",
+    image: "https://randomuser.me/api/portraits/women/3.jpg",
+    content:
+      "Interface linda e intuitiva. Encontrei várias vagas remotas perfeitas para mim.",
     rating: 5,
   },
   {
-    name: "Pedro Oliveira",
+    name: "Felipe Santos",
     role: "Engenheiro de Dados",
-    company: "DataFlow Inc",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Pedro",
-    content: "Impressionante como a IA sugere vagas relevantes. Economizei horas de busca e foquei apenas nas oportunidades certas para mim.",
+    company: "Data Corp",
+    image: "https://randomuser.me/api/portraits/men/4.jpg",
+    content:
+      "O tracker de candidaturas é sensacional. Sempre sei em que etapa estou.",
     rating: 5,
   },
   {
-    name: "Mariana Santos",
-    role: "Tech Lead",
-    company: "CloudTech",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mariana",
-    content: "Como recrutadora, o EmpreGol revolucionou nosso processo. Encontramos candidatos qualificados muito mais rápido.",
+    name: "Mariana Oliveira",
+    role: "Marketing Manager",
+    company: "Growth Co",
+    image: "https://randomuser.me/api/portraits/women/5.jpg",
+    content:
+      "Recebi 3 propostas em 1 mês. O EmpreGol realmente conecta com as empresas certas.",
     rating: 5,
   },
   {
     name: "Lucas Ferreira",
     role: "DevOps Engineer",
-    company: "InfraCloud",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lucas",
-    content: "A transparência no processo seletivo e o acompanhamento em tempo real fazem toda diferença. Plataforma top!",
+    company: "Cloud Systems",
+    image: "https://randomuser.me/api/portraits/men/6.jpg",
+    content:
+      "Suporte rápido, vagas de qualidade e processo simples. Recomendo!",
     rating: 5,
   },
 ];
 
 export function Testimonials() {
   return (
-    <section className="relative py-32 overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          className="absolute top-1/2 left-1/4 w-96 h-96 rounded-full bg-[var(--secondary-500)] opacity-10 blur-[120px]"
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 30, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </div>
-
-      <div className="container mx-auto px-4">
+    <section className="py-20 bg-[var(--bg-tertiary)] relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="max-w-7xl mx-auto"
         >
-          {/* Section Header */}
-          <motion.div variants={fadeInUp} className="text-center mb-20">
-            <div className="inline-block mb-4">
-              <div className="glass rounded-full px-6 py-2 border border-[var(--glass-border)]">
-                <span className="text-sm text-[var(--text-secondary)]">
-                  💬 Depoimentos
-                </span>
-              </div>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-[var(--text-primary)]">O Que Dizem</span>{" "}
-              <span className="gradient-text-primary">Nossos Usuários</span>
+          {/* Header */}
+          <motion.div variants={fadeInUp} className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+              O que nossos usuários{" "}
+              <span className="gradient-text-primary">dizem</span>
             </h2>
-            <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-              Milhares de profissionais já transformaram suas carreiras com o EmpreGol
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Milhares de profissionais já encontraram suas oportunidades
             </p>
           </motion.div>
 
@@ -107,74 +89,61 @@ export function Testimonials() {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                whileHover={{ y: -5 }}
-                className="relative group"
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200"
               >
-                <div className="glass rounded-2xl p-6 border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] transition-all h-full flex flex-col">
-                  {/* Quote Icon */}
-                  <div className="absolute top-6 right-6 opacity-10">
-                    <Quote className="w-12 h-12 text-[var(--primary-500)]" />
+                {/* Quote icon */}
+                <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                  <Quote className="w-5 h-5 text-purple-600" />
+                </div>
+
+                {/* Rating */}
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: testimonial.rating }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                    />
+                  ))}
+                </div>
+
+                {/* Content */}
+                <p className="text-gray-700 leading-relaxed mb-6 flex-1">
+                  &ldquo;{testimonial.content}&rdquo;
+                </p>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-200">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200 relative">
+                    <Image
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-
-                  {/* Rating */}
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-4 h-4 fill-[var(--accent-gold)] text-[var(--accent-gold)]"
-                      />
-                    ))}
+                  <div>
+                    <p className="font-semibold text-gray-900">
+                      {testimonial.name}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {testimonial.role} • {testimonial.company}
+                    </p>
                   </div>
-
-                  {/* Content */}
-                  <p className="text-[var(--text-secondary)] leading-relaxed mb-6 flex-1">
-                    &ldquo;{testimonial.content}&rdquo;
-                  </p>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-3 pt-4 border-t border-[var(--glass-border)]">
-                    <div className="w-12 h-12 rounded-full overflow-hidden glass border border-[var(--glass-border)] relative">
-                      <Image
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        width={48}
-                        height={48}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-[var(--text-primary)] font-semibold">
-                        {testimonial.name}
-                      </h4>
-                      <p className="text-sm text-[var(--text-muted)]">
-                        {testimonial.role} • {testimonial.company}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Hover glow */}
-                  <motion.div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                    style={{
-                      boxShadow: "0 0 40px var(--primary-glow)",
-                    }}
-                  />
                 </div>
               </motion.div>
             ))}
           </div>
 
           {/* Trust Badge */}
-          <motion.div
-            variants={fadeInUp}
-            className="text-center mt-16"
-          >
-            <div className="inline-flex items-center gap-2 glass rounded-full px-6 py-3 border border-[var(--glass-border)]">
+          <motion.div variants={fadeInUp} className="text-center mt-16">
+            <div className="inline-flex items-center gap-2 bg-white rounded-full px-6 py-3 border border-gray-200 shadow-sm">
               <div className="flex -space-x-2">
                 {testimonials.slice(0, 4).map((t, i) => (
                   <div
                     key={i}
-                    className="w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--bg-primary)] relative"
+                    className="w-8 h-8 rounded-full overflow-hidden border-2 border-white relative"
                   >
                     <Image
                       src={t.image}
@@ -186,8 +155,9 @@ export function Testimonials() {
                   </div>
                 ))}
               </div>
-              <span className="text-sm text-[var(--text-secondary)]">
-                <span className="text-[var(--text-primary)] font-semibold">+12.500</span> profissionais satisfeitos
+              <span className="text-sm text-gray-700">
+                <span className="text-gray-900 font-semibold">+12.500</span>{" "}
+                profissionais satisfeitos
               </span>
             </div>
           </motion.div>

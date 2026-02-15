@@ -6,23 +6,23 @@ import { cn } from "@/lib/utils";
 import { buttonHover } from "@/lib/animations";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-gradient-cta text-white glow-cta hover:bg-gradient-cta-hover hover:shadow-[0_0_40px_var(--accent-glow)]",
+          "bg-gradient-cta text-white shadow-md hover:shadow-lg hover:opacity-90",
         primary:
-          "bg-gradient-primary text-white glow-primary hover:shadow-[0_0_40px_var(--primary-glow)]",
+          "bg-gradient-primary text-white shadow-md hover:shadow-lg hover:opacity-90",
         secondary:
-          "glass glass-hover text-[var(--text-primary)] hover:border-[var(--primary-500)]",
+          "bg-white border-2 border-gray-200 text-gray-900 hover:border-gray-300 hover:bg-gray-50 shadow-sm",
         ghost:
-          "bg-transparent hover:bg-[var(--glass-bg)] hover:text-[var(--text-primary)]",
+          "bg-transparent hover:bg-gray-100 text-gray-700 hover:text-gray-900",
         outline:
-          "border border-[var(--glass-border)] bg-transparent hover:bg-[var(--glass-bg)] hover:border-[var(--glass-border-hover)]",
+          "border-2 border-gray-200 bg-transparent text-gray-900 hover:bg-gray-50 hover:border-gray-300",
         destructive:
-          "bg-[var(--danger-500)] text-white hover:bg-[#DC2626] shadow-[0_0_20px_rgba(239,68,68,0.3)]",
-        link: "text-[var(--primary-500)] underline-offset-4 hover:underline",
+          "bg-red-500 text-white hover:bg-red-600 shadow-md",
+        link: "text-purple-600 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-11 px-6 py-2.5",
