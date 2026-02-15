@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { VagaCard } from "@/components/cards/VagaCard";
+import { ActivityChart } from "@/components/dashboard/ActivityChart";
 
 const stats = [
   {
@@ -170,6 +171,11 @@ export default function DashboardPage() {
             <div className="text-sm text-[var(--text-muted)]">{stat.label}</div>
           </motion.div>
         ))}
+      </motion.div>
+
+      {/* Activity Chart */}
+      <motion.div variants={fadeInUp} className="mb-8">
+        <ActivityChart />
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
