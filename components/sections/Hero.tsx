@@ -67,26 +67,34 @@ export function Hero() {
         />
 
         {/* Floating Particles */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[var(--primary-500)] rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+        {Array.from({ length: 20 }, (_, i) => {
+          // Posições determinísticas para evitar hydration mismatch
+          const left = ((i * 37 + 13) % 100);
+          const top = ((i * 53 + 7) % 100);
+          const duration = 3 + ((i * 17) % 20) / 10; // 3.0 a 5.0 segundos
+          const delay = (i * 0.3) % 4; // 0 a 4 segundos
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-[var(--primary-500)] rounded-full"
+              style={{
+                left: `${left}%`,
+                top: `${top}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration,
+                repeat: Infinity,
+                delay,
+                ease: "easeInOut",
+              }}
+            />
+          );
+        })}
       </div>
 
       <div className="container mx-auto px-4 relative z-10">

@@ -40,27 +40,35 @@ export function FinalCTA() {
         />
 
         {/* Floating particles */}
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[var(--primary-500)] rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -50, 0],
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+        {Array.from({ length: 30 }, (_, i) => {
+          // Posições determinísticas para evitar hydration mismatch
+          const left = ((i * 41 + 17) % 100);
+          const top = ((i * 59 + 11) % 100);
+          const duration = 3 + ((i * 19) % 20) / 10; // 3.0 a 5.0 segundos
+          const delay = (i * 0.25) % 5; // 0 a 5 segundos
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-[var(--primary-500)] rounded-full"
+              style={{
+                left: `${left}%`,
+                top: `${top}%`,
+              }}
+              animate={{
+                y: [0, -50, 0],
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0],
+              }}
+              transition={{
+                duration,
+                repeat: Infinity,
+                delay,
+                ease: "easeInOut",
+              }}
+            />
+          );
+        })}
       </div>
 
       <div className="container mx-auto px-4">
