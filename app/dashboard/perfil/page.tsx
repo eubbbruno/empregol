@@ -8,6 +8,15 @@ import { Input } from "@/components/ui/input";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/toast";
+import { Database } from "@/types/database.types";
+
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+type Candidato = Database["public"]["Tables"]["candidatos"]["Row"];
+
+// Helper to bypass Supabase type inference issues
+const updateTable = async (supabase: ReturnType<typeof createClient>, table: string, data: Record<string, unknown>, id: string) => {
+  return (supabase.from(table) as any).update(data).eq("id", id);
+};
 
 export default function PerfilPage() {
   const [loading, setLoading] = useState(true);
@@ -50,23 +59,24 @@ export default function PerfilPage() {
           .eq("id", user.id)
           .single();
 
-        const p = profile as any;
-        const c = candidato as any;
+        const p = profile as Profile | null;
+        const c = candidato as Candidato | null;
         
         setFormData({
           nome_completo: p?.nome_completo || "",
           titulo_profissional: c?.titulo_profissional || "",
           resumo: c?.resumo || "",
-          cidade: c?.cidade || "",
-          estado: c?.estado || "",
+          cidade: p?.cidade || "",
+          estado: p?.estado || "",
           salario_pretendido: c?.salario_pretendido?.toString() || "",
           linkedin_url: c?.linkedin_url || "",
-          telefone: c?.telefone || "",
+          telefone: p?.telefone || "",
           skills: c?.skills?.join(", ") || "",
         });
       }
-    } catch (error) {
-      console.error("Error loading profile:", error);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error loading profile";
+      console.error(message);
     } finally {
       setLoading(false);
     }
@@ -83,30 +93,26 @@ export default function PerfilPage() {
       } = await supabase.auth.getUser();
 
       if (user) {
-        // Update profiles table
-        await (supabase
-          .from("profiles")
-          .update as any)({ nome_completo: formData.nome_completo })
-          .eq("id", user.id);
+        // Update profiles table (cidade, estado, telefone estão aqui)
+        await updateTable(supabase, "profiles", {
+          nome_completo: formData.nome_completo,
+          cidade: formData.cidade || null,
+          estado: formData.estado || null,
+          telefone: formData.telefone || null,
+        }, user.id);
 
         // Update candidatos table
-        await (supabase
-          .from("candidatos")
-          .update as any)({
-            titulo_profissional: formData.titulo_profissional || null,
-            resumo: formData.resumo || null,
-            cidade: formData.cidade || null,
-            estado: formData.estado || null,
-            salario_pretendido: formData.salario_pretendido
-              ? parseInt(formData.salario_pretendido)
-              : null,
-            linkedin_url: formData.linkedin_url || null,
-            telefone: formData.telefone || null,
-            skills: formData.skills
-              ? formData.skills.split(",").map((s) => s.trim())
-              : null,
-          })
-          .eq("id", user.id);
+        await updateTable(supabase, "candidatos", {
+          titulo_profissional: formData.titulo_profissional || null,
+          resumo: formData.resumo || null,
+          salario_pretendido: formData.salario_pretendido
+            ? parseInt(formData.salario_pretendido)
+            : null,
+          linkedin_url: formData.linkedin_url || null,
+          skills: formData.skills
+            ? formData.skills.split(",").map((s) => s.trim())
+            : null,
+        }, user.id);
 
         addToast({
           type: "success",
@@ -114,8 +120,9 @@ export default function PerfilPage() {
           description: "Suas informações foram salvas com sucesso",
         });
       }
-    } catch (error) {
-      console.error("Error saving profile:", error);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error saving profile";
+      console.error(message);
       addToast({
         type: "error",
         title: "Erro ao salvar",

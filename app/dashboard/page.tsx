@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Eye,
   Mail,
@@ -248,13 +249,13 @@ export default function DashboardPage() {
               Comece a explorar vagas e candidate-se às oportunidades que
               combinam com você!
             </p>
-            <a
+            <Link
               href="/vagas"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-primary text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-md"
             >
               Explorar Vagas
               <ArrowUpRight className="w-5 h-5" />
-            </a>
+            </Link>
           </div>
         </motion.div>
       ) : (
@@ -265,13 +266,13 @@ export default function DashboardPage() {
               <h2 className="text-2xl font-bold text-gray-900">
                 Vagas Recomendadas
               </h2>
-              <a
+              <Link
                 href="/vagas"
                 className="text-purple-600 hover:text-purple-700 font-semibold text-sm flex items-center gap-1"
               >
                 Ver todas
                 <ArrowUpRight className="w-4 h-4" />
-              </a>
+              </Link>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {vagas.slice(0, 3).map((vaga) => (

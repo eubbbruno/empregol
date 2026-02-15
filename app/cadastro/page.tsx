@@ -90,7 +90,7 @@ export default function CadastroPage() {
           .from("profiles")
           .insert([{
             id: data.user.id,
-            tipo: userType,
+            tipo: userType as "candidato" | "empresa",
             nome_completo: formData.nomeCompleto,
           }] as any);
 
