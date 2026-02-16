@@ -1,60 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { UserPlus, Search, Rocket } from "lucide-react";
+import Image from "next/image";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 const steps = [
   {
-    icon: UserPlus,
     number: "01",
-    title: "Crie seu perfil",
+    title: "Crie seu Perfil",
     description:
-      "Cadastre-se em menos de 2 minutos. Adicione suas habilidades, experiências e preferências.",
-    color: "purple",
+      "Cadastre-se em menos de 2 minutos. Adicione suas habilidades, experiências e preferências de trabalho.",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80",
   },
   {
-    icon: Search,
     number: "02",
-    title: "Encontre vagas perfeitas",
+    title: "Encontre Vagas",
     description:
-      "Nossa IA analisa seu perfil e recomenda as melhores oportunidades com match personalizado.",
-    color: "orange",
+      "Nossa IA analisa seu perfil e recomenda as melhores oportunidades com match personalizado para você.",
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&q=80",
   },
   {
-    icon: Rocket,
     number: "03",
-    title: "Candidate-se e decole",
+    title: "Candidate-se",
     description:
-      "Envie sua candidatura com um clique. Acompanhe o status em tempo real e receba feedback rápido.",
-    color: "cyan",
+      "Envie sua candidatura com um clique. Acompanhe o status em tempo real e receba feedback rápido das empresas.",
+    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80",
   },
 ];
 
-const colorClasses = {
-  purple: {
-    bg: "bg-green-600",
-    light: "bg-green-100",
-    text: "text-green-600",
-    ring: "ring-green-200",
-  },
-  orange: {
-    bg: "bg-orange-600",
-    light: "bg-orange-100",
-    text: "text-orange-600",
-    ring: "ring-orange-200",
-  },
-  cyan: {
-    bg: "bg-cyan-600",
-    light: "bg-cyan-100",
-    text: "text-cyan-600",
-    ring: "ring-cyan-200",
-  },
-};
-
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 bg-[var(--bg-tertiary)] relative overflow-hidden">
+    <section id="how-it-works" className="py-20 bg-[#F8F9FC] relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
@@ -64,8 +40,8 @@ export function HowItWorks() {
         >
           {/* Header */}
           <motion.div variants={fadeInUp} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-              Como <span className="gradient-text-primary">funciona</span>
+            <h2 className="text-4xl sm:text-5xl font-bold font-heading text-gray-900 mb-4">
+              Como <span className="text-green-600">funciona</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Três passos simples para transformar sua carreira
@@ -75,44 +51,38 @@ export function HowItWorks() {
           {/* Steps */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative">
             {/* Connecting line - desktop only */}
-            <div className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-green-300 via-orange-300 to-cyan-300 opacity-30" />
+            <div className="hidden md:block absolute top-48 left-1/4 right-1/4 h-px border-t-2 border-dashed border-green-300" />
 
-            {steps.map((step, index) => {
-              const Icon = step.icon;
-              const colors = colorClasses[step.color as keyof typeof colorClasses];
+            {steps.map((step, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="relative text-center"
+              >
+                {/* Image */}
+                <div className="relative w-full h-64 rounded-2xl overflow-hidden mb-6 shadow-lg">
+                  <Image
+                    src={step.image}
+                    alt={step.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
-              return (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  className="relative"
-                >
-                  <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 relative z-10">
-                    {/* Number badge */}
-                    <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg">
-                      <span className="text-white font-bold text-lg">
-                        {step.number}
-                      </span>
-                    </div>
+                {/* Number badge */}
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-50 text-green-600 font-bold text-2xl font-heading mb-4">
+                  {step.number}
+                </div>
 
-                    {/* Icon */}
-                    <div
-                      className={`w-20 h-20 rounded-2xl ${colors.light} flex items-center justify-center mb-6 ring-4 ${colors.ring}`}
-                    >
-                      <Icon className={`w-10 h-10 ${colors.text}`} />
-                    </div>
-
-                    {/* Content */}
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+                {/* Content */}
+                <h3 className="text-2xl font-bold font-heading text-gray-900 mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-gray-500 leading-relaxed">
+                  {step.description}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>
