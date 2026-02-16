@@ -11,9 +11,12 @@ import {
   XCircle,
   ArrowUpRight,
   Filter,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { CandidaturaTimeline } from "@/components/candidatura/CandidaturaTimeline";
 import { fadeInUp } from "@/lib/animations";
 import { createClient } from "@/lib/supabase/client";
 
@@ -53,6 +56,7 @@ export default function CandidaturasPage() {
   const [loading, setLoading] = useState(true);
   const [candidaturas, setCandidaturas] = useState<any[]>([]);
   const [filter, setFilter] = useState<string>("all");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const loadCandidaturas = useCallback(async () => {
     setLoading(true);
@@ -173,41 +177,64 @@ export default function CandidaturasPage() {
                 {filteredCandidaturas.map((candidatura: any) => {
                   const badge = getStatusBadge(candidatura.status);
                   const Icon = badge.icon;
+                  const isExpanded = expandedId === candidatura.id;
                   return (
-                    <tr
-                      key={candidatura.id}
-                      className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
-                    >
-                      <td className="px-6 py-4">
-                        <Link
-                          href={`/vagas/${candidatura.vaga_id}`}
-                          className="font-medium text-gray-900 hover:text-green-600"
-                        >
-                          {candidatura.vagas?.titulo || "Vaga"}
-                        </Link>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {candidatura.vagas?.empresas?.nome_empresa || "Empresa"}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {new Date(candidatura.created_at).toLocaleDateString(
-                          "pt-BR"
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        <span
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${badge.color}`}
-                        >
-                          <Icon className="w-3.5 h-3.5" />
-                          {badge.label}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                          <ArrowUpRight className="w-4 h-4 text-gray-400" />
-                        </button>
-                      </td>
-                    </tr>
+                    <>
+                      <tr
+                        key={candidatura.id}
+                        className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
+                      >
+                        <td className="px-6 py-4">
+                          <Link
+                            href={`/vagas/${candidatura.vaga_id}`}
+                            className="font-medium text-gray-900 hover:text-green-600"
+                          >
+                            {candidatura.vagas?.titulo || "Vaga"}
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {candidatura.vagas?.empresas?.nome_empresa || "Empresa"}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-500">
+                          {new Date(candidatura.created_at).toLocaleDateString(
+                            "pt-BR"
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${badge.color}`}
+                          >
+                            <Icon className="w-3.5 h-3.5" />
+                            {badge.label}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() =>
+                              setExpandedId(isExpanded ? null : candidatura.id)
+                            }
+                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                          >
+                            {isExpanded ? (
+                              <ChevronUp className="w-4 h-4 text-gray-400" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4 text-gray-400" />
+                            )}
+                          </button>
+                        </td>
+                      </tr>
+                      {isExpanded && (
+                        <tr>
+                          <td colSpan={5} className="px-6 py-4 bg-gray-50/50">
+                            <CandidaturaTimeline
+                              currentStatus={candidatura.status}
+                              createdAt={candidatura.created_at}
+                              updatedAt={candidatura.updated_at}
+                            />
+                          </td>
+                        </tr>
+                      )}
+                    </>
                   );
                 })}
               </tbody>
