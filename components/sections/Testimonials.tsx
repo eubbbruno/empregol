@@ -99,7 +99,7 @@ export function Testimonials() {
 
               {/* Content */}
               <p className="text-xl text-gray-700 leading-relaxed mb-6 max-w-3xl">
-                "{featuredTestimonial.content}"
+                &ldquo;{featuredTestimonial.content}&rdquo;
               </p>
 
               {/* Author */}
@@ -138,7 +138,7 @@ export function Testimonials() {
 
               {/* Content */}
               <p className="text-sm text-gray-700 mb-4">
-                "{testimonial.content}"
+                &ldquo;{testimonial.content}&rdquo;
               </p>
 
               {/* Author */}

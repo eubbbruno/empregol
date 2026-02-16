@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Target, FileText, TrendingUp, Sparkles } from "lucide-react";
-import { fadeInUp } from "@/lib/animations";
 
 const aiFeatures = [
   {

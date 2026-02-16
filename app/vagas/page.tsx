@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import Head from "next/head";
 import { motion } from "framer-motion";
 import {
   Search,

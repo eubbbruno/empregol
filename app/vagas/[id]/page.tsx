@@ -15,9 +15,7 @@ import {
   Loader2,
   Share2,
   Users,
-  Calendar,
   Globe,
-  Copy,
   Check,
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
