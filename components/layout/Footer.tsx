@@ -35,8 +35,8 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-gray-200 bg-gray-50 mt-32">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="relative bg-[#111827] text-gray-300">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -52,10 +52,10 @@ export function Footer() {
                 alt="EmpreGol"
                 width={180}
                 height={56}
-                className="h-12 w-auto"
+                className="h-12 w-auto brightness-0 invert"
               />
             </Link>
-            <p className="text-gray-600 mb-6 max-w-xs">
+            <p className="text-gray-400 mb-6 max-w-xs">
               A plataforma que conecta talentos brasileiros às melhores
               oportunidades. Sem burocracia, sem enrolação.
             </p>
@@ -68,12 +68,12 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center hover:border-purple-400 hover:bg-purple-50 transition-all"
+                    className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-green-600 transition-all"
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label={social.label}
                   >
-                    <Icon className="w-5 h-5 text-gray-600" />
+                    <Icon className="w-5 h-5 text-gray-300" />
                   </motion.a>
                 );
               })}
@@ -83,7 +83,7 @@ export function Footer() {
           {/* Links Columns */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <motion.div key={category} variants={fadeInUp}>
-              <h3 className="font-bold text-gray-900 mb-4 capitalize">
+              <h3 className="font-bold text-white mb-4 capitalize">
                 {category}
               </h3>
               <ul className="space-y-3">
@@ -91,7 +91,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 hover:text-purple-600 transition-colors text-sm"
+                      className="text-gray-400 hover:text-green-500 transition-colors text-sm"
                     >
                       {link.label}
                     </Link>
@@ -102,19 +102,16 @@ export function Footer() {
           ))}
         </motion.div>
 
-        {/* Bottom Bar */}
-        <motion.div
-          variants={fadeInUp}
-          className="pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4"
-        >
-          <p className="text-sm text-gray-600 flex items-center gap-1">
-            © {new Date().getFullYear()} EmpreGol. Feito com{" "}
-            <Heart className="w-4 h-4 fill-red-500 text-red-500" /> no Brasil.
+        {/* Divider */}
+        <div className="border-t border-gray-800 mb-8" />
+
+        {/* Bottom */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+          <p>© {new Date().getFullYear()} EmpreGol. Todos os direitos reservados.</p>
+          <p className="flex items-center gap-2">
+            Feito com <Heart className="w-4 h-4 text-green-500 fill-green-500" /> no Brasil
           </p>
-          <p className="text-sm text-gray-500">
-            Todos os direitos reservados.
-          </p>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
