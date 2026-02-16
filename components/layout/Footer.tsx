@@ -47,12 +47,12 @@ export function Footer() {
           {/* Logo & Description */}
           <motion.div variants={fadeInUp} className="col-span-2">
             <Link href="/" className="flex items-center mb-4">
-              <Image 
-                src="/logo-empreGol.svg" 
-                alt="EmpreGol" 
-                width={160} 
-                height={48} 
-                className="h-10 w-auto"
+              <Image
+                src="/logo-empreGol.svg"
+                alt="EmpreGol"
+                width={180}
+                height={56}
+                className="h-12 w-auto"
               />
             </Link>
             <p className="text-gray-600 mb-6 max-w-xs">

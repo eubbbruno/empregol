@@ -53,16 +53,16 @@ export function Navbar() {
           >
             <div className="flex items-center justify-between px-6 py-4">
               {/* Logo */}
-              <Link href="/" className="flex items-center">
-                <Image 
-                  src="/logo-empreGol.svg" 
-                  alt="EmpreGol" 
-                  width={140} 
-                  height={40} 
-                  className="h-8 w-auto"
-                  priority
-                />
-              </Link>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo-empreGol.svg"
+              alt="EmpreGol"
+              width={160}
+              height={48}
+              className="h-10 w-auto"
+              priority
+            />
+          </Link>
 
               {/* Desktop Navigation */}
               <div className="hidden lg:flex items-center gap-1">

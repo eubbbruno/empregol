@@ -90,13 +90,13 @@ export default function DashboardLayout({
         >
           <Menu className="w-6 h-6 text-gray-600" />
         </button>
-        <Image
-          src="/logo-empreGol.svg"
-          alt="EmpreGol"
-          width={120}
-          height={36}
-          className="h-7 w-auto"
-        />
+                  <Image
+                    src="/logo-empreGol.svg"
+                    alt="EmpreGol"
+                    width={160}
+                    height={48}
+                    className="h-10 w-auto"
+                  />
         <div className="w-10" />
       </div>
 
@@ -115,17 +115,17 @@ export default function DashboardLayout({
             )}
           >
             {/* Logo */}
-            <div className="p-6 border-b border-gray-100">
-              <Link href="/" className="flex items-center">
-                <Image
-                  src="/logo-empreGol.svg"
-                  alt="EmpreGol"
-                  width={140}
-                  height={42}
-                  className="h-8 w-auto"
-                />
-              </Link>
-            </div>
+                <div className="p-6 border-b border-gray-100">
+                  <Link href="/" className="flex items-center">
+                    <Image
+                      src="/logo-empreGol.svg"
+                      alt="EmpreGol"
+                      width={160}
+                      height={48}
+                      className="h-10 w-auto"
+                    />
+                  </Link>
+                </div>
 
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
