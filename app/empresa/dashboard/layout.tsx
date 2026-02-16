@@ -77,7 +77,7 @@ export default function EmpresaDashboardLayout({
   const router = useRouter();
   const { addToast } = useToast();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [empresaNome, setEmpresaNome] = useState("Empresa");
+  const [empresaNome] = useState("Empresa");
 
   const handleLogout = async () => {
     try {
@@ -89,7 +89,7 @@ export default function EmpresaDashboardLayout({
         description: "Até logo!",
       });
       router.push("/");
-    } catch (error) {
+    } catch {
       addToast({
         type: "error",
         title: "Erro ao fazer logout",

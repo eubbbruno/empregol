@@ -7,7 +7,6 @@ import {
   Eye,
   Calendar,
   Search,
-  Filter,
 } from "lucide-react";
 import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";

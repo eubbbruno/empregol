@@ -47,10 +47,10 @@ export function Testimonials() {
     <section className="py-20 bg-green-50 relative overflow-hidden">
       {/* Decorative quotes */}
       <div className="absolute top-10 left-10 text-9xl font-serif text-green-200 opacity-50 select-none">
-        "
+        &ldquo;
       </div>
       <div className="absolute bottom-10 right-10 text-9xl font-serif text-green-200 opacity-50 select-none rotate-180">
-        "
+        &rdquo;
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
