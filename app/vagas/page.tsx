@@ -15,6 +15,9 @@ import {
   Briefcase,
   Building2,
   Target,
+  ChevronLeft,
+  ChevronRight,
+  ArrowUpDown,
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -64,12 +67,18 @@ function mapNivel(nivel: string): "Estágio" | "Júnior" | "Pleno" | "Sênior" |
   return "Júnior";
 }
 
+const ITEMS_PER_PAGE = 12;
+
+type SortOption = "recentes" | "salario" | "relevancia";
+
 export default function VagasPage() {
   const searchParams = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(true);
   const [vagas, setVagas] = useState<VagaWithEmpresa[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState<SortOption>("recentes");
 
   const [filters, setFilters] = useState({
     search: searchParams.get("q") || "",
@@ -94,13 +103,29 @@ export default function VagasPage() {
         salario_max: filters.salario_max ? parseInt(filters.salario_max) : undefined,
       });
 
-      setVagas(vagasData as VagaWithEmpresa[]);
+      let sortedVagas = [...(vagasData as VagaWithEmpresa[])];
+      
+      // Aplicar ordenação
+      if (sortBy === "recentes") {
+        sortedVagas.sort((a, b) => 
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      } else if (sortBy === "salario") {
+        sortedVagas.sort((a, b) => {
+          const salarioA = a.salario_max || a.salario_min || 0;
+          const salarioB = b.salario_max || b.salario_min || 0;
+          return salarioB - salarioA;
+        });
+      }
+
+      setVagas(sortedVagas);
+      setCurrentPage(1); // Reset para primeira página ao filtrar
     } catch (error) {
       console.error("Error loading vagas:", error);
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  }, [filters, sortBy]);
 
   useEffect(() => {
     loadVagas();
@@ -138,6 +163,17 @@ export default function VagasPage() {
     filters.cidade ||
     filters.salario_min ||
     filters.salario_max;
+
+  // Paginação
+  const totalPages = Math.ceil(vagas.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentVagas = vagas.slice(startIndex, endIndex);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -331,7 +367,7 @@ export default function VagasPage() {
                 variants={fadeInUp}
                 initial="hidden"
                 animate="visible"
-                className="flex items-center justify-between mb-6"
+                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6"
               >
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -341,21 +377,35 @@ export default function VagasPage() {
                     {loading ? "Carregando..." : `${vagas.length} vagas encontradas`}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant={viewMode === "grid" ? "default" : "secondary"}
-                    size="sm"
-                    onClick={() => setViewMode("grid")}
+                <div className="flex items-center gap-3">
+                  {/* Ordenação */}
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as SortOption)}
+                    className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                   >
-                    <Grid3x3 className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === "list" ? "default" : "secondary"}
-                    size="sm"
-                    onClick={() => setViewMode("list")}
-                  >
-                    <List className="w-4 h-4" />
-                  </Button>
+                    <option value="recentes">Mais Recentes</option>
+                    <option value="salario">Maior Salário</option>
+                    <option value="relevancia">Relevância</option>
+                  </select>
+
+                  {/* View Mode */}
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant={viewMode === "grid" ? "default" : "secondary"}
+                      size="sm"
+                      onClick={() => setViewMode("grid")}
+                    >
+                      <Grid3x3 className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant={viewMode === "list" ? "default" : "secondary"}
+                      size="sm"
+                      onClick={() => setViewMode("list")}
+                    >
+                      <List className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
               </motion.div>
 
@@ -384,7 +434,7 @@ export default function VagasPage() {
                       : "space-y-4"
                   }
                 >
-                  {vagas.map((vaga) => (
+                  {currentVagas.map((vaga) => (
                     <motion.div key={vaga.id} variants={fadeInUp}>
                       <VagaCard
                         id={vaga.id}
@@ -416,6 +466,73 @@ export default function VagasPage() {
                     <Button onClick={clearFilters}>Limpar Filtros</Button>
                   )}
                 </div>
+              )}
+
+              {/* Paginação */}
+              {!loading && vagas.length > ITEMS_PER_PAGE && (
+                <motion.div
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate="visible"
+                  className="mt-8 flex items-center justify-center gap-2"
+                >
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => goToPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="gap-2"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    Anterior
+                  </Button>
+
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                      // Mostrar apenas algumas páginas
+                      if (
+                        page === 1 ||
+                        page === totalPages ||
+                        (page >= currentPage - 1 && page <= currentPage + 1)
+                      ) {
+                        return (
+                          <button
+                            key={page}
+                            onClick={() => goToPage(page)}
+                            className={`w-10 h-10 rounded-lg font-medium transition-all ${
+                              page === currentPage
+                                ? "bg-green-500 text-white"
+                                : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      } else if (
+                        page === currentPage - 2 ||
+                        page === currentPage + 2
+                      ) {
+                        return (
+                          <span key={page} className="px-2 text-gray-400">
+                            ...
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
+
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => goToPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="gap-2"
+                  >
+                    Próxima
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </motion.div>
               )}
             </div>
           </div>
