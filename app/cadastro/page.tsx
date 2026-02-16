@@ -85,36 +85,15 @@ export default function CadastroPage() {
       if (error) throw error;
 
       if (data.user) {
-        // Create profile record
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .insert([{
-            id: data.user.id,
-            tipo: userType as "candidato" | "empresa",
-            nome_completo: formData.nomeCompleto,
-          }] as any);
-
-        if (profileError) {
-          console.error("Error creating profile:", profileError);
-        }
-
-        // Create specific profile (candidato or empresa)
-        if (userType === "candidato") {
-          await supabase.from("candidatos").insert([{
-            id: data.user.id,
-          }] as any);
-        } else {
-          await supabase.from("empresas").insert([{
-            id: data.user.id,
-            nome_empresa: formData.nomeCompleto,
-          }] as any);
-        }
-
+        // O trigger SQL handle_new_user() já cria o profile e o registro em candidatos/empresas
         addToast({
           type: "success",
           title: "Conta criada!",
           description: "Você já pode fazer login",
         });
+
+        // Aguardar um momento para o trigger processar
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         router.push("/login");
       }
@@ -144,7 +123,7 @@ export default function CadastroPage() {
           <motion.div variants={fadeInUp} className="mb-8">
             <Link href="/" className="flex items-center">
               <Image 
-                src="/logo-empreGol.png" 
+                src="/logo-empreGol.svg" 
                 alt="EmpreGol" 
                 width={160} 
                 height={48} 

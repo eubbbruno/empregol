@@ -240,10 +240,19 @@ BEGIN
   INSERT INTO public.profiles (id, tipo, nome_completo, avatar_url)
   VALUES (
     NEW.id,
-    'candidato', -- Default to candidato, can be changed later
+    COALESCE(NEW.raw_user_meta_data->>'tipo', 'candidato'),
     COALESCE(NEW.raw_user_meta_data->>'nome_completo', NEW.email),
     NEW.raw_user_meta_data->>'avatar_url'
   );
+  
+  -- Create candidato or empresa record based on tipo
+  IF COALESCE(NEW.raw_user_meta_data->>'tipo', 'candidato') = 'candidato' THEN
+    INSERT INTO public.candidatos (id) VALUES (NEW.id);
+  ELSE
+    INSERT INTO public.empresas (id, nome_empresa) 
+    VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'nome_completo', NEW.email));
+  END IF;
+  
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

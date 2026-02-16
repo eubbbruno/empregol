@@ -109,7 +109,7 @@ export default function EmpresaDashboardLayout({
           <Menu className="w-6 h-6 text-gray-600" />
         </button>
         <Image
-          src="/logo-empreGol.png"
+          src="/logo-empreGol.svg"
           alt="EmpreGol"
           width={120}
           height={36}
@@ -136,7 +136,7 @@ export default function EmpresaDashboardLayout({
             <div className="p-6 border-b border-gray-100">
               <Link href="/" className="flex items-center">
                 <Image
-                  src="/logo-empreGol.png"
+                  src="/logo-empreGol.svg"
                   alt="EmpreGol"
                   width={140}
                   height={42}
