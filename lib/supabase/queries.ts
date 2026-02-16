@@ -5,7 +5,6 @@ type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 type Candidato = Database["public"]["Tables"]["candidatos"]["Row"];
 type Empresa = Database["public"]["Tables"]["empresas"]["Row"];
 type Vaga = Database["public"]["Tables"]["vagas"]["Row"];
-type Candidatura = Database["public"]["Tables"]["candidaturas"]["Row"];
 
 export async function getCandidatoDashboardData(userId: string) {
   const supabase = createClient();

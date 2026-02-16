@@ -30,7 +30,6 @@ export function CandidaturaTimeline({
 }: CandidaturaTimelineProps) {
   // Se foi recusada, mostrar apenas até o ponto da recusa
   if (currentStatus === "recusada") {
-    const currentIndex = STEPS.findIndex((s) => s.status === "enviada");
     return (
       <div className="bg-white rounded-2xl p-6 border border-gray-200">
         <h3 className="text-sm font-semibold text-gray-900 mb-6">Status da Candidatura</h3>

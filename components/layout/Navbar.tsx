@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X, Briefcase, Building2, DollarSign, FileText } from "lucide-react";
+import { Menu, X, Briefcase, Building2, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

@@ -10,15 +10,11 @@ import {
   SlidersHorizontal,
   Grid3x3,
   List,
-  Loader2,
   X,
   DollarSign,
   Briefcase,
-  Building2,
-  Target,
   ChevronLeft,
   ChevronRight,
-  ArrowUpDown,
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -104,7 +100,7 @@ export default function VagasPage() {
         salario_max: filters.salario_max ? parseInt(filters.salario_max) : undefined,
       });
 
-      let sortedVagas = [...(vagasData as VagaWithEmpresa[])];
+      const sortedVagas = [...(vagasData as VagaWithEmpresa[])];
       
       // Aplicar ordenação
       if (sortBy === "recentes") {
