@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
+import Head from "next/head";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -74,7 +75,7 @@ type SortOption = "recentes" | "salario" | "relevancia";
 export default function VagasPage() {
   const searchParams = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [showFilters, setShowFilters] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [loading, setLoading] = useState(true);
   const [vagas, setVagas] = useState<VagaWithEmpresa[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -180,13 +181,45 @@ export default function VagasPage() {
       <Navbar />
       <div className="min-h-screen bg-gray-50 pt-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Mobile Filter Button */}
+          <div className="lg:hidden mb-4">
+            <Button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              variant="secondary"
+              className="w-full gap-2"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filtros
+              {hasActiveFilters && (
+                <span className="ml-2 px-2 py-0.5 bg-green-500 text-white text-xs rounded-full">
+                  Ativos
+                </span>
+              )}
+            </Button>
+          </div>
+
           <div className="flex gap-8">
             {/* Sidebar de Filtros */}
             <motion.aside
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="hidden lg:block w-80 flex-shrink-0"
+              className={`${
+                showMobileFilters ? "block" : "hidden"
+              } lg:block w-full lg:w-80 flex-shrink-0 ${
+                showMobileFilters ? "fixed inset-0 z-50 bg-white p-6 overflow-y-auto" : ""
+              }`}
             >
+              {showMobileFilters && (
+                <div className="flex items-center justify-between mb-6 lg:hidden">
+                  <h2 className="text-lg font-bold text-gray-900">Filtros</h2>
+                  <button
+                    onClick={() => setShowMobileFilters(false)}
+                    className="p-2 hover:bg-gray-100 rounded-lg"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
               <div className="bg-white rounded-2xl border border-gray-200 p-6 sticky top-24">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -357,6 +390,18 @@ export default function VagasPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Mobile Apply Button */}
+                {showMobileFilters && (
+                  <div className="lg:hidden mt-6">
+                    <Button
+                      onClick={() => setShowMobileFilters(false)}
+                      className="w-full"
+                    >
+                      Aplicar Filtros
+                    </Button>
+                  </div>
+                )}
               </div>
             </motion.aside>
 
