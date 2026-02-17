@@ -87,11 +87,11 @@ export default function LoginPage() {
           <motion.div variants={fadeInUp} className="mb-8">
             <Link href="/" className="flex items-center">
               <Image 
-                src="/logo-empreGol.svg" 
+                src="/logo-empregol-paths.png" 
                 alt="EmpreGol" 
                 width={220} 
                 height={72} 
-                className="h-16 w-auto"
+                className="h-14 sm:h-16 w-auto"
               />
             </Link>
           </motion.div>

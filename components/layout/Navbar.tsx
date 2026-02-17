@@ -34,27 +34,38 @@ export function Navbar() {
   return (
     <>
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm"
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          isScrolled ? "py-2" : "py-3"
+        )}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-3 sm:py-4">
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo-empreGol.svg"
-                alt="EmpreGol"
-                width={180}
-                height={56}
-                className="h-8 sm:h-10 lg:h-12 w-auto"
-                priority
-              />
-            </Link>
+        <div className="container mx-auto px-4">
+          <motion.div
+            className={cn(
+              "rounded-2xl border transition-all duration-300",
+              isScrolled
+                ? "bg-white/95 backdrop-blur-xl border-gray-200 shadow-lg"
+                : "bg-white/80 backdrop-blur-sm border-gray-200"
+            )}
+          >
+            <div className="flex items-center justify-between px-6 py-4">
+              {/* Logo */}
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/logo-empregol-paths.png"
+                  alt="EmpreGol"
+                  width={180}
+                  height={48}
+                  className="h-8 sm:h-10 lg:h-12 w-auto"
+                  priority
+                />
+              </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1">
+              {/* Desktop Navigation */}
+              <div className="hidden lg:flex items-center gap-1">
                 {navLinks.map((link) => (
                   <Link key={link.href} href={link.href}>
                     <motion.div
@@ -87,19 +98,20 @@ export function Navbar() {
                 </Link>
               </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <Menu className="w-6 h-6 text-gray-900" />
-              ) : (
-                <Menu className="w-6 h-6 text-gray-900" />
-              )}
-            </button>
-          </div>
+              {/* Mobile Menu Button */}
+              <button
+                className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <Menu className="w-6 h-6 text-gray-900" />
+                ) : (
+                  <Menu className="w-6 h-6 text-gray-900" />
+                )}
+              </button>
+            </div>
+          </motion.div>
         </div>
       </motion.nav>
 

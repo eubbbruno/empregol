@@ -70,7 +70,7 @@ export function Hero() {
     router.push(`/vagas?${params.toString()}`);
   };
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-hero overflow-hidden pt-24 sm:pt-0">
+    <section className="relative min-h-screen flex items-center bg-gradient-hero overflow-hidden pt-20 sm:pt-24 lg:pt-32">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-96 h-96 bg-green-200 rounded-full blur-3xl opacity-30" />
