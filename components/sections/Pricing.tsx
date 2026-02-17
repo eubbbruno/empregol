@@ -67,7 +67,7 @@ export function Pricing() {
   const [isAnnual, setIsAnnual] = useState(false);
 
   return (
-    <section id="pricing" className="py-20 bg-white relative overflow-hidden">
+    <section id="pricing" className="py-12 sm:py-16 lg:py-24 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
@@ -76,11 +76,11 @@ export function Pricing() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* Header */}
-          <motion.div variants={fadeInUp} className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+          <motion.div variants={fadeInUp} className="text-center mb-8 sm:mb-10 lg:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
               Planos para <span className="gradient-text-primary">empresas</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            <p className="text-sm sm:text-base lg:text-xl text-gray-600 max-w-2xl mx-auto mb-6 sm:mb-8">
               Escolha o plano ideal para o tamanho da sua equipe
             </p>
 

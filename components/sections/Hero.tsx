@@ -70,14 +70,14 @@ export function Hero() {
     router.push(`/vagas?${params.toString()}`);
   };
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-hero overflow-hidden pt-20 sm:pt-24 lg:pt-32">
+    <section className="relative min-h-screen flex items-center bg-gradient-hero overflow-hidden pt-4 sm:pt-8 lg:pt-16">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-96 h-96 bg-green-200 rounded-full blur-3xl opacity-30" />
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left side - Content */}
           <motion.div
@@ -99,7 +99,7 @@ export function Hero() {
             {/* Headline */}
             <motion.h1
               variants={fadeInUp}
-              className="text-3xl sm:text-5xl lg:text-7xl font-bold font-heading mb-6 leading-tight"
+              className="text-2xl sm:text-4xl lg:text-7xl font-bold font-heading mb-4 sm:mb-6 leading-tight"
             >
               Seu próximo{" "}
               <span className="gradient-text-primary">gol profissional</span>{" "}
@@ -109,7 +109,7 @@ export function Hero() {
             {/* Subtitle */}
             <motion.p
               variants={fadeInUp}
-              className="text-base sm:text-xl text-gray-600 mb-8 max-w-xl"
+              className="text-sm sm:text-base lg:text-xl text-gray-600 mb-6 sm:mb-8 max-w-xl"
             >
               Conecte-se com as melhores oportunidades do Brasil. Match
               inteligente, salários transparentes, zero burocracia.

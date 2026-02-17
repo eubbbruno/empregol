@@ -30,7 +30,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 bg-[#F8F9FC] relative overflow-hidden">
+    <section id="how-it-works" className="py-12 sm:py-16 lg:py-24 bg-[#F8F9FC] relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
@@ -39,17 +39,17 @@ export function HowItWorks() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* Header */}
-          <motion.div variants={fadeInUp} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold font-heading text-gray-900 mb-4">
+          <motion.div variants={fadeInUp} className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold font-heading text-gray-900 mb-3 sm:mb-4">
               Como <span className="text-green-600">funciona</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base lg:text-xl text-gray-600 max-w-2xl mx-auto">
               Três passos simples para transformar sua carreira
             </p>
           </motion.div>
 
           {/* Steps */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 relative">
             {/* Connecting line - desktop only */}
             <div className="hidden md:block absolute top-48 left-1/4 right-1/4 h-px border-t-2 border-dashed border-green-300" />
 

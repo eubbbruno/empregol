@@ -123,7 +123,7 @@ export default function CadastroPage() {
           <motion.div variants={fadeInUp} className="mb-8">
             <Link href="/" className="flex items-center">
               <Image 
-                src="/logo-empregol-paths.png" 
+                src="/logo-empreGol-paths.svg" 
                 alt="EmpreGol" 
                 width={220} 
                 height={72} 

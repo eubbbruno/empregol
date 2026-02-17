@@ -94,7 +94,7 @@ const colorClasses = {
 
 export function Features() {
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
+    <section className="py-12 sm:py-16 lg:py-24 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
@@ -103,18 +103,18 @@ export function Features() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* Header */}
-          <motion.div variants={fadeInUp} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold font-heading text-gray-900 mb-4">
+          <motion.div variants={fadeInUp} className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold font-heading text-gray-900 mb-3 sm:mb-4">
               Recursos que fazem a{" "}
               <span className="text-green-600">diferença</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base lg:text-xl text-gray-600 max-w-2xl mx-auto">
               Tudo que você precisa para encontrar o emprego dos seus sonhos
             </p>
           </motion.div>
 
           {/* Bento Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               const colors =
@@ -128,7 +128,7 @@ export function Features() {
                   whileHover={{ y: -4, borderColor: "rgb(34, 197, 94)" }}
                   className={`
                     ${isLarge ? "sm:col-span-2 lg:row-span-2" : "sm:col-span-1"}
-                    bg-white rounded-2xl p-6 lg:p-8 border border-gray-200
+                    bg-white rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200
                     hover:shadow-lg transition-all duration-300 group
                     ${isLarge ? "sm:min-h-[400px]" : ""}
                   `}

@@ -44,7 +44,7 @@ const smallTestimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-20 bg-green-50 relative overflow-hidden">
+    <section className="py-12 sm:py-16 lg:py-24 bg-green-50 relative overflow-hidden">
       {/* Decorative quotes */}
       <div className="absolute top-10 left-10 text-9xl font-serif text-green-200 opacity-50 select-none">
         &ldquo;

@@ -48,11 +48,11 @@ export function Footer() {
           <motion.div variants={fadeInUp} className="col-span-1 sm:col-span-2 text-center sm:text-left">
             <Link href="/" className="flex items-center mb-4 justify-center sm:justify-start">
               <Image
-                src="/logo-empregol-green.png"
+                src="/logo-empreGol.svg"
                 alt="EmpreGol"
                 width={200}
                 height={64}
-                className="h-12 sm:h-14 w-auto"
+                className="h-12 sm:h-14 w-auto brightness-0 invert"
               />
             </Link>
             <p className="text-gray-400 mb-6 max-w-xs mx-auto sm:mx-0">

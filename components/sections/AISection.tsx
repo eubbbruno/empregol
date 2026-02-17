@@ -24,7 +24,7 @@ const aiFeatures = [
 
 export function AISection() {
   return (
-    <section className="py-24 bg-[#09090B] text-white relative overflow-hidden">
+    <section className="py-12 sm:py-16 lg:py-24 bg-[#09090B] text-white relative overflow-hidden">
       {/* Green glow effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 right-1/4 w-[600px] h-[600px] bg-green-600 rounded-full blur-[150px] opacity-10" />

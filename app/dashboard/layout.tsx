@@ -90,7 +90,7 @@ export default function DashboardLayout({
           <Menu className="w-6 h-6 text-gray-600" />
         </button>
                   <Image
-                    src="/logo-empregol-paths.png"
+                    src="/logo-empreGol-paths.svg"
                     alt="EmpreGol"
                     width={180}
                     height={48}
@@ -117,7 +117,7 @@ export default function DashboardLayout({
                 <div className="p-6 border-b border-gray-100">
                   <Link href="/" className="flex items-center">
                     <Image
-                      src="/logo-empregol-paths.png"
+                      src="/logo-empreGol-paths.svg"
                       alt="EmpreGol"
                       width={180}
                       height={48}

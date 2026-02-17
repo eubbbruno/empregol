@@ -55,7 +55,7 @@ export function Navbar() {
               {/* Logo */}
               <Link href="/" className="flex items-center">
                 <Image
-                  src="/logo-empregol-paths.png"
+                  src="/logo-empreGol-paths.svg"
                   alt="EmpreGol"
                   width={180}
                   height={48}
