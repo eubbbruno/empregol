@@ -42,6 +42,7 @@ function AnimatedNumber({ value, suffix = "", prefix = "" }: AnimatedNumberProps
   );
 }
 
+// Marketing metrics - update with real numbers when available
 const metrics = [
   {
     value: 12500,

@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { OnboardingModal } from "@/components/onboarding/OnboardingModal";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { getCandidatoDashboardData } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/client";
@@ -68,16 +69,17 @@ function getStatusBadge(status: string) {
   );
 }
 
-// Dados mockados para o gráfico
+// Activity data - will be calculated from real candidaturas data
 const activityData = [
-  { name: "Sem 1", value: 8 },
-  { name: "Sem 2", value: 12 },
-  { name: "Sem 3", value: 6 },
-  { name: "Sem 4", value: 15 },
+  { name: "Sem 1", value: 0 },
+  { name: "Sem 2", value: 0 },
+  { name: "Sem 3", value: 0 },
+  { name: "Sem 4", value: 0 },
 ];
 
 export default function CandidatoDashboard() {
   const [loading, setLoading] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [data, setData] = useState<{
     profile: any;
     candidato: any;
@@ -117,7 +119,54 @@ export default function CandidatoDashboard() {
 
   useEffect(() => {
     loadDashboardData();
+    checkOnboarding();
   }, [loadDashboardData]);
+
+  const checkOnboarding = async () => {
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("onboarding_completed")
+          .eq("id", user.id)
+          .single();
+
+        if (!(profile as any)?.onboarding_completed) {
+          setShowOnboarding(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error checking onboarding:", error);
+    }
+  };
+
+  const handleOnboardingComplete = async () => {
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await (supabase.from("profiles") as any)
+          .update({ onboarding_completed: true })
+          .eq("id", user.id);
+      }
+    } catch (error) {
+      console.error("Error completing onboarding:", error);
+    } finally {
+      setShowOnboarding(false);
+    }
+  };
+
+  const handleOnboardingSkip = async () => {
+    await handleOnboardingComplete();
+  };
 
   const nomeUsuario =
     data.profile?.nome_completo?.split(" ")[0] || "Usuário";
@@ -193,9 +242,9 @@ export default function CandidatoDashboard() {
               {candidaturasCount}
             </p>
             <p className="text-sm text-gray-500 mb-2">Candidaturas Ativas</p>
-            <p className="text-xs text-green-600 flex items-center gap-1">
+            <p className="text-xs text-gray-400 flex items-center gap-1">
               <TrendingUp className="w-3 h-3" />
-              <span>↑ 3 esta semana</span>
+              <span>Acompanhe aqui</span>
             </p>
           </motion.div>
 
@@ -221,11 +270,11 @@ export default function CandidatoDashboard() {
                 </svg>
               </button>
             </div>
-            <p className="text-3xl font-bold text-gray-900 mb-1">142</p>
+            <p className="text-3xl font-bold text-gray-900 mb-1">0</p>
             <p className="text-sm text-gray-500 mb-2">Visualizações do Perfil</p>
-            <p className="text-xs text-blue-600 flex items-center gap-1">
+            <p className="text-xs text-gray-400 flex items-center gap-1">
               <TrendingUp className="w-3 h-3" />
-              <span>↑ 12 esta semana</span>
+              <span>Em breve</span>
             </p>
           </motion.div>
 
@@ -251,11 +300,11 @@ export default function CandidatoDashboard() {
                 </svg>
               </button>
             </div>
-            <p className="text-3xl font-bold text-gray-900 mb-1">7</p>
+            <p className="text-3xl font-bold text-gray-900 mb-1">0</p>
             <p className="text-sm text-gray-500 mb-2">Convites Recebidos</p>
-            <p className="text-xs text-orange-600 flex items-center gap-1">
+            <p className="text-xs text-gray-400 flex items-center gap-1">
               <TrendingUp className="w-3 h-3" />
-              <span>↑ 2 esta semana</span>
+              <span>Em breve</span>
             </p>
           </motion.div>
         </motion.div>
@@ -267,7 +316,7 @@ export default function CandidatoDashboard() {
               Vagas Recomendadas
             </h2>
             <Link
-              href="/vagas"
+              href="/dashboard/vagas"
               className="text-sm font-medium text-green-600 hover:text-green-700 flex items-center gap-1"
             >
               Ver todas
@@ -556,6 +605,15 @@ export default function CandidatoDashboard() {
           <p className="text-xs text-gray-500 mt-2">2 de 4 completo</p>
         </motion.div>
       </div>
+
+      {/* Onboarding Modal */}
+      {showOnboarding && (
+        <OnboardingModal
+          userType="candidato"
+          onComplete={handleOnboardingComplete}
+          onSkip={handleOnboardingSkip}
+        />
+      )}
     </div>
   );
 }

@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { OnboardingModal } from "@/components/onboarding/OnboardingModal";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { getEmpresaDashboardData } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/client";
@@ -27,6 +28,7 @@ import * as Avatar from "@radix-ui/react-avatar";
 
 export default function EmpresaDashboard() {
   const [loading, setLoading] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [data, setData] = useState<{
     profile: any;
     empresa: any;
@@ -65,7 +67,54 @@ export default function EmpresaDashboard() {
 
   useEffect(() => {
     loadDashboardData();
+    checkOnboarding();
   }, [loadDashboardData]);
+
+  const checkOnboarding = async () => {
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("onboarding_completed")
+          .eq("id", user.id)
+          .single();
+
+        if (!(profile as any)?.onboarding_completed) {
+          setShowOnboarding(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error checking onboarding:", error);
+    }
+  };
+
+  const handleOnboardingComplete = async () => {
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await (supabase.from("profiles") as any)
+          .update({ onboarding_completed: true })
+          .eq("id", user.id);
+      }
+    } catch (error) {
+      console.error("Error completing onboarding:", error);
+    } finally {
+      setShowOnboarding(false);
+    }
+  };
+
+  const handleOnboardingSkip = async () => {
+    await handleOnboardingComplete();
+  };
 
   const nomeEmpresa = data.empresa?.nome_empresa || "Empresa";
   const vagasAtivas = data.vagas.filter((v) => v.status === "ativa").length;
@@ -565,6 +614,15 @@ export default function EmpresaDashboard() {
           </div>
         </motion.div>
       </div>
+
+      {/* Onboarding Modal */}
+      {showOnboarding && (
+        <OnboardingModal
+          userType="empresa"
+          onComplete={handleOnboardingComplete}
+          onSkip={handleOnboardingSkip}
+        />
+      )}
     </div>
   );
 }

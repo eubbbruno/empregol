@@ -90,6 +90,7 @@ export function Hero() {
             <motion.div variants={fadeInUp} className="inline-flex mb-6">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-green-200 shadow-sm">
                 <Sparkles className="w-4 h-4 text-green-600" />
+                {/* Marketing metric - update with real numbers when available */}
                 <span className="text-sm font-medium text-green-700">
                   +12.500 vagas ativas
                 </span>
