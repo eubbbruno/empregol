@@ -90,7 +90,7 @@ export function CompaniesMarquee() {
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent pointer-events-none" />
           </div>
 
-          {/* Stats */}
+          {/* Stats - Marketing metrics, update with real numbers when available */}
           <motion.div
             variants={fadeInUp}
             className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 max-w-4xl mx-auto"
