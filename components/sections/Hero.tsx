@@ -70,7 +70,7 @@ export function Hero() {
     router.push(`/vagas?${params.toString()}`);
   };
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-hero overflow-hidden">
+    <section className="relative min-h-screen flex items-center bg-gradient-hero overflow-hidden pt-24 sm:pt-0">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-96 h-96 bg-green-200 rounded-full blur-3xl opacity-30" />
@@ -99,7 +99,7 @@ export function Hero() {
             {/* Headline */}
             <motion.h1
               variants={fadeInUp}
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              className="text-3xl sm:text-5xl lg:text-7xl font-bold font-heading mb-6 leading-tight"
             >
               Seu próximo{" "}
               <span className="gradient-text-primary">gol profissional</span>{" "}
@@ -109,7 +109,7 @@ export function Hero() {
             {/* Subtitle */}
             <motion.p
               variants={fadeInUp}
-              className="text-xl text-[var(--text-secondary)] mb-8 max-w-xl"
+              className="text-base sm:text-xl text-gray-600 mb-8 max-w-xl"
             >
               Conecte-se com as melhores oportunidades do Brasil. Match
               inteligente, salários transparentes, zero burocracia.
@@ -117,7 +117,7 @@ export function Hero() {
 
             {/* Search bar */}
             <motion.div variants={fadeInUp} className="mb-8">
-              <div className="flex flex-col sm:flex-row gap-3 p-3 bg-white rounded-2xl shadow-lg border border-gray-200 max-w-2xl">
+              <div className="flex flex-col gap-3 p-3 bg-white rounded-2xl shadow-lg border border-gray-200 max-w-2xl w-full">
                 <Autocomplete
                   placeholder="Cargo ou palavra-chave"
                   suggestions={CARGO_SUGGESTIONS}
@@ -138,7 +138,7 @@ export function Hero() {
                   variant="default"
                   size="lg"
                   onClick={handleSearch}
-                  className="bg-gradient-cta hover:opacity-90 text-white px-8 shadow-lg whitespace-nowrap"
+                  className="bg-gradient-cta hover:opacity-90 text-white px-8 shadow-lg w-full sm:w-auto"
                 >
                   Buscar
                 </Button>

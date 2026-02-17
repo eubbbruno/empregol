@@ -80,7 +80,7 @@ export default function LoginPage() {
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="flex flex-col justify-center px-6 py-12 lg:px-16 bg-white"
+        className="flex flex-col justify-center px-6 py-12 pt-24 lg:pt-12 lg:px-16 bg-white"
       >
         <div className="w-full max-w-md mx-auto">
           {/* Logo */}
@@ -89,9 +89,9 @@ export default function LoginPage() {
               <Image 
                 src="/logo-empreGol.svg" 
                 alt="EmpreGol" 
-                width={200} 
-                height={64} 
-                className="h-14 w-auto"
+                width={220} 
+                height={72} 
+                className="h-16 w-auto"
               />
             </Link>
           </motion.div>

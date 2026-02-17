@@ -50,9 +50,9 @@ export function Footer() {
               <Image
                 src="/logo-empreGol.svg"
                 alt="EmpreGol"
-                width={180}
-                height={56}
-                className="h-12 w-auto brightness-0 invert"
+                width={200}
+                height={64}
+                className="h-14 w-auto brightness-0 invert"
               />
             </Link>
             <p className="text-gray-400 mb-6 max-w-xs">

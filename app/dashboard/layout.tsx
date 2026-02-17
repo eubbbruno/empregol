@@ -93,9 +93,9 @@ export default function DashboardLayout({
                   <Image
                     src="/logo-empreGol.svg"
                     alt="EmpreGol"
-                    width={160}
-                    height={48}
-                    className="h-10 w-auto"
+                    width={180}
+                    height={56}
+                    className="h-12 w-auto"
                   />
         <div className="w-10" />
       </div>
@@ -120,9 +120,9 @@ export default function DashboardLayout({
                     <Image
                       src="/logo-empreGol.svg"
                       alt="EmpreGol"
-                      width={160}
-                      height={48}
-                      className="h-10 w-auto"
+                      width={180}
+                      height={56}
+                      className="h-12 w-auto"
                     />
                   </Link>
                 </div>

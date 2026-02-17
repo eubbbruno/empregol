@@ -57,9 +57,9 @@ export function Navbar() {
             <Image
               src="/logo-empreGol.svg"
               alt="EmpreGol"
-              width={160}
-              height={48}
-              className="h-10 w-auto"
+              width={180}
+              height={56}
+              className="h-10 lg:h-12 w-auto"
               priority
             />
           </Link>
