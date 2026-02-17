@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Save, User, Briefcase, MapPin, DollarSign, Linkedin, Phone, Loader2 } from "lucide-react";
+import { Save, User, Briefcase, MapPin, DollarSign, Linkedin, Phone, Loader2, Github, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SkillsInput } from "@/components/ui/SkillsInput";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/toast";
@@ -31,9 +32,14 @@ export default function PerfilPage() {
     estado: "",
     salario_pretendido: "",
     linkedin_url: "",
+    github_url: "",
+    portfolio_url: "",
     telefone: "",
-    skills: "",
+    anos_experiencia: "",
+    disponibilidade: "",
   });
+
+  const [skills, setSkills] = useState<string[]>([]);
 
   useEffect(() => {
     loadProfile();
@@ -70,9 +76,14 @@ export default function PerfilPage() {
           estado: p?.estado || "",
           salario_pretendido: c?.salario_pretendido?.toString() || "",
           linkedin_url: c?.linkedin_url || "",
+          github_url: c?.github_url || "",
+          portfolio_url: c?.portfolio_url || "",
           telefone: p?.telefone || "",
-          skills: c?.skills?.join(", ") || "",
+          anos_experiencia: c?.experiencia_anos?.toString() || "",
+          disponibilidade: c?.disponibilidade || "",
         });
+
+        setSkills(c?.skills || []);
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Error loading profile";
@@ -109,9 +120,13 @@ export default function PerfilPage() {
             ? parseInt(formData.salario_pretendido)
             : null,
           linkedin_url: formData.linkedin_url || null,
-          skills: formData.skills
-            ? formData.skills.split(",").map((s) => s.trim())
+          github_url: formData.github_url || null,
+          portfolio_url: formData.portfolio_url || null,
+          experiencia_anos: formData.anos_experiencia
+            ? parseInt(formData.anos_experiencia)
             : null,
+          disponibilidade: formData.disponibilidade || "imediata",
+          skills: skills.length > 0 ? skills : null,
         }, user.id);
 
         addToast({
@@ -294,6 +309,34 @@ export default function PerfilPage() {
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Anos de Experiência
+              </label>
+              <Input
+                type="number"
+                placeholder="5"
+                min="0"
+                max="50"
+                value={formData.anos_experiencia}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    anos_experiencia: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Links */}
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Globe className="w-5 h-5 text-green-600" />
+            Links Profissionais
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Linkedin className="w-4 h-4 inline mr-1" />
@@ -309,19 +352,78 @@ export default function PerfilPage() {
               />
             </div>
 
-            <div className="md:col-span-2">
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Skills (separadas por vírgula)
+                <Github className="w-4 h-4 inline mr-1" />
+                GitHub URL
               </label>
               <Input
-                type="text"
-                placeholder="React, TypeScript, Node.js, PostgreSQL"
-                value={formData.skills}
+                type="url"
+                placeholder="https://github.com/seu-usuario"
+                value={formData.github_url}
                 onChange={(e) =>
-                  setFormData({ ...formData, skills: e.target.value })
+                  setFormData({ ...formData, github_url: e.target.value })
                 }
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <Globe className="w-4 h-4 inline mr-1" />
+                Portfolio URL
+              </label>
+              <Input
+                type="url"
+                placeholder="https://seuportfolio.com"
+                value={formData.portfolio_url}
+                onChange={(e) =>
+                  setFormData({ ...formData, portfolio_url: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Skills */}
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Briefcase className="w-5 h-5 text-green-600" />
+            Habilidades
+          </h2>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Skills Técnicas
+            </label>
+            <SkillsInput skills={skills} onChange={setSkills} />
+          </div>
+        </div>
+
+        {/* Preferências */}
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <MapPin className="w-5 h-5 text-green-600" />
+            Preferências de Trabalho
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Disponibilidade
+              </label>
+              <select
+                value={formData.disponibilidade}
+                onChange={(e) =>
+                  setFormData({ ...formData, disponibilidade: e.target.value })
+                }
+                className="flex h-11 w-full rounded-xl bg-gray-50 border border-gray-200 px-4 py-2 text-sm text-gray-900 transition-all focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white"
+              >
+                <option value="">Selecione...</option>
+                <option value="Imediata">Imediata</option>
+                <option value="15 dias">15 dias</option>
+                <option value="30 dias">30 dias</option>
+                <option value="Negociável">Negociável</option>
+              </select>
+            </div>
+
           </div>
         </div>
 
