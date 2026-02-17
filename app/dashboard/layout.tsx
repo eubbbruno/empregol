@@ -167,7 +167,7 @@ export default function DashboardLayout({
             {/* Bottom Actions */}
             <div className="p-4 border-t border-gray-100 space-y-1">
               <Link
-                href="/ajuda"
+                href="/dashboard/ajuda"
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors"
               >
                 <HelpCircle className="w-5 h-5" />
