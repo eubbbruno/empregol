@@ -17,31 +17,31 @@ export function FinalCTA() {
           className="max-w-4xl mx-auto text-center"
         >
           {/* Headline */}
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-heading text-white mb-6">
             Pronto para Marcar seu Gol?
           </h2>
 
           {/* Subtitle */}
-          <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-white/90 mb-12 max-w-2xl mx-auto">
             Junte-se a milhares de profissionais e empresas que já encontraram
             suas oportunidades perfeitas
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link href="/cadastro">
+          <div className="flex flex-col gap-4 justify-center mb-8 max-w-md mx-auto sm:max-w-none sm:flex-row">
+            <Link href="/cadastro" className="w-full sm:w-auto">
               <Button
                 size="lg"
-                className="bg-white text-green-600 hover:bg-gray-50 px-8 text-lg shadow-xl font-semibold"
+                className="bg-white text-green-600 hover:bg-gray-50 px-8 text-lg shadow-xl font-semibold w-full"
               >
                 Sou Candidato
               </Button>
             </Link>
-            <Link href="/cadastro">
+            <Link href="/cadastro" className="w-full sm:w-auto">
               <Button
                 size="lg"
                 variant="outline"
-                className="px-8 text-lg border-2 border-white text-white hover:bg-white/10 font-semibold"
+                className="px-8 text-lg border-2 border-white text-white hover:bg-white/10 font-semibold w-full"
               >
                 Sou Empresa
               </Button>

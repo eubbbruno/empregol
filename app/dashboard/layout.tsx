@@ -20,7 +20,6 @@ import {
   Bell,
   Mail,
   Menu,
-  X,
   ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";

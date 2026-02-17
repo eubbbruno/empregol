@@ -9,8 +9,6 @@ import {
   Calendar,
   CheckCircle2,
   XCircle,
-  ArrowUpRight,
-  Filter,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";

@@ -78,7 +78,7 @@ export function Testimonials() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto mb-12"
         >
-          <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-gray-200">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-xl border border-gray-200">
             <div className="flex flex-col items-center text-center">
               {/* Avatar */}
               <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg mb-6">
@@ -98,7 +98,7 @@ export function Testimonials() {
               </div>
 
               {/* Content */}
-              <p className="text-xl text-gray-700 leading-relaxed mb-6 max-w-3xl">
+              <p className="text-base sm:text-xl text-gray-700 leading-relaxed mb-6 max-w-3xl">
                 &ldquo;{featuredTestimonial.content}&rdquo;
               </p>
 

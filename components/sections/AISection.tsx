@@ -33,7 +33,7 @@ export function AISection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-5 gap-12 items-center">
           {/* Left side - Content (60%) */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 text-center lg:text-left">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}

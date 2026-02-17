@@ -42,11 +42,11 @@ export function Footer() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12"
         >
           {/* Logo & Description */}
-          <motion.div variants={fadeInUp} className="col-span-2">
-            <Link href="/" className="flex items-center mb-4">
+          <motion.div variants={fadeInUp} className="col-span-1 sm:col-span-2 text-center sm:text-left">
+            <Link href="/" className="flex items-center mb-4 justify-center sm:justify-start">
               <Image
                 src="/logo-empreGol.svg"
                 alt="EmpreGol"
@@ -55,11 +55,11 @@ export function Footer() {
                 className="h-14 w-auto brightness-0 invert"
               />
             </Link>
-            <p className="text-gray-400 mb-6 max-w-xs">
+            <p className="text-gray-400 mb-6 max-w-xs mx-auto sm:mx-0">
               A plataforma que conecta talentos brasileiros às melhores
               oportunidades. Sem burocracia, sem enrolação.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-3 justify-center sm:justify-start">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
                 return (

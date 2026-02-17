@@ -33,7 +33,7 @@ function AnimatedNumber({ value, suffix = "", prefix = "" }: AnimatedNumberProps
   return (
     <motion.span
       onViewportEnter={() => setInView(true)}
-      className="block text-5xl sm:text-6xl font-bold font-heading text-white"
+      className="block text-3xl sm:text-5xl lg:text-6xl font-bold font-heading text-white"
     >
       {prefix}
       {count.toLocaleString("pt-BR")}
@@ -67,7 +67,7 @@ const metrics = [
 
 export function Metrics() {
   return (
-    <section className="py-20 bg-[#15803D] relative overflow-hidden">
+    <section className="py-16 sm:py-20 bg-[#15803D] relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
           {metrics.map((metric, index) => (

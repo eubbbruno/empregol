@@ -114,7 +114,7 @@ export function Features() {
           </motion.div>
 
           {/* Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               const colors =
@@ -127,10 +127,10 @@ export function Features() {
                   variants={fadeInUp}
                   whileHover={{ y: -4, borderColor: "rgb(34, 197, 94)" }}
                   className={`
-                    ${isLarge ? "md:col-span-2 lg:row-span-2" : "md:col-span-1"}
+                    ${isLarge ? "sm:col-span-2 lg:row-span-2" : "sm:col-span-1"}
                     bg-white rounded-2xl p-6 lg:p-8 border border-gray-200
                     hover:shadow-lg transition-all duration-300 group
-                    ${isLarge ? "min-h-[400px]" : ""}
+                    ${isLarge ? "sm:min-h-[400px]" : ""}
                   `}
                 >
                   {/* Image for large cards */}
