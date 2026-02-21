@@ -105,34 +105,34 @@ export default function LoginPage() {
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="flex flex-col justify-center px-6 py-12 pt-24 lg:pt-12 lg:px-16 bg-white"
+        className="flex flex-col justify-center px-4 sm:px-6 py-8 pt-20 lg:pt-12 lg:px-16 bg-white"
       >
         <div className="w-full max-w-md mx-auto">
           {/* Logo */}
-          <motion.div variants={fadeInUp} className="mb-8">
-            <Link href="/" className="flex items-center">
+          <motion.div variants={fadeInUp} className="mb-6 sm:mb-8 text-center lg:text-left">
+            <Link href="/" className="inline-flex items-center">
               <Image 
                 src="/logo-empreGol-paths.svg" 
                 alt="EmpreGol" 
                 width={220} 
                 height={72} 
-                className="h-14 sm:h-16 w-auto"
+                className="h-12 sm:h-14 lg:h-16 w-auto"
               />
             </Link>
           </motion.div>
 
           {/* Header */}
-          <motion.div variants={fadeInUp} className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <motion.div variants={fadeInUp} className="mb-6 sm:mb-8 text-center lg:text-left">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Bem-vindo de volta!
             </h1>
-            <p className="text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600">
               Entre para acessar sua conta e continuar sua jornada
             </p>
           </motion.div>
 
           {/* Social Login */}
-          <motion.div variants={fadeInUp} className="space-y-3 mb-6">
+          <motion.div variants={fadeInUp} className="space-y-3 mb-4 sm:mb-6">
             <Button
               variant="outline"
               size="lg"
@@ -193,7 +193,7 @@ export default function LoginPage() {
           </motion.div>
 
           {/* Divider */}
-          <motion.div variants={fadeInUp} className="relative mb-6">
+          <motion.div variants={fadeInUp} className="relative mb-4 sm:mb-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200" />
             </div>
@@ -296,7 +296,7 @@ export default function LoginPage() {
           {/* Footer */}
           <motion.p
             variants={fadeInUp}
-            className="mt-8 text-center text-sm text-gray-600"
+            className="mt-6 sm:mt-8 text-center text-sm text-gray-600"
           >
             Não tem uma conta?{" "}
             <Link

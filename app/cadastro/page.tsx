@@ -152,18 +152,18 @@ export default function CadastroPage() {
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="flex flex-col justify-center px-6 py-12 pt-24 lg:pt-12 lg:px-16 bg-white"
+        className="flex flex-col justify-center px-4 sm:px-6 py-8 pt-20 lg:pt-12 lg:px-16 bg-white"
       >
         <div className="w-full max-w-md mx-auto">
           {/* Logo */}
-          <motion.div variants={fadeInUp} className="mb-8">
-            <Link href="/" className="flex items-center">
+          <motion.div variants={fadeInUp} className="mb-6 sm:mb-8 text-center lg:text-left">
+            <Link href="/" className="inline-flex items-center">
               <Image 
                 src="/logo-empreGol-paths.svg" 
                 alt="EmpreGol" 
                 width={220} 
                 height={72} 
-                className="h-14 sm:h-16 w-auto"
+                className="h-12 sm:h-14 lg:h-16 w-auto"
               />
             </Link>
           </motion.div>
